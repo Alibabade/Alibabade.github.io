@@ -1,0 +1,2038 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Li Wang</title>
+    <link>https://Alibabade.github.io/</link>
+      <atom:link href="https://Alibabade.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <description>Li Wang</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 12:21:28 +0000</lastBuildDate>
+    <image>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Li Wang</title>
+      <link>https://Alibabade.github.io/</link>
+    </image>
+    
+    <item>
+      <title>Object_detection</title>
+      <link>https://Alibabade.github.io/post/object_detection/</link>
+      <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/object_detection/</guid>
+      <description>&lt;p&gt;This blog contains four parts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduction: What is Object Detection? and general thoughts/ideas to deal with Object Detection;&lt;/li&gt;
+&lt;li&gt;Classic Deep Learning based Methods: multi-stage :RCNN and SPP Net , two-stage: Fast RCNN, Faster RCNN, Mask RCNN;&lt;/li&gt;
+&lt;li&gt;Classic One-Stage Methods: YOLOv1-v3, SSD, RetinaNet;&lt;/li&gt;
+&lt;li&gt;More Recent Anchor-Free Object Detection Methods (2018-2019);&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;What is Object Detection?&lt;/strong&gt; Given an image, object detection aims to find the categories of objects contained and their corresponding locations (presented as bounding-boxes) in the image. Thus Object Detection contains two tasks: classification and localization.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;General thoughts/ideas to detect objects.&lt;/strong&gt; The classification has been done by CNNs like AlexNet, VGG and ResNet. Then only localization still needs to be done. There are two intuitive ways: 1. Regression: the location of an object is presented by a vector $(x,y,w,h)$ which are the centre coordinates and width/height of an object bounding-box in the given image. For example, given an image, it only contains one object&amp;mdash;cat. To locate the bounding-box, we apply a CNN to predict the vector $(x_p,y_p,w_p,h_p)$ and learn to regress the predicted vector to be close to groundtruth $(x_t,y_t,w_t,h_t)$ by calculating the L2 loss (see Fig 1.).&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Regression for localization shown in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;If the initial bounding-box is &lt;strong&gt;randomly chosen&lt;/strong&gt; or &lt;strong&gt;there are many objects&lt;/strong&gt;, then the entire regression will be much difficult and take lots of training time to correct the predicted vector to groundtruth. Sometime, it may not achieve a good convergence. However, if we select approximately initial box coordinates which probably contains the objects, then the regression of these boxes should be much easier and faster as these initial boxes already have closer coordinates to groundtruth than random ones. Thus, we could divide the problem into Box Selection and Regression, which are called &lt;strong&gt;Region Proposal Selection&lt;/strong&gt; and &lt;strong&gt;Bounding-box Regression&lt;/strong&gt;(please go post Basic_understanding_dl if you do not know Bounding-box regression) in Object Detection, respectively. Based on this, the early Object Detection methods contain multi-stage tasks like: Region Proposal Selection, Classification and Bounding-box Regression. In this blog, we only focus on the DL-based techniques, thus We do not review any pre-DL methods here.&lt;/p&gt;
+&lt;p&gt;There are a few candidate Region Proposal Selection methods (shown in below), and some of them are able to select fewer proposals (nearly hundreds or thousands) and keep high recall.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Comparisons between different Region Proposal Selection methods shown in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;2-classic-deep-learning-based-methods&#34;&gt;2. Classic Deep Learning based Methods&lt;/h2&gt;
+&lt;p&gt;Since using Region Proposal Selection can reduce bounding-box candidates from almost infinite to ~2k for one image with multiple objects, &lt;a href=&#34;https://arxiv.org/pdf/1311.2524.pdf&#34;&gt;Ross et al. 2014&lt;/a&gt; propose the first CNN-based Object Detection method, which uses CNN to extract features of images, classifies the categories and regress bounding-box based on the CNN features.&lt;/p&gt;
+&lt;h3 id=&#34;21-r-cnn-region-cnn&#34;&gt;2.1 R-CNN (Region CNN)&lt;/h3&gt;
+&lt;p&gt;The basic procedure of R-CNN model:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use &lt;strong&gt;Selective Search&lt;/strong&gt; to select ~2k Region Proposals for one image.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Warp&lt;/strong&gt; all the Region Proposals into a &lt;strong&gt;same size&lt;/strong&gt; as the fully connection layers in their backbone neural network (i.e., AlexNet) has image size limitation. For example, the FC layers only take 21x21xC feature vector as input, then all the input image size has to be 227x227 if all the Conv + BN + relu layers of a pre-trained AlexNet are preserved.&lt;/li&gt;
+&lt;li&gt;Feed the Region Proposals into the pre-trained AlexNet at &lt;strong&gt;each proposal per time&lt;/strong&gt; rate, and extract the CNN features from FC7 layer for further &lt;strong&gt;classification&lt;/strong&gt; (i.e., SVM).&lt;/li&gt;
+&lt;li&gt;The extracted CNN features will also be used for &lt;strong&gt;Bounding-box Regression&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Based on the procedure above, there are twice fine-tuning:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Fine-tune the pre-trained CNN for classification. For example, the pre-trained CNN (i.e., AlexNet) may have 1000 categories, but we may only need it to classify ~20 categories, thus we need to fine-tune the neural network.&lt;/li&gt;
+&lt;li&gt;Fine-tune the pre-trained CNN for bounding-box regression. For example, we add a regression head behind the FC7 layer, and we need to fine-tune the network for bounding-box regression task.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;211-some-common-tricks-used&#34;&gt;2.1.1 Some common tricks used&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;1. Non-Maximum Suppression&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Commonly, sometimes the RCNN model outputs multiple bounding-boxes to localize the same object in the given image. To choose the best matching one, we use non-maximum suppression technique to avoid repeated detection of the same instance. For example, we sort all the boxes with confidence score, and remove those with low confidence score. Then we choose the box with highest IOU.&lt;br&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Non-maximum suppression used in RCNN &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Hard Negative Mining&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bounding-box containing no objects (i.e., cat or dog) are considered as negative samples. However, not all of them are equally hard to be identified. For example, some samples purely holding background are &amp;ldquo;easily negative&amp;rdquo; as they are easily distinguished. However, some negative samples may hold other textures or part of objects which makes it more difficult to identify. These samples are likely  &amp;ldquo;Hard Negative&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;These &amp;ldquo;Hard Negative&amp;rdquo; are difficult to be correctly classified. What we can do about it is to find explicitly those false positive samples during training loops and add them into the training data in order to improve the classifier.&lt;/p&gt;
+&lt;h4 id=&#34;212-problems-of-rcnn&#34;&gt;2.1.2 Problems of RCNN&lt;/h4&gt;
+&lt;p&gt;RCNN extracts CNN features for each region proposal by feeding each of them into CNN once at a time, and the proposals selected by Selective Search are approximately 2k for each image, thus this process consumes much time. Adding pre-processing Selective Search, RCNN needs ~47 second per image.&lt;/p&gt;
+&lt;h3 id=&#34;22-spp-net-spatial-pyramid-pooling-network&#34;&gt;2.2 SPP Net (Spatial Pyramid Pooling Network)&lt;/h3&gt;
+&lt;p&gt;To speedup RCNN, SPPNet focuses on how to fix the problem that each proposal is fed into the CNN once a time. The reason behind the problem is the fully connected layers need fixed feature size (i.e., 1 x 21 x 256 in &lt;a href=&#34;https://arxiv.org/pdf/1406.4729.pdf&#34;&gt;He et al.,2014&lt;/a&gt;) for further classification and regression. Thus SPPNet comes up with an idea that an additional pooling layer called spatial pyramid pooling is inserted right after the last Conv layer and before the Fc layers. The operation of this pooling first projects the region proposals to the Conv features, then divides each feature map (i.e., 60 x 40 x 256 filters) from the last Conv layer into 3 patch scales (i.e., 1,4 and 16 patches, see Fig 4. For example, the patch size is: 60x40 for 1 patch, 30x20 for 4 patches and 15x10 for 16 patches, next operates max pooling on each scaled patch to obtain a 1 x 21(1+4+16) for each feature map, thus we get 1x21x256 fiexd vector for Fc layers.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. The spatial pyramid pooling layer in &lt;a href=&#34;https://arxiv.org/pdf/1406.4729.pdf&#34;&gt;SPPNet&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;By proposing spatial pyramid pooling layer, SPPNet is able to reuse the feature maps extracted from CNN by passing the image once through because all information that region proposals need is shared in these feature maps. The only thing we could do next is project the region proposals selected by Selective Search onto these feature maps (&lt;strong&gt;How to project Region Proposals to feature maps? Please go to basic_understanding post for ROI pooling.&lt;/strong&gt;). This operation extremely saves time consumption compared to extract feature maps per proposal per forward (like RCNN does). The total speedup of SPPNet is about 100 times compared to RCNN.&lt;/p&gt;
+&lt;h2 id=&#34;fast-rcnn&#34;&gt;Fast RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. The pipeline of Fast RCNN in &lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1504.08083.pdf&#34;&gt;Fast RCNN&lt;/a&gt; attempts to overcome three notable &lt;strong&gt;drawbacks&lt;/strong&gt; of RCNN:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Training a multi-stage pipeline&lt;/strong&gt;: fine-tune a ConvNet based on Region Proposals; train SVM classifiers with Conv Features; train bounding-box regressors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Training is expensive in space and time&lt;/strong&gt;: 2.5 GPU-days for 5k images and hundreds of gigabytes of storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Speed is slow&lt;/strong&gt;: ~47 second per image even on GPU.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Solutions&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Combine both classification (replace SVM with softmax) and bounding-box regression into one network with multi-task loss.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Introduce ROI pooling for: 1. reuse Conv feature maps of one image; 2. speedup both training and testing.&lt;/strong&gt; Using VGG16 as backbone network, ROI (Region of Interest) pooling converts all different sizes of region proposals into 7x7x512 feature vector fed into Fc layers. Please go to post &lt;strong&gt;basic_understanding_dl&lt;/strong&gt; for more details about ROI pooling.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. Speed comparison between RCNN and Fast RCNN in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;multi-task-loss-for-classification-and-bounding-box-regression&#34;&gt;Multi-task Loss for Classification and Bounding-box Regression&lt;/h3&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Symbol Explanation&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$u$       Groundtruth class label, $u \in 0,1,&amp;hellip;,K$; To simplify, all background class has $u=0$.&lt;/p&gt;
+&lt;p&gt;$v$       Groundtruth bounding-box regression target, $v=(v_x,v_y,v_w,v_h)$.&lt;/p&gt;
+&lt;p&gt;$p$       Descrete probability distribtion (per RoI), $p=(p_0,p_1,&amp;hellip;,p_K)$ over $K+1$ categories. $p$ is computed by a softmax over the $K+1$ outputs of a fully connected layer.&lt;/p&gt;
+&lt;p&gt;$t^u$     Predicted bounding-box vector, $t^u=(t_x^u,t_y^u,t_w^u,t_h^u)$.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;$&lt;/p&gt;
+&lt;p&gt;The multi-task loss on each RoI is defined as:&lt;/p&gt;
+&lt;p&gt;$$L(p,u,t^u,v) = L_{cls}(p,u) + \lambda[u \geqslant 1]L_{loc}(t^u,v)$$
+where $L_{cls}(p,u)$=-log$p_u$ is a log loss for groundtruth class $u$. The Iverson bracket indicator function $[u \geqslant 1]$ is 1 when $u \geqslant 1$ (the predicted class is not background), and is 0 otherwise. The $L_{loc}$ term is using smooth L1 loss, which is denoted as:
+$$L_{loc}(t^u,v)=\sum_{i \in {x,y,w,h}}smooth_{L_1}(t_i^u-v_i)$$ and
+\begin{equation}
+smooth_{L_1}(x) = \begin{cases}
+0.5x^2, &amp;amp;|x| &amp;lt; 1 \newline
+|x|-0.5,&amp;amp;otherwise
+\end{cases}
+\end{equation}
+$smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than $L_2$ loss.&lt;/p&gt;
+&lt;h2 id=&#34;faster-rcnn&#34;&gt;Faster RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 7. The pipeline of Faster RCNN in &lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Faster RCNN&lt;/a&gt; focuses on solving the speed bottleneck of Region Proposal Selection as previous RCNN and Fast RCNN separately compute the region proposal by Selective Search on CPU which still consumes much time. To address this problem, a novel subnetwork called RPN (Region Proposal Network) is proposed to combine Region Proposal Selection into ConvNet along with Softmax classifiers and Bounding-box regressors.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 8. The pipeline of RPN in &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;the paper&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;To adapt the multi-scale scheme of region proposals, the RPN introduces an anchor box. Specifically, RPN has a classifier and a regressor. The classifier is to predict the probability of a proposal holding an object, and the regressor is to correct the proposal coordinates. Anchor is the centre point of the sliding window. For any image, scale and aspect-ratio are two import factors, where scale is the image size and aspect-ratio is width/height. &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Ren et al., 2015&lt;/a&gt; introduce 9 kinds of anchors, which are scales (1,2,3) and aspect-ratio(1:1,1:2,2:1). Then for the whole image, the number of anchors is $W \times H \times 9$ where $W$ and $H$ are width and height, respectively.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Symbol  Explanation&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$i$&lt;/strong&gt;         the index of an anchor in a mini-batch.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$p_i$&lt;/strong&gt;       the probability that the anchor $i$ being an object.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$p_i^{*}$&lt;/strong&gt;  the groundtruth label $p_i^{*}$ is 1 if the anchor is positive, and is 0 if the anchor is negative.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$t_i$&lt;/strong&gt;       a vector $(x,y,w,h)$ representing the coordinates of predicted bounding box.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$t_i^{*}$&lt;/strong&gt;  that of the groundtruth box associated with a positive anchor.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-$&lt;/p&gt;
+&lt;p&gt;The RPN also has a multi-task loss just like in Fast RCNN, which is defined as:&lt;/p&gt;
+&lt;p&gt;$$L({p_i},{t_i}) = \frac{1}{N_{cls}} \sum_i L_{cls}(p_i,p_i^{*}) + \lambda \frac{1}{N_{reg}} \sum_i p_i^{*} L_{reg}(t_i, t_i^{*})$$
+where the classification $L_{cls}$ is log loss over two classes (object vs not object). The regression loss $L_{reg}(p_i, p_i^{*}) = smooth_{L1}(t_i - t_i^{*})$. The term $p_i^{*} L_{reg}(t_i, t_i^{*})$ means the regression loss is activated if $p_i^{*}=1$ and is disabled if $p_i^{*}=0$. These two loss term are normalized by $N_{cls}$ and $N_{reg}$ and weighted by a balancing parameter $\lambda$. In implementation, $N_{cls}$ is the number of images in a mini-batch (i.e., $N_{cls}=256$), and the $reg$ term is normalized by the number of anchor locations (i.e., $N_{reg} \sim 2,400$). By default, the $\lambda$ is set to 10.&lt;/p&gt;
+&lt;p&gt;Therefore, there are four loss functions in one neural network:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;one is for classifying whether an anchor contains an object or not (anchor good or bad in RPN);&lt;/li&gt;
+&lt;li&gt;one is for proposal bounding box regression (anchor -&amp;gt; groundtruth proposal in RPN);&lt;/li&gt;
+&lt;li&gt;one is for classifying which category that the object belongs to (over all classes in main network);&lt;/li&gt;
+&lt;li&gt;one is for bounding box regression (proposal -&amp;gt; groundtruth bounding-box in main network);&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The total speedup comparison between RCNN, Fast RCNN and Faster RCNN is shown below:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;mask-rcnn&#34;&gt;Mask RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 10. The pipeline of Mask RCNN, which is Faster RCNN + Instance Segmentation + improved RoIAlign Pooling.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1703.06870.pdf&#34;&gt;Mask RCNN&lt;/a&gt; has three branches: RPN for region proposal + a pretrained CNN + Headers for classification and bounding-box regression + Mask Network for pixel-level instance segmentation. Mask RCNN is developed on Faster RCNN and adds RoIAlign Pooling and instance segmentation to output object masks in a pixel-to-pixel manner. The RoIAlign is proposed to improve RoI for pixel-level segmentation as it requires much more fine-grained alignment than Bounding-boxes. The accurate computation of RoIAlign is described in RoIAlign Pooling for Object Detection in Basic_understanding_dl post.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 11. Mask RCNN results on the COCO test set. Image source: &lt;a href=&#34;https://arxiv.org/pdf/1703.06870.pdf&#34;&gt;Mask RCNN paper&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;mask-loss&#34;&gt;Mask Loss&lt;/h3&gt;
+&lt;p&gt;During the training, a multi-task loss on each sampled RoI is defined as : $L=L_{cls} + L_{bbox}+L_{mask}$. The $L_{cls}$ and $L_{bbox}$ are identical as those defined in &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Faster RCNN&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The mask branch has a $K\times m^2$ dimensional output for each RoI, which is $K$ binary masks of resolution $m \times m$, one for each the $K$ classes. Since the mask branch learns a mask for every class with a per-pixel &lt;strong&gt;sigmoid&lt;/strong&gt; and a &lt;strong&gt;binary cross-entropy loss&lt;/strong&gt;, there is no competition among classes for generating masks. Previous semantic segmentation methods (e.g., &lt;a href=&#34;https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf&#34;&gt;FCN for semantic segmentation&lt;/a&gt;) use a &lt;strong&gt;softmax&lt;/strong&gt; and a &lt;strong&gt;multinomial cross-entropy loss&lt;/strong&gt;, which causes classification competition among classes.&lt;/p&gt;
+&lt;p&gt;$L_{mask}$ is defined as the **average binary mask loss**, which **only includes $k$-th class** if the region is associated with the groundtruth class $k$:
+$$L_{mask} = -\frac{1}{m^2} \sum_{1 \leqslant i,j \leqslant m} (y_{ij}log\hat{y}_{ij}^k +(1-y_{ij})log(1-\hat{y}_{ij}^k))$$
+where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask for the region of size $m \times m$, $\hat{y}_{ij}$ is the predicted value in the same cell in the predicted mask learned by the groundtruth class $k$.&lt;/p&gt;
+&lt;h2 id=&#34;summary-for-r-cnn-based-object-detection-methods&#34;&gt;Summary for R-CNN based Object Detection Methods&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 12. Summary for R-CNN based Object Detection Methods . Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;https://blog.csdn.net/v_JULY_v/article/details/80170182&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&#34;&gt;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&#34;&gt;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&#34;&gt;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37998710&#34;&gt;https://zhuanlan.zhihu.com/p/37998710&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Training_tricks_dl</title>
+      <link>https://Alibabade.github.io/post/training_tricks_dl/</link>
+      <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/training_tricks_dl/</guid>
+      <description>&lt;h2 id=&#34;fine-tuning-neural-networks&#34;&gt;Fine-tuning neural networks&lt;/h2&gt;
+&lt;p&gt;In practise, researchers tend to use pre-trained neural networks on datasets like ImageNet to train their own neural network for new tasks due to their dataset perhaps not big enough (compared to millions of images in ImageNet). Thus this type of operation is called fine-tuning the neural network.&lt;/p&gt;
+&lt;p&gt;There are two typical scenarios:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;use the pre-trained CNNs as feature extractors.&lt;/strong&gt; For example, we remove the fully connected layers from a pre-trained image classification CNN, then add a classification operator (i.e., softmax and SVM) at the end of left fully convolutional networks to classify images.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fine-tune the pre-trained CNNs.&lt;/strong&gt; For example, we preserve part/all of the layers in a pre-trained CNNs, and retrain it on our own dataset. In this case, the front layers extract low-level features which can be used for many tasks (i.e., object recognition/detection and image segmentation), and the rear layers extract high-level features related to specific classification task, thus we only need fine-tune the rear layers.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;how-to-fine-tune&#34;&gt;How to fine-tune&lt;/h3&gt;
+&lt;p&gt;There are normally four different situations:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is small and similar to pre-trained dataset.&lt;/strong&gt; Since the dataset is small, then retrain the CNN may cause overfitting. And the new dataset is similar to pre-trained dataset, thus we hope the high-level features are similar as well. In this case, we could just use the features extracted from pre-trained CNN and train a classification operator like softmax.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is small but not similar to pre-trained datasets.&lt;/strong&gt; Since the dataset is small then we can not retrain the CNN. And the new dataset is not similar to pre-trained datasets, then we do not use high-level features which means we do not use rear layers. Thus we can just use front layers as feature extractor and training a classification operator like softmax or SVM.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is big and similar to pre-trained datasets.&lt;/strong&gt; We can fine-tune the entire pre-trained CNN.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;dataset is big but not similar to pre-trained datasets.&lt;/strong&gt; We can fine-tune the entire pre-trained CNN.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In practise, a smaller learning-rate is suggested as the weights in network is already smooth and a larger learning-rate may distort the weights of pre-trained CNN.&lt;/p&gt;
+&lt;h3 id=&#34;coding-in-experiments&#34;&gt;Coding in experiments&lt;/h3&gt;
+&lt;p&gt;In Pytorch, you can set &amp;ldquo;param.requires_grad = False&amp;rdquo; to freeze any pre-trained CNN part.
+For example, to freeze some layers in BERT model, you could do something like &lt;a href=&#34;https://github.com/huggingface/transformers/issues/1431&#34;&gt;this&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;   if freeze_embeddings:
+             for param in list(model.bert.embeddings.parameters()):
+                 param.requires_grad = False
+             print (&amp;quot;Froze Embedding Layer&amp;quot;)
+
+   # freeze_layers is a string &amp;quot;1,2,3&amp;quot; representing layer number
+   if freeze_layers is not &amp;quot;&amp;quot;:
+        layer_indexes = [int(x) for x in freeze_layers.split(&amp;quot;,&amp;quot;)]
+        for layer_idx in layer_indexes:
+             for param in list(model.bert.encoder.layer[layer_idx].parameters()):
+                 param.requires_grad = False
+             print (&amp;quot;Froze Layer: &amp;quot;, layer_idx)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Graph_NN</title>
+      <link>https://Alibabade.github.io/post/graph_nn/</link>
+      <pubDate>Sun, 05 Jan 2020 17:26:13 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/graph_nn/</guid>
+      <description>&lt;p&gt;This blog simply clarifies the concepts of graph embedding, graph neural networks and graph convolutional networks.&lt;/p&gt;
+&lt;h2 id=&#34;graph-embedding&#34;&gt;Graph Embedding&lt;/h2&gt;
+&lt;p&gt;Graph Embedding (GE) is in representation learning of neural network, which often contains two types:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;embed each node in a graph into a low-dimension, scalar and dense vector, which can be represented and inferenced for learning tasks.&lt;/li&gt;
+&lt;li&gt;embed the whole graph into a low-dimension, scalar and dense vector, which can be used for graph structure classification.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are three types of method to complete graph embedding:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Matrix  Factorization. A representable matrix of a graph is factorized into vectors, which can be used for learning tasks. The representable matrix of a graph are often adjacency matrix, laplacian matrix etc.&lt;/li&gt;
+&lt;li&gt;Deepwalk. Inspired by word2vec, the deepwalk considers the reached node list by random walk as a word, which is fed into word2vec network to obtain a embeded vector for learning tasks.&lt;/li&gt;
+&lt;li&gt;Graph Neural Network. It is basically a series of neural networks operating on graphs. The graph information like representable matrix is fed into neural networks in order to get embedded vectors for learning tasks.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;graph-neural-networks&#34;&gt;Graph Neural Networks&lt;/h2&gt;
+&lt;p&gt;Graph Neural Networks (GNN) are deep neural networks with graph information as input. In general, the GNN can be divided into different types: 1. Graph Convolutional Networks (GCN); 2. Graph Attention Networks (GAT); 3. Graph Adversarial Networks; 4. Graph LSTM. The basic relationship between GE, GNN,GCN is shown as following picture:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Relation between GE, GNN and GCN in &lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;graph-convolutional-networks&#34;&gt;Graph Convolutional Networks&lt;/h2&gt;
+&lt;p&gt;Graph Convolutional Networks (GCN) operate convolution on graph information like adjacency matrix, which is similar to convolution on pixels in CNN. To better clarify this concept, we will use equations and pictures in the following paragraph.&lt;/p&gt;
+&lt;h3 id=&#34;concepts&#34;&gt;Concepts&lt;/h3&gt;
+&lt;p&gt;There are two concepts should be understood first before GCN.
+&lt;strong&gt;Degree Matrix (D)&lt;/strong&gt;: this matrix ($N \times N$, N is the node number) is a diag matrix in which values in diag line means the degree of each node; &lt;strong&gt;Adjacency Matrix (A)&lt;/strong&gt;: this matrix is also a $N \times N$ matrix in which value $A_{i,j}=1$ means there is an edge between node $i$ and $j$, otherwise $A_{i,j}=0$;&lt;/p&gt;
+&lt;h3 id=&#34;simple-gcn-example&#34;&gt;Simple GCN example&lt;/h3&gt;
+&lt;p&gt;Let&#39;s consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it&#39;s already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;there is no node self information as adjacency matrix $A$ does not contain any information of nodeself.&lt;/li&gt;
+&lt;li&gt;there is no normalization of adjacency matrix. The formulation $AH^{l}$ is actually a linear transformation which scales node feature vectors $H^l$ by summing the features of all neighbour nodes. The nodes having more neighbour nodes has more impact, which should be normalized.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Fix limitation 1.&lt;/strong&gt; We introduce the identity matrix $I$ into adjacency matrix $A$ to add nodeself information. For example, $\hat{A} = A + I_n$ where $I_n$ is the identity matrix with $n \times n$ size.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fix limiation 2.&lt;/strong&gt; Normalizing $A$ means that all rows of $A$ should sum to be one, and we realize this by $D^{-1}A$ where $D$ is the diag degree matrix. In practise, we surprisingly find that using a symmetric normalization, e.g., $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$ is more dynamically more interesting (I still do not get it why use symmetric normalization $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$). Combining these two tricks, we get the propagation rule introduced in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf et al. 2017&lt;/a&gt;:
+$$f(H^l, A) = \sigma(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^lW^l)$$
+where $\hat{A} = I_n + A$ and $\hat{D}$ is the diagonal node degree matrix of $\hat{A}$. In general, whatever matrix multiplies $H^lW^l$ (i.e. $A$, $D^{-1}A$ or $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$) is called Laplacian Matrix, which can be denoted as $L_{i,j}$ the value for $i$th and $j$th node. Taking the laplacian Matrix introduced in Kipf et al. 2017 as an example, the $L_{i,j}$ is as following:
+\begin{equation}
+L_{i,j}^{sym} = \begin{cases}
+1, &amp;amp;i=j, deg(j) \neq 0 \newline
+-\frac{1}{\sqrt{deg(i)deg(j)}}, &amp;amp;i \neq j, j \in \Omega_i \newline
+0, &amp;amp;otherwise
+\end{cases}
+\end{equation}
+where deg($\cdot$) denotes the degree matrix and $\Omega_i$ denotes all the neighbour nodes of node $i$. This symmetric Laplacian matrix not only considers the degree of node $i$ but also takes the degree of its neighbour node $j$ into account, which refers to symmetric normalization. This propagation rule weighs neighbour in the weighted sum higher if the node $i$ has a low-degree and lower if the node $i$ has a high-degree. This may be useful when low-degree neighbours have bigger impact than high-degree neighbours.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-for-simple-gcn&#34;&gt;Code example for simple GCN&lt;/h3&gt;
+&lt;p&gt;Considering the following simple directed graph:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Graph example in &lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Then the Adjacency Matrix $A$ is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A = np.matrix([
+               [0.,1.,0.,1.],
+               [0.,0.,1.,1.],
+               [0.,1.,0.,0.],
+               [1.,0.,1.,0.]],
+               dtype=float)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the identity matrix $I_n$ of $A$ is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;I_n = np.matrix([
+              [1.,0.,0.,0.],
+              [0.,1.,0.,0.],
+              [0.,0.,1.,0.],
+              [0.,0.,0.,1.]],
+              dtype=float)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We assign random weight matrix of one GCN layer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;W = np.matrix([[1,-1],[-1,1]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we randomly give 2 integer features for each node in the graph.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;H = np.matrix([[i,-i] for i in range(A.shape[0])], dtype=float)
+H
+matrix([[ 0.,  0.],
+        [ 1., -1.],
+        [ 2., -2.],
+        [ 3., -3.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now the &lt;strong&gt;unnormalized&lt;/strong&gt; features $\hat{A}H$ are:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat * H
+matrix([[ 1., -1.],
+        [ 6., -6.],
+        [ 3., -3.],
+        [ 5., -5.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the output of this GCN layer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat * H * W
+matrix([[  2.,  -2.],
+        [ 12., -12.],
+        [  6.,  -6.],
+        [ 10., -10.]])
+# f(H,A)=relu(A_hat * H * W)
+relu(A_hat * H * W)
+matrix([ [2., 0.],
+         [12.,0.]
+         [6., 0.],
+         [10., 0]])        
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we apply the propagation rule introduced in Kipf et al. 2017. First, we add self-loop information $\hat{A} = A + I$ is :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat = A + I_n
+A_hat
+matrix([
+      [1.,1.,0.,0.],
+      [0.,1.,1.,1.],
+      [0.,1.,1.,0.],
+      [1.,0.,1.,1.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Second, we add normalization by computing $\hat{D}$ and $\hat{D}^{-\frac{1}{2}}$ (inverse matrix of square root of $\hat{D}$):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;D_hat = np.array(np.sum(A_hat, axis=0))[0]
+D_hat = np.matrix(np.diag(D_hat))
+D_hat
+matrix([[ 2.,  0.,  0.,  0.],
+        [ 0.,  3.,  0.,  0.],
+        [ 0.,  0.,  3.,  0.],
+        [ 0.,  0.,  0.,  2.]])
+inv_D_hat_sqrtroot = np.linalg.inv(np.sqrt(D_hat))
+inv_D_hat_sqrtroot
+matrix([[ 0.70710678,  0.        ,  0.        ,  0.        ],
+        [ 0.        ,  0.57735027,  0.        ,  0.        ],
+        [ 0.        ,  0.        ,  0.57735027,  0.        ],
+        [ 0.        ,  0.        ,  0.        ,  0.70710678]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we compute the Laplacian matrix of $L = \hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$ and the &lt;strong&gt;nomalized&lt;/strong&gt; features $L * H$ :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;Laplacian_matrix = inv_D_hat_sqrtroot * A_hat * inv_D_hat_sqrtroot
+Laplacian_matrix
+matrix([[ 0.5       ,  0.40824829,  0.        ,  0.        ],
+        [ 0.        ,  0.33333333,  0.33333333,  0.40824829],
+        [ 0.        ,  0.33333333,  0.33333333,  0.        ],
+        [ 0.5       ,  0.        ,  0.40824829,  0.5       ]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# normalized feature vectors
+Laplacian_matrix * H
+matrix([[ 0.40824829, -0.40824829],
+        [ 2.22474487, -2.22474487],
+        [ 1.        , -1.        ],
+        [ 2.31649658, -2.31649658]])        
+#non-normalized feature vectors
+A_hat * H
+matrix([[ 1., -1.],
+        [ 6., -6.],
+        [ 3., -3.],
+        [ 5., -5.]])        
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As can be seen, all the values of feature vectors are scaled to smaller absolute values than Non-normalized feature vectors.&lt;/p&gt;
+&lt;p&gt;Finally, the output of GCN layer with applying the propagation rule:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# f(H,A) = relu(L*H*W)
+relu(Laplacian_matrix*H*W)
+matrix([[ 0.81649658, 0.],
+        [ 4.44948974, 0.],
+        [ 2.        , 0.],
+        [ 4.63299316, 0.]])
+# compared to f(H,A) = relu(A_hat*H*W)
+relu(A_hat*H*W)
+matrix([[  2.,  0.],
+        [ 12.,  0.],
+        [  6.,  0.],
+        [ 10., 0.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I suggest to verify this operation by yourself.&lt;/p&gt;
+&lt;h2 id=&#34;real-example-semi-supervised-classification-with-gcns&#34;&gt;Real example: Semi-Supervised Classification with GCNs&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling ICLR 2017&lt;/a&gt; demonstrates that the propgation rule in GCNs can predict semi-supervised classification for social networks. In this semi-supervised learning example, we assume that we know all the graph information including nodes and their neighbours, but not all the node labels, which means some nodes are labeled but others are not labeled.&lt;/p&gt;
+&lt;p&gt;We train the GCNs on labeled nodes and propagate the node label information to unlabedled nodes by updating weight matrices shared arcoss all nodes. This is done by following steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;perform forward propagation through the GCN layers.&lt;/li&gt;
+&lt;li&gt;apply sigmoid function row-wise at the last layer of GCN.&lt;/li&gt;
+&lt;li&gt;compute the cross entropy loss on known node labels.&lt;/li&gt;
+&lt;li&gt;backpropagate the loss and update the weight matrices $W$ in each layer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;zacharys-karate-club&#34;&gt;Zachary&#39;s Karate Club&lt;/h3&gt;
+&lt;p&gt;Zachary&#39;s Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Graph structure of Karate Club in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;We run a 3-layer GCN with randomly initialized weights. Now before training the weights, we simply insert Adjacency matrix $A$ and feature $H=I$ (i.e., $I$ is the identity matrix) into the model, then perform three propagation steps during the forward pass and effectively convolves the 3rd-order neighbourhood of each node. The model already produces predict results like picture below without any training updates:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. Predicted nodes for Karate Club in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Now we rewrite the propagation rule in layer-wise GCN (in vector form):
+$$h_{i}^{l+1} = \sigma (\sum_{j} \frac{1}{c_{i,j}} h_{j}^{l} W^l)$$
+where $\frac{1}{c_{i,j}}$ originates from $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$ and $h_j^l$ denotes the feature vector of neighbour node $j$. Now the propagation rule is interpreted as a differentiable and parameterized (with $W^l$) variant, if we choose an appropriate non-linear activation and initialize the random weight matrix such that is orthogonal (or using the initialization from &lt;a href=&#34;http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf&#34;&gt;Glorot &amp;amp; Bengio&lt;/a&gt;, AISTATS 2010), this update rule becomes stable in practice (also thanks to the normalization with $c_{i,j}$).&lt;/p&gt;
+&lt;p&gt;Next we simply label one node per class and use the semi-supervised learning algorithm for GCNs introduced in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling, ICLR 2017&lt;/a&gt;, and we start to train for a couple of iterations:
+
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;https://Alibabade.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+The video above shows Semi-supervised classification with GCNs in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;. And the model directly produces a 2-dimensional laten space which we can visualize.&lt;/p&gt;
+&lt;p&gt;Note that we just use random feature vectors (e.g., identity matrix we used here) and random weight matrices, only after a couple of iteration, the model used in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling&lt;/a&gt; is already able to achieve remarkable results. If we choose more serious initial node feature vectors, then the model can achieve state-of-the-art classification results on a various number of graph datasets.&lt;/p&gt;
+&lt;h2 id=&#34;further-reading-on-gcn&#34;&gt;Further Reading on GCN&lt;/h2&gt;
+&lt;p&gt;Well, the GCN is developing rapidly, here are a few papers for further reading:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1706.02216.pdf&#34;&gt;Inductive Representation Learning on Large graph&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1801.10247.pdf&#34;&gt;FastGCN: Fast Learning with Graph Convolutional Networks via Importance Sampling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1802.08888.pdf&#34;&gt;N-GCN: Multi-scale Graph Convolution for Semi-supervised Node Classification&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;https://zhuanlan.zhihu.com/p/89503068&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-7d2250723780&#34;&gt;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-7d2250723780&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-62acf5b143d0&#34;&gt;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-62acf5b143d0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;https://tkipf.github.io/graph-convolutional-networks/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Archive_papers</title>
+      <link>https://Alibabade.github.io/post/archive_papers/</link>
+      <pubDate>Sun, 05 Jan 2020 12:57:22 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/archive_papers/</guid>
+      <description>&lt;h2 id=&#34;deep-correlations-for-texture-synthesis-tog2017&#34;&gt;Deep Correlations for Texture Synthesis (TOG2017)&lt;/h2&gt;
+&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;The texture synthesis using &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;deep feature maps&lt;/a&gt; has difficulty to synthesize structure textures, which is a challenge to preserve the non-local structures.&lt;/p&gt;
+&lt;h3 id=&#34;core-ideas&#34;&gt;Core Ideas&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduce a structure matrix to represent the deep correlation among deep features. In another word, &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;Gatys et al.,2015&lt;/a&gt; consider the Gram loss of deep features between channels, while acutally the structure information is included inside each feature channel. Thus  &lt;a href=&#34;https://docs.wixstatic.com/ugd/b1fe6d_f4f1684f6ba647ffbf1148c3721fdfc4.pdf&#34;&gt;Sendik et al., 2017&lt;/a&gt; propose an intra-feature based Gram loss, which is fomulated as:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;\begin{equation}
+R_{i,j}^{l,n} = \sum_{q,m} w_{i,j} f_{q,n}^{l,n} f_{q-i,m-j}^{l,n}
+\end{equation}
+where $R_{i,j}^{l,n}$ denotes the intra-feature Gram loss of $n$th channel in $l$th layer, $i \in [-Q/2, Q/2]$ and $ j \in [-M/2,M/2]$.  This means that $f_{q,m}^{l,n}$ is shifted by $i$ pixels vertically and $j$ pixels horizontally, and applying a point-wise multiplication across the overlapping region, weighted by the inverse of the total amount of overlapping regions, That is
+$$w_{i,j} = [(Q-|i|)(M-|j|)]^{-1}$
+Then the structure loss based on intra-feature Gram loss is denoted as:&lt;/p&gt;
+&lt;p&gt;$$E_{DCor}^l = \frac{1}{4}\sum_{i,j,n}(R_{i,j}^{l,n} - \widetilde{R}_{i,j}^{l,n})^2$$&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Introduce a diversity loss to make sure the method can synthesize a larger texture than input exemplar. The idea is to shift the input deep correlation matrix $f_{i,j}^{l,n}$ to the size of desired output texture.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Introduce an edge-preserving smooth loss, which only penalizes the pixel difference when none of neighbouring pixels are smiliar to the pixel under consideration. The authors claim that this smooth loss is useful to reduce checker artefacts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The total loss function is weighted $E_{DCor}$, Gram loss, diversity loss and edge-preserving smooth loss.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Attention</title>
+      <link>https://Alibabade.github.io/post/attention/</link>
+      <pubDate>Sat, 28 Dec 2019 22:03:15 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/attention/</guid>
+      <description>&lt;h2 id=&#34;attention&#34;&gt;Attention&lt;/h2&gt;
+&lt;p&gt;The attention mechanism was created to simulate the human visual attention on images or understanding attention on texts. It was firstly born for solving a problem that widely exists in natural language processing (NLP) models like seq2seq, which NLP models often tend to forget the first part of processed sentences.&lt;/p&gt;
+&lt;h3 id=&#34;seq2seq-model&#34;&gt;Seq2seq model&lt;/h3&gt;
+&lt;p&gt;The encoder-decoder architecture commonly used in Seq2seq model:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;encoder, compress the input sentence into a context vector in a fixed length way which is regarded as a representation of the meaning of input sentence.&lt;/li&gt;
+&lt;li&gt;decoder, fed by the context vector and translate the vector to output. In some early works, the last state of encoder is usually used as the initial state of decoder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both of the encoder and decoder are recurrent neural networks, using LSTM or GRU units.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The critical problem of seq2seq model.&lt;/strong&gt; The seq2seq model often forgets the first part of a long sentence once it completes translation from the entire sentence to a context vector. To address this problem, the &lt;a href=&#34;https://arxiv.org/pdf/1409.0473.pdf&#34;&gt;attention mechanism&lt;/a&gt; is proposed.&lt;/p&gt;
+&lt;h2 id=&#34;the-attention-mechanism&#34;&gt;The attention mechanism&lt;/h2&gt;
+&lt;p&gt;The new architecture for encoder-decoder machine translaion is as following:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; data-caption=&#34;Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+The encoder is composed by a bidirection RNN, a context vector is the sum of weighted hidden states and the decoder translates the context vector to a output target based on previous output targets.&lt;/p&gt;
+&lt;h3 id=&#34;fomula&#34;&gt;Fomula&lt;/h3&gt;
+&lt;p&gt;Let &lt;strong&gt;x&lt;/strong&gt;=$(x_1, x_2,&amp;hellip;,x_n)$ denote the source sequence of length $n$ and &lt;strong&gt;y&lt;/strong&gt;=$(y_1, y_2,&amp;hellip;,y_m)$ denote the output sequence of length $m$, $\overrightarrow{h_i}$ denotes the forward direction state and $\overleftarrow{h_i}$ presents the backward direction state, then the hidden state for $i$th input word is fomulated as:
+$$h_i = [\overrightarrow{h_i}^T; \overleftarrow{h_i}^T], i=1,2,&amp;hellip;,n$$&lt;/p&gt;
+&lt;p&gt;The hidden states at position $t$ in decoder includes previous hidden states $s_{t-1}$, previous output target $y_{t-1}$ the context vector $c_t$, which is denoted as $s_{t} = f(s_{t-1}, y_{t-1}, c_{t})$, where the context vector $c_{t}$ is a sum of encoder hidden states of input sequence, weighted by alignment scores. For output target at position $t$, we have:
+$$c_{t} = \sum_{i=1}^{n} \alpha_{t,i} h_i$$&lt;/p&gt;
+&lt;p&gt;$$ \alpha_{t,i}= align(y_t, x_i) = \frac{exp(score(s_{t-1},h_i))}{\Sigma^n_{i=1} exp(score(s_{t-1},h_{i}))} $$
+The score $\alpha_{t,i}$ is assigned to the pair $(y_t, x_i)$ of input at position $i$ and output at position $t$, and the set of weights ${\alpha_{t,i}}$ denotes how much each source hidden state matches for each output. In &lt;a href=&#34;https://arxiv.org/pdf/1409.0473.pdf&#34;&gt;Bahdanau et al. 2015&lt;/a&gt;, the score $\alpha$ is learnt by a feed-forward network with a single hidden layer and this network is jointly learnt with other part of the model. Since the score is modelled in a network which also has weight matrices (i.e., $v_a$ and $W_a$) and activation layer (i.e., tanh), then the learning function is fomulated as:
+$$score(s_t, h_i) = v_a^T tanh(W_a[s_t;h_i])$$&lt;/p&gt;
+&lt;h2 id=&#34;self-attention&#34;&gt;Self-attention&lt;/h2&gt;
+&lt;p&gt;Self-attention (or intra-attention) is such an attention mechnaism that assigns correlation in a single sequence for an effective representation of the same sequence. It has been shown to be very useful in machine reading, abstractive summarizatin or image description generation.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&#34;https://arxiv.org/pdf/1601.06733.pdf&#34;&gt;Cheng et al., 2016&lt;/a&gt;, an application of self-attention mechanism is shown in machine reading. For example, the self-attention mechanism enables the model to learn a correlation between the current word and the previous part of the input sentence.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/self_attention.png&#34; data-caption=&#34;Fig 2. An example of self-attention mechanism in Cheng et al., 2016&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/self_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. An example of self-attention mechanism in Cheng et al., 2016
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;soft-and-hard-attention&#34;&gt;Soft and Hard Attention&lt;/h2&gt;
+&lt;p&gt;In image caption generation, the attention mechanism is applied and shown to be very helpful. &lt;a href=&#34;http://proceedings.mlr.press/v37/xuc15.pdf&#34;&gt;Xu et al.,2015&lt;/a&gt; shows a series of attention visualization to demonstrate how the model learn to summarize the image by paying attention to different regions.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; data-caption=&#34;Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;The soft attention and hard attention is telled by whether the attention has access to the entire image or only a patch region:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Soft&lt;/strong&gt; attention: the alignment weights are assigned to all the patches in the source image, which is the same type used in &lt;a href=&#34;https://arxiv.org/pdf/1409.0473.pdf&#34;&gt;Bahdanau et al. 2015&lt;/a&gt;
+Pro: the model is smooth and differentiable
+Con: computationally expensive when the source image is large&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hard&lt;/strong&gt; attention: the alignment weights are only assigned to a patch in the source image at a time
+Pro: less computation at the inference time
+Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires more complicated techniques such as variance reduction and reinforcement learning to train.(&lt;a href=&#34;https://arxiv.org/pdf/1508.04025.pdf&#34;&gt;Luong et al., 2015&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.quora.com/Why-is-hard-attention-non-differentiable-in-NNs&#34;&gt;why hard attention is non-differentiable?&lt;/a&gt; Hard attention is non-differentiable because it’s stochastic. Both hard and soft attention calculate a context vector using a probability distribution (usually over some set of annotation vectors), but soft attention works by taking the expected context vector at that time (i.e. a weighted sum of the annotation vectors using the probability distribution as weights), which is a differentiable action. Hard attention, on the other hand, stochastically chooses a context vector; when the distribution is multinomial over a set of annotation vectors (similar to how soft attention works, but we aren’t calculating the expected context vector now), you just sample from the annotation vectors using the given distribution. The advantage of hard attention is that you can also attend to context spaces that aren’t multinomial (e.g. a Gaussian-distributed context space), which is very helpful when the context space is continuous rather than discrete (soft attention can only work over discrete spaces).&lt;/p&gt;
+&lt;p&gt;And since hard attention is non-differentiable, models using this method have to be trained using reinforcement learning.&lt;/p&gt;
+&lt;h2 id=&#34;global-and-local-attention&#34;&gt;Global and Local Attention&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1508.04025.pdf&#34;&gt;Luong et al. 2015&lt;/a&gt; proposed a global and local attention, where the global attention calculate the entire weighted sum of hidden states for a target output (which is similar to soft attention). While the local attention is more smiliar to the blend of soft and hard attention. For example, in their paper, the model first predict a aligned position for the current target word then a window centred around the source position is used to compute a context vector.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; data-caption=&#34;Fig 1. The global and local attention architecture in Luong et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. The global and local attention architecture in Luong et al., 2015
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;This attention blog heavily borrowed from Lilian Weng&#39;s blog, more details refer to &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&#34;&gt;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Meta_learning_in_dl</title>
+      <link>https://Alibabade.github.io/post/meta_learning_in_dl/</link>
+      <pubDate>Fri, 27 Dec 2019 20:41:16 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/meta_learning_in_dl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Record_discrete_knowledge</title>
+      <link>https://Alibabade.github.io/post/record_discrete_knowledge/</link>
+      <pubDate>Wed, 25 Dec 2019 10:27:43 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/record_discrete_knowledge/</guid>
+      <description>&lt;h2 id=&#34;basic-knowledge-in-neural-networks&#34;&gt;Basic knowledge in neural networks&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Graph Neural Network&lt;/li&gt;
+&lt;li&gt;Graph Convolutional Network&lt;/li&gt;
+&lt;li&gt;Transform learning: mete learning, few shot learning, zero-shot learning&lt;/li&gt;
+&lt;li&gt;RNN, GRU&lt;/li&gt;
+&lt;li&gt;Siamese Network&lt;/li&gt;
+&lt;li&gt;Reinforcement learning&lt;/li&gt;
+&lt;li&gt;NAS&lt;/li&gt;
+&lt;li&gt;Optimization: Adam, SGD&lt;/li&gt;
+&lt;li&gt;Normalization&lt;/li&gt;
+&lt;li&gt;AlexNet, VGG, Inception, ResNet (ResNet-50,ResNet-101, ResNeXt-50/101), Xecption.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;sota-research-areas&#34;&gt;SOTA research areas&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Object recognition/detection: YOLO, LOGAN, Anchor, Anchor free, two-stage,one-stage&lt;/li&gt;
+&lt;li&gt;Object tracking&lt;/li&gt;
+&lt;li&gt;face recognition/detection&lt;/li&gt;
+&lt;li&gt;NLP: BERT, seq2seq, bag of words&lt;/li&gt;
+&lt;li&gt;Image segmentation/instance segmentation: deeplab&lt;/li&gt;
+&lt;li&gt;ShuffleNet, MobileNet&lt;/li&gt;
+&lt;li&gt;2D Image &amp;mdash;&amp;gt; 3D model&lt;/li&gt;
+&lt;li&gt;Human pose estimation: 2D skeleton, 3D skeleton, 3D mesh&lt;/li&gt;
+&lt;li&gt;Optical flow&lt;/li&gt;
+&lt;li&gt;Attention&lt;/li&gt;
+&lt;li&gt;FPN, Mask-rcnn,faster-rcnn, RPN, RetinaNet, ROI pooling,&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;machine-learning&#34;&gt;Machine Learning&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;KNN,SVM, GBDT, XGBOOST&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Activation_functions_in_dl</title>
+      <link>https://Alibabade.github.io/post/activation_functions_in_dl/</link>
+      <pubDate>Tue, 24 Dec 2019 21:15:41 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/activation_functions_in_dl/</guid>
+      <description>&lt;h2 id=&#34;activation-functions&#34;&gt;Activation functions&lt;/h2&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Activation functions works like an on-off button that determines whether the output of a neuron or what information should be passed to next layer. In biology, it works like synaptic in brain which decides what information it passes from one neuron cell to next one. There are several activation functions widely used in neural networks.&lt;/p&gt;
+&lt;h3 id=&#34;binary-function-step-function&#34;&gt;Binary function (step function)&lt;/h3&gt;
+&lt;p&gt;In one word, the output of binary function is 1 or 0 which is based on whether the input is greater or lower than a threshold. In math, it looks like this:
+f(x) = {1, if x &amp;gt; T; 0, otherwise}.&lt;/p&gt;
+&lt;p&gt;Cons: it does not allow multiple outputs, and it can not support to classify inputs to one of categories.&lt;/p&gt;
+&lt;h3 id=&#34;linear-function&#34;&gt;Linear function&lt;/h3&gt;
+&lt;p&gt;f(x) = $cx$. &lt;strong&gt;Cons:&lt;/strong&gt; 1. the deviation of linear function is a constant, which does not help for backpropagation as the deviation is not correlated to its inputs, in another word, it can not distinguih what weights or parameters help to learn the task; 2. linear function makes the entire multiple neural network into one linear layer (as the combination of linear functions is still a linear function), which becomes a simple regression model. It can not handle complex tasks by varying parameters of inputs.&lt;/p&gt;
+&lt;h3 id=&#34;non-linear-functions&#34;&gt;Non-linear functions&lt;/h3&gt;
+&lt;p&gt;Non-linear functions address the problems by two aspects:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The deviation of non-liear function is a function correlated to its inputs, which contributes the backpropagation to learn how to update weights for high accurancy.&lt;/li&gt;
+&lt;li&gt;Non-linear functions form the layers with hidden neurons into a deep neural network which is capable of predicting for complicated tasks by learning from complex datasets.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are several popular activation functions used in modern deep neural networks.&lt;/p&gt;
+&lt;h3 id=&#34;sigmoidlogistic-regression&#34;&gt;Sigmoid/Logistic Regression&lt;/h3&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/sigmoid.png&#34; data-caption=&#34;Fig 1. Sigmoid Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/sigmoid.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Sigmoid Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Equation: $$Sigmoid(x) = \frac{1}{1+e^{-x}}$$
+Derivative (with respect to $x$): $$Sigmoid^{&#39;}(x) = Sigmoid(x)(1-Sigmoid(x))$$
+&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;smooth gradient&lt;/strong&gt;, no jumping output values compared to binary function.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;output value lies between 0 and 1&lt;/strong&gt;, normalizing output of each neuron.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;right choice for probability prediction&lt;/strong&gt;, the probability of anything exists only between 0 and 1.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;vanishing gradient&lt;/strong&gt;, the gradient barely changes when $x&amp;gt;2$ or $x&amp;lt;-2$.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;computationally expensive.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;non zero centered outputs.&lt;/strong&gt; The outputs after applying sigmoid are always positive, during gradient descent, the gradients on weights in backpropagation will always be positive or negative, which means the gradient updates go too far in different directions, and makes the optimization harder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;softmax&#34;&gt;Softmax&lt;/h3&gt;
+&lt;p&gt;$$Softmax(x_i)= \frac{x_i}{\Sigma_{j=1}^{n}{x_j}}$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt; capable of handling multiple classification and the sum of predicted probabilities is 1. &lt;strong&gt;Cons:&lt;/strong&gt; only used for output layer.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Softmax is more suitable for multiple classification case when the predicted class must and only be one of categories. k-sigmoid/LR can be used to classify such multi-class problem that the predicted class could be multiple.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;tanh&#34;&gt;Tanh&lt;/h3&gt;
+&lt;p&gt;Equation: $$tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+Derivative (with respect to $x$): $$tanh^{&#39;}(x) = 1 -tanh(x)^2$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;zero centered. make it easier to model inputs that have strongly positive, strongly negative, and natural values.&lt;/li&gt;
+&lt;li&gt;similar to sigmoid&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;vanishing gradient&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;computationally expensive&lt;/strong&gt; as it includes division and exponential operation.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;vanishing-gradient&#34;&gt;Vanishing gradient&lt;/h3&gt;
+&lt;p&gt;Vanishing gradient means that the values of weights and biases are barely change along with the training.&lt;/p&gt;
+&lt;h3 id=&#34;exploding-gradient&#34;&gt;Exploding gradient&lt;/h3&gt;
+&lt;p&gt;Gradient explosion means that the values of weights and biases are increasing rapidly along with the training.&lt;/p&gt;
+&lt;h3 id=&#34;relu&#34;&gt;ReLU&lt;/h3&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relu.png&#34; data-caption=&#34;Fig 2. ReLU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. ReLU Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Equation: $$ReLU(x) = max(0, x)$$
+Derivative (with respect to $x$):
+\begin{equation}
+ReLU^{&#39;}(x) = \begin{cases}
+0, &amp;amp;x \leqslant 0; \newline
+1, &amp;amp; x &amp;gt; 0
+\end{cases}
+\end{equation}
+&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;computationally efficient&lt;/li&gt;
+&lt;li&gt;non-linear&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Why ReLU performs better in modern NNs?&lt;/strong&gt; The answer is not so sure right now, but its propeties like &lt;strong&gt;non-saturation gradient&lt;/strong&gt; and &lt;strong&gt;computionally efficient&lt;/strong&gt; indeed lead to fast convergence. Additionally, its property &lt;strong&gt;sparsing the network&lt;/strong&gt; also improves the modeling preformance. The &lt;strong&gt;non-zero centered issue&lt;/strong&gt; can be tackled by other regularization techniques like &lt;strong&gt;Batch Normalization&lt;/strong&gt; which produces a stable distribution for ReLU.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Dying ReLU problem. The backpropagation won&#39;t work when inputs approach zero or negative.
+However, to some extent, dying ReLU problem makes input values sparse which is helpful for neural network to learn more important values and perform better.&lt;/li&gt;
+&lt;li&gt;Non differentiable at zero.&lt;/li&gt;
+&lt;li&gt;Non zero centered.&lt;/li&gt;
+&lt;li&gt;Don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;elu&#34;&gt;ELU&lt;/h3&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/elu.png&#34; data-caption=&#34;Fig 3. ELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/elu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. ELU Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Equation:
+\begin{equation}
+ELU(x) = \begin{cases}
+\alpha (e^x-1), &amp;amp; x \leqslant 0 \newline
+x, &amp;amp;x &amp;gt; 0    &lt;br&gt;
+\end{cases}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Derivative:
+\begin{equation}
+ELU^{&#39;}(x) = \begin{cases}
+ELU(x) + \alpha, &amp;amp; x \leqslant 0 \newline
+1, &amp;amp; x &amp;gt; 0
+\end{cases}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;prevent dying ReLU problem.&lt;/li&gt;
+&lt;li&gt;gradient works when input values are negative.&lt;/li&gt;
+&lt;li&gt;non-linear, gradient is not zero.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;don&#39;t avoid gradient explode.&lt;/li&gt;
+&lt;li&gt;not computationally efficient.&lt;/li&gt;
+&lt;li&gt;$\alpha$ is not learnt by neural networks.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;leaky-relu&#34;&gt;Leaky ReLU&lt;/h3&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/lrelu.png&#34; data-caption=&#34;Fig 4. LReLU Visualization ($\alpha=0.1$)&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/lrelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. LReLU Visualization ($\alpha=0.1$)
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Equation:
+\begin{equation}
+LReLU(x) = \begin{cases}
+\alpha x,  &amp;amp;x \leqslant 0 \newline
+x, &amp;amp;x &amp;gt; 0
+\end{cases}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Derviative:
+\begin{equation}
+LReLU^{&#39;}(x) = \begin{cases}
+\alpha, &amp;amp;x \leqslant 0 \newline
+1, &amp;amp;x &amp;gt; 0
+\end{cases}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;prevent Dying ReLU problem&lt;/li&gt;
+&lt;li&gt;computationally efficient&lt;/li&gt;
+&lt;li&gt;non-linear&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;li&gt;Non consistent results for negative input values.&lt;/li&gt;
+&lt;li&gt;non-zero centered&lt;/li&gt;
+&lt;li&gt;non differentiable at Zeros&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;selu&#34;&gt;SELU&lt;/h3&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/selu.png&#34; data-caption=&#34;Fig 5. SELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/selu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 5. SELU Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Equation:
+\begin{equation}
+SELU(x) = \lambda \begin{cases}
+\alpha e^x-\alpha, &amp;amp; x \leqslant 0 \newline
+x, &amp;amp; x &amp;gt; 0
+\end{cases}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Derivative:
+\begin{equation}
+SELU^{&#39;}(x) = \lambda \begin{cases}
+\alpha e^x, &amp;amp; x \leqslant 0 \newline
+1, &amp;amp; x &amp;gt; 0
+\end{cases}
+\end{equation}
+where $\alpha \approx 1.6732632423543772848170429916717$ and $\lambda \approx 1.0507009873554804934193349852946$.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Internal normalization, which means faster convergence.&lt;/li&gt;
+&lt;li&gt;Preventing vanishing gradient and exploding gradient.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;
+Need more applications to prove its performance on CNNs and RNNs.&lt;/p&gt;
+&lt;h3 id=&#34;gelu&#34;&gt;GELU&lt;/h3&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/gelu.png&#34; data-caption=&#34;Fig 6. GELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/gelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. GELU Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Equation:
+\begin{equation}
+GELU(x) = 0.5x(1 + tanh(\sqrt{\frac{2}{\pi}} (x + 0.044715x^3)))
+\end{equation}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Best performance in NLP, especially BERT and GPT-2&lt;/li&gt;
+&lt;li&gt;Avoid vanishing gradient&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;
+Need more applications to prove its performance.&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://missinglink.ai/guides/neural-network-concepts/7-types-neural-network-activation-functions-right/&#34;&gt;https://missinglink.ai/guides/neural-network-concepts/7-types-neural-network-activation-functions-right/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jianshu.com/p/6db999961393&#34;&gt;https://www.jianshu.com/p/6db999961393&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/activation-functions-b63185778794&#34;&gt;https://towardsdatascience.com/activation-functions-b63185778794&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://datascience.stackexchange.com/questions/23493/why-relu-is-better-than-the-other-activation-functions&#34;&gt;https://datascience.stackexchange.com/questions/23493/why-relu-is-better-than-the-other-activation-functions&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Basic_understanding_dl</title>
+      <link>https://Alibabade.github.io/post/basic_understanding_dl/</link>
+      <pubDate>Tue, 24 Dec 2019 15:52:34 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/basic_understanding_dl/</guid>
+      <description>&lt;h2 id=&#34;bag-of-words-bow&#34;&gt;Bag of words (BOW)&lt;/h2&gt;
+&lt;p&gt;BOW is a method to extract features from text documents, which is usually used in &lt;strong&gt;NLP&lt;/strong&gt;, &lt;strong&gt;Information retrieve (IR) from documents&lt;/strong&gt; and &lt;strong&gt;document classification&lt;/strong&gt;. In general, BOW summarizes words in documents into a vocabulary (like dict type in python) that &lt;strong&gt;collects all the words in the documents along with word counts but disregarding the order they appear.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For examples, two sentences:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;Lei Li would like to have a lunch before he goes to watch a movie.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;James enjoyed the movie of Star War and would like to watch it again.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;BOW will collect all the words together to form a vocabulary like:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;{&amp;quot;Lei&amp;quot;:1, &amp;quot;Li&amp;quot;:1, &amp;quot;would&amp;quot;:2, &amp;quot;like&amp;quot;:2, &amp;quot;to&amp;quot;:3, &amp;quot;have&amp;quot;:1, &amp;quot;a&amp;quot;:2, &amp;quot;lunch&amp;quot;:1, &amp;quot;before&amp;quot;:1, &amp;quot;he&amp;quot;:1, &amp;quot;goes&amp;quot;:1, &amp;quot;watch&amp;quot;:2, &amp;quot;movie&amp;quot;:2, &amp;quot;James&amp;quot;:1, &amp;quot;enjoyed&amp;quot;:1, &amp;quot;the&amp;quot;:1, &amp;quot;of&amp;quot;:1, &amp;quot;Star&amp;quot;:1, &amp;quot;War&amp;quot;:1, &amp;quot;and&amp;quot;:1, &amp;quot;it&amp;quot;:1, &amp;quot;again&amp;quot;:1 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The length of vector represents each sentence is equal to the word number, which is 22 in our case.
+Then first sentence is presented in vector (in the order of vocabulary) as: {1,1,1,1,2,1,2,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0}, and the second sentence is presented in vector as: {0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1}.&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.freecodecamp.org/news/an-introduction-to-bag-of-words-and-how-to-code-it-in-python-for-nlp-282e87a9da04/&#34;&gt;https://www.freecodecamp.org/news/an-introduction-to-bag-of-words-and-how-to-code-it-in-python-for-nlp-282e87a9da04/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;principal-component-analysis-pca&#34;&gt;Principal Component Analysis (PCA)&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;mean: $\mu_i = \frac{1}{n} \Sigma_{i=1}^n{x_i}$&lt;/li&gt;
+&lt;li&gt;variance: $\sigma^2 = \frac{1}{n} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$&lt;/li&gt;
+&lt;li&gt;standard deviation: $\sigma^2 = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$&lt;/li&gt;
+&lt;li&gt;covariance: $cov(x,y) = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i-\mu_x)*(y_i -\mu_y)}$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;cross-entropy&#34;&gt;Cross Entropy&lt;/h2&gt;
+&lt;h3 id=&#34;amount-of-information-that-an-event-gives&#34;&gt;Amount of information that an event gives&lt;/h3&gt;
+&lt;p&gt;In general, the amount of information should be greater when an event with low probability happens. For example, event A: China won the table-tennis world champion; event B: Eygpt won the table-tennis world champion. Obviously, event B will give people more information if it happens. The reason behind this is that event A has great probability to happen while event B is rather rare, so people will get more information if event B happens.&lt;/p&gt;
+&lt;p&gt;The amount of information that an event gives is denoted as following equation:&lt;/p&gt;
+&lt;p&gt;$$f(x) = -log(p(x))$$
+where $p(x)$ denotes the probability that event $x$ happens.&lt;/p&gt;
+&lt;h3 id=&#34;entropy&#34;&gt;Entropy&lt;/h3&gt;
+&lt;p&gt;For a given event $X$, there may be several possible situations/results, and each situation/result has its own probability, then the amount of information that this event gives is denoted as:
+$$f(X)= -\Sigma_{i=1}^{n}p(x_i)log(p(x_i))$$&lt;br&gt;
+where $n$ denotes the number of situations/results and $p(x_i)$ is the probability of situation/result $x_i$ happens.&lt;/p&gt;
+&lt;h3 id=&#34;kullback-leibler-kl-divergence&#34;&gt;Kullback-Leibler (KL) divergence&lt;/h3&gt;
+&lt;p&gt;The KL divergence aims to describe the difference between two probability distributions. For instance, for a given event $X$ consisting of a series events ${x_1,x_2,&amp;hellip;,x_n}$, if there are two probability distributions of possible situations/results: $P={p(x_1),p(x_2),&amp;hellip;,p(x_n)}$ and $Q={q(x_1),q(x_2),&amp;hellip;,q(x_n)}$, then the KL divergence distance between $P$ and $Q$ is formulated as:&lt;/p&gt;
+&lt;p&gt;$$D_{KL}(P||Q) = \Sigma_{i=1}^n p(x_i)log(\frac{p(x_i)}{q(x_i)})$$
+further,
+$$D_{KL}(P||Q) = \Sigma_{i=1}^n p(x_i)log(p(x_i)) - \Sigma_{i=1}^n p(x_i)log(q(x_i))$$
+where $Q$ is closer to $P$ when $D_{KL}(P||Q)$ is smaller.&lt;/p&gt;
+&lt;h3 id=&#34;cross-entropy-1&#34;&gt;Cross Entropy&lt;/h3&gt;
+&lt;p&gt;In machine learning or deep learning, let $y={p(x_1),p(x_2),&amp;hellip;,p(x_n)}$ denote the groundturth probability distribution, and $\widetilde{y}={q(x_1),q(x_2),&amp;hellip;,q(x_n)}$ present the predicted probability distribution, then KL divergence is just a good way to compute the distance between predicted distribution and groudtruth. Thus, the loss could be just formulated as:
+$$Loss(y,\widetilde{y}) = \Sigma_{i=1}^n p(x_i)log(p(x_i)) - \Sigma_{i=1}^n p(x_i)log(q(x_i))$$
+where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the $Loss(y,\widetilde{y})$ is only related to the second term $- \Sigma_{i=1}^n p(x_i)log(q(x_i))$ which is called **Cross Entropy** as a training loss.&lt;/p&gt;
+&lt;h3 id=&#34;reference-1&#34;&gt;Reference&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/tsyccnh/article/details/79163834&#34;&gt;https://blog.csdn.net/tsyccnh/article/details/79163834&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;conv-1x1&#34;&gt;Conv 1x1&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1409.4842.pdf&#34;&gt;Conv 1x1&lt;/a&gt; in Google Inception is quite useful when the filter dimension of input featues needs to be increased or decreased meanwhile keeping the spaital dimension, and reduces the convolution computation. For example, the input feautre dimension is $(B, C, H, W)$ where $B$ is batch size, $C$ is channel number, $H$ and $W$ are height and width. Using $M$ filters of Conv 1x1, then the output of Conv 1x1 is $(B,M,H,W)$, only channel number changes but spatial dimension ($H \times W$) is still the same as input. To demonstrate the computation efficiency using conv 1x1, take a look at next example. For instance, the output feature we want is $(C, H, W)$, using M filters of conv 3x3, then the compuation is $3^2C \times MHW$. Using conv 1x1, the computation is $1^2C \times MHW$, which is $\frac{1}{9}$ of using conv 3x3.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://machinelearningmastery.com/introduction-to-1x1-convolutions-to-reduce-the-complexity-of-convolutional-neural-networks/&#34;&gt;Why do we need to decrease filter dimension or the number of feature maps?&lt;/a&gt; The filters or the number of feature maps often increases along with the depth of the network, it is a common network design pattern. For example, the number of feature maps in VGG19, is 64,128,512 along with the depth of network. Further, some networks like Inception architecture may also concatenate the output feature maps from multiple front convolution layers, which also rapidly increases the number of feature maps to subsequent convolutional layers.&lt;/p&gt;
+&lt;h3 id=&#34;reference-2&#34;&gt;Reference&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://stats.stackexchange.com/questions/194142/what-does-1x1-convolution-mean-in-a-neural-network&#34;&gt;https://stats.stackexchange.com/questions/194142/what-does-1x1-convolution-mean-in-a-neural-network&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;iou-intersection-of-union-in-object-detection&#34;&gt;IOU (Intersection of Union) in Object Detection&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/IOU.png&#34; data-caption=&#34;Fig 1. IOU Visualization in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/IOU.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. IOU Visualization in &lt;a href=&#34;https://blog.csdn.net/fendoubasaonian/article/details/78981636&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;bounding-box-regression-in-object-detection&#34;&gt;Bounding-box Regression in Object Detection&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Why do we need Bounding-box Regression?&lt;/strong&gt; In general, our object detection method predicts bounding-box for an object like blue box in below image. But the groundturth box is shown in green colour, thus we can see the bounding-box of the plane is not accurate compared to the groundtruth box as IOU is lower than 0.5 (intersection of union). If we want to get box location more close to groundtruth, then Bounding-box Regression will help us do this.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; data-caption=&#34;Fig 2. Predicted box for airplane and its corresponding groudtruth in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Predicted box for airplane and its corresponding groudtruth in &lt;a href=&#34;https://www.julyedu.com/question/big/kp_id/26/ques_id/2139&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;What is Bounding-box Regression?&lt;/strong&gt; We use $P = (P_x,P_y, P_w, P_y)$ presents the centre coordinates and width/height for the Region Proposals, which is shown as Blue window in the Fig 3. The groundtruth box is represented by $G=(G_x,G_y,G_w,G_h)$. Our aim is to find a projection function $F$ which finds a box $\hat{G}=(\hat{G}_x,\hat{G}_y,\hat{G}_w,\hat{G}_h)$ closer to $G$. In math, we need to find a $F$ which makes sure that $F(P) = \hat{G}$ and $\hat{G} \approx G$.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; data-caption=&#34;Fig 3. Bounding box regression in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Bounding box regression in &lt;a href=&#34;https://www.julyedu.com/question/big/kp_id/26/ques_id/2139&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;How to do Bounding-box Regression in R-CNN?&lt;/strong&gt; We want to transform $P$ to $\hat{G}$, then we need a transformation $(\Delta x, \Delta y, \Delta w, \Delta h)$ which makes the following happen:
+$$\hat{G}_x = P_x + \Delta x * P_w \Rightarrow \Delta x = (\hat{G}_x - P_x)/P_w$$
+$$\hat{G}_y = P_y + \Delta y * P_h \Rightarrow \Delta y = (\hat{G}_y - P_y)/P_h$$
+$$\hat{G}_w = P_w e^{\Delta w} \Rightarrow \Delta w = log(\hat{G}_w/P_w)$$
+$$\hat{G}_h = P_h e^{\Delta h} \Rightarrow \Delta h = log(\hat{G}_h/P_h)$$&lt;/p&gt;
+&lt;p&gt;While the groundtruth $(\Delta t_x, \Delta t_y, \Delta t_w, \Delta t_h)$ is defined as:
+$$\Delta t_x = (G_x - P_x)/P_w$$
+$$\Delta t_y = (G_y - P_y)/P_h$$
+$$\Delta t_w = log(G_w/P_w)$$
+$$\Delta t_h = log(G_h/P_h)$$
+Next, we denote $W_i \Phi(P_i)$ where $i \in {x,y,w,h}$ as learned transformation through the neural network, then the loss function is to minimize the L2 distance between $\Delta t_i$ and $W_i \Phi(P_i)$ where $i \in {x,y,w,h}$ by SGD:
+$$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/p&gt;
+&lt;h2 id=&#34;upsampling-deconvolution-and-unpooling&#34;&gt;Upsampling, Deconvolution and Unpooling&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Upsampling&lt;/strong&gt;: upsample any image to higher resolution. It uses &lt;strong&gt;upsample&lt;/strong&gt; and &lt;strong&gt;interpolation&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://www.quora.com/How-do-fully-convolutional-networks-upsample-their-coarse-output&#34;&gt;Deconvolution&lt;/a&gt;&lt;/strong&gt;: also called transpose convolution. For example, your input for deconvolution layer is 4x4, deconvolution layer multiplies one point in the input with a 3x3 weighted kernel and place the 3x3 results in the output image. Where the outputs overlap you sum them. Often you would use a stride larger than 1 to increase the overlap points where you sum them up, which adds upsampling effect (see blue points). The upsampling kernels can be learned just like normal convolutional kernels.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; data-caption=&#34;Fig 4. Visualization of Deconvolution in this Quora answer.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. Visualization of Deconvolution in &lt;a href=&#34;https://www.julyedu.com/question/big/kp_id/26/ques_id/2139&#34;&gt;this Quora answer&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://arxiv.org/pdf/1311.2901v3.pdf&#34;&gt;Unpooling&lt;/a&gt;&lt;/strong&gt;: We use an unpooling layer to approximately simulate the inverse of max pooling since max pooling is non-invertible. The unpooling operates on following steps: 1. record the maxima positions of each pooling region as a set of switch variables; 2. place the maxima back to the their original positions according to switch variables; 3. reset all values on non-maxima positions to $0$. This may cause some information loss.&lt;/p&gt;
+&lt;h3 id=&#34;references&#34;&gt;Reference:s&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.quora.com/What-is-the-difference-between-Deconvolution-Upsampling-Unpooling-and-Convolutional-Sparse-Coding&#34;&gt;https://www.quora.com/What-is-the-difference-between-Deconvolution-Upsampling-Unpooling-and-Convolutional-Sparse-Coding&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;roi-pooling-in-object-detection-fast-rcnn&#34;&gt;RoI Pooling in Object Detection (Fast RCNN)&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1504.08083.pdf&#34;&gt;RoI pooling&lt;/a&gt; is simple version of Spatial Pyramid Pooling (multiple division scales, i.e., divide the entire feature maps into (1,4,16) patches/grids), which has only one scale division. For example, the original input image size is (1056x640) and one region proposal ($x_1=0, y_1=80,x_2=245, y_2=498$), after convolutional layers and pooling layers, the feature map size is (66x40), then we should rescale the proposal from ($x_1=0, y_1=80,x_2=245, y_2=498$) to ($x_1=0, y_1=5,x_2=15, y_2=31$) as the scale is 16 (1056/66=16 and 640/40=16). Then we divide the proposal on feature map into 7x7 sections/grids (the proposal size is no need of 7 times) if the output size is 7x7. Next we operate max pooling on each grid, and place the maxima into output 7x7. Here is another simple example below, the input feature size is 8x8, proposal is (0,3,7,8), and the output size is 2x2 thus divide the proposal region into 2x2 sections:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; data-caption=&#34;Fig 5. Visualization of ROI pooling in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 5. Visualization of ROI pooling in &lt;a href=&#34;https://towardsdatascience.com/region-of-interest-pooling-f7c637f409af&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;reference-3&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/73654026&#34;&gt;https://zhuanlan.zhihu.com/p/73654026&lt;/a&gt;ß&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;roialign-pooling-in-object-detection&#34;&gt;RoIAlign Pooling in Object Detection&lt;/h2&gt;
+&lt;p&gt;RoI align Pooling is proposed in &lt;a href=&#34;https://arxiv.org/pdf/1703.06870.pdf&#34;&gt;Mask RCNN&lt;/a&gt; to address the problem that RoI pooling causes misalignments by rounding quantization.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Problem of RoI pooling.&lt;/strong&gt; There are twice misalignments for each RoI pooling operation. For example, the size of original input image is 800x800, and one region proposal is 515x482 and its corresponding coordinates are ($x_{tl}=20, y_{tl}=267, x_{br}=535, y_{br}=749$) where &amp;lsquo;tl&amp;rsquo; means top left and &amp;lsquo;br&amp;rsquo; means bottom right. And the stride of last conv layer is **16** which means each feature map extracted from the last conv layer is **50x50** (800/16). If the output size is fixed to 7x7, then RoI pooling would quantize (by floor operation) the region proposal to **32x30** and its corresponding coordinates to ($x_{tl}=1,y_{tl}=16, x_{br}=33, y_{br}=46$). The twice misalignments in each feature map are visualized in the below figure (acutal coordinates in blue colour).&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; data-caption=&#34;Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Solution.&lt;/strong&gt; RoI Align removes all the quantizations of RoI and keeps the float number. Taking the example above, RoI Align Pooling keeps the projected region proposal size &lt;strong&gt;32.1875x30.125&lt;/strong&gt; and its corresponding coordinates are ($x_{tl}=1.25,y_{tl}=16.6875, x_{br}=33.4375, y_{br}=46.8125$). Then its corresponding grid size is **4.598x4.303**. We assume the **sample rate is 2**, then 4 points will be sampled. For each grid, we compute the coordinates of 4 sampled points. The coordinates of top left sampled point is (1.25+(4.598/2)/2=2.3995, (16.6875+(4.303/2)/2)=17.76325), the top right sampled point is (1.25+(4.598/2)x1.5=4.6985, 17.76325), the bottom left sampled point is (1.25+(4.598/2)/2=2.3995, 16.6875+(4.303/2)x1.5=19.91475), and the bottom right samples point is (1.25+(4.598/2)x1.5=4.6985, 16.6875+(4.303/2)x1.5=19.91475). For the first sampled point, we compute the value at (2.3995,17.76325) by interpolating values at four nearest points ((2,17),(3,17),(2,18) and (3,18)) in each feature map. The computation of one sampled point can be visualized by the below figure.&lt;/p&gt;
+&lt;p&gt;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; data-caption=&#34;Fig 6. Visualization of one sampled value computation in RoI Align.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. Visualization of one sampled value computation in RoI Align.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+where area0=(2.3995-2)x(17.76325-17)=0.304918375, area1=(3-2.3995)x(17.76325-17)=0.458331625, area2=(2.3995-2)x(18-17.76325)=0.094581625, area3=(3-2.3995)x(18-17.76325)=0.142168375.&lt;/p&gt;
+&lt;h3 id=&#34;reference-4&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/61317964&#34;&gt;https://zhuanlan.zhihu.com/p/61317964&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Normalization_in_DL</title>
+      <link>https://Alibabade.github.io/post/normalizaion_in_dl/</link>
+      <pubDate>Mon, 23 Dec 2019 11:26:06 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/normalizaion_in_dl/</guid>
+      <description>&lt;h2 id=&#34;batch-normalization-bn&#34;&gt;Batch Normalization (BN)&lt;/h2&gt;
+&lt;h3 id=&#34;short-description&#34;&gt;Short Description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1502.03167.pdf&#34;&gt;Batch Normalization&lt;/a&gt; is a basic method to initialize inputs to neural networks. In the early years, the neural network is sensitive to the hyperparameters, which makes it difficult to train and stabilize. To address this problem, Loffe et al. proposed a novel normalization method to accelerate the neural network trianing process.&lt;/p&gt;
+&lt;h3 id=&#34;training-problems&#34;&gt;Training Problems&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1. Slow learning speed.&lt;/strong&gt;
+The $W$ weights and $b$ bias (parameters) in each layer are updated along with each SGD iterative optimization (back propagation), which makes the distribution of inputs to the next layer changes all the time. Thus the learning speed becomes slow as each layer has to adapt to input changes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Slow convergence speed.&lt;/strong&gt;
+For saturating nonlinearities like Sigmoid and Tanh, more and more inputs to activation functions may lay in the saturation regions along with the $W$ and $b$ increase. This further causes the gradient becomes close to 0 and weights update in a slow rate.&lt;/p&gt;
+&lt;p&gt;These problems are described as &lt;strong&gt;Internal Covariate Shift&lt;/strong&gt; in Loffe et al. 2015.&lt;/p&gt;
+&lt;h3 id=&#34;solutions-to-internal-covariate-shift&#34;&gt;Solutions to Internal Covariate Shift&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1. Whitening (machine learning).&lt;/strong&gt;
+Whitening aims to linearly transform the inputs to zero mean and unit variances, which decorrelates the inputs. There are normally two whitening methods: PCA and ZCA, where PCA whitening transforms inputs to zero mean and unit variance, and ZCA whitening transforms inputs to zero mean and same variance as original inputs.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Batch Normalization.&lt;/strong&gt;
+Motivation: 1. whitening costs too much computation if it is put before each layer; 2. the distribution of transformed inputs does not have expressive power as original inputs.&lt;/p&gt;
+&lt;p&gt;Solutions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;simplify the linearly transformation by following equations:
+$$ \mu_j = \frac{1}{m}\Sigma_{i=1}^{m}{x_j^i}$$
+$$\sigma^2_j = \frac{1}{m}\Sigma_{i=1}^{m}{(x_j^i - \mu_j)^2}$$
+$$x_j^{i&#39;} = \frac{x_j^i - \mu_j}{\sqrt{\sigma_j^2 + \varepsilon}}$$
+where $j$ denotes the $j$th layer, $\mu_j$ and $\sigma_j^2$ denote the mean and variance of inputs $x_j$. $x_j^{i&#39;}$ denotes the transformation output which has zero mean and unit variance, $m$ denotes the sample number in $x_i$ and $\varepsilon$ ($\varepsilon=10^{-8}$) prevents the zero in variance.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;learn a linear transformation with parameter $\gamma$ and $\beta$ to restore original input distribution by following equation:
+$$x_j^{i&amp;quot;} = \gamma_j x_j^{i&#39;} + \beta_j$$&lt;br&gt;
+where the transformed output will have the same distribution of original inputs when $\gamma_j^2$ and $\beta_i$ equal to $\sigma_j^2$ and $\mu_j$.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Normalization in testing stage.&lt;/strong&gt; Generally, there may be just one or a few examples to be predicted in testing stage, the mean and variance computed from such examples could be baised. To address this problem, the $\mu_{batch}$ and $\sigma^2_{batch}$ of each layer are stored to compute the mean and variance for testing stage. For example, $\mu_{test} = \frac{1}{n} \Sigma \mu_{batch}$ and $\sigma^2_{batch}=\frac{m}{m-1} \frac{1}{n} \Sigma \sigma^2_{batch}$, then $BN(x_{test})=\gamma \frac{x_{test} - \mu_{test}}{\sqrt{\sigma^2_{test} + \varepsilon}} + \beta$.&lt;/p&gt;
+&lt;h3 id=&#34;advantages-of-bn&#34;&gt;Advantages of BN&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Faster learning speed due to stable input distribution.&lt;/li&gt;
+&lt;li&gt;Saturating nonlinearities like Sigmoid and Tanh can still be used since gradients are prevented from disappearing.&lt;/li&gt;
+&lt;li&gt;Neural network is not sensitive to parameters, simplfy tuning process and stabilize the learning process.&lt;/li&gt;
+&lt;li&gt;BN partially works as regularization, increases generalization ability. The mean and variance of each mini
+-batch is different from each other, which may work as some noise input for the nerual network to learn. This has same function as Dropout shutdowns some neurons to produce some noise input to the neural networks.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;disadvantages-of-bn&#34;&gt;Disadvantages of BN&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;NOT well for small mini-batch as the mean ans variance of small mini-batch differ great from other mini-batches which may introduce too much noise into the NN training.&lt;/li&gt;
+&lt;li&gt;NOT well for recurrent neural network as one hidden state may deal with a series of inputs, and each input has different mean and variance. To remember these mean and variance, it may need more BN to store them for each input.&lt;/li&gt;
+&lt;li&gt;NOT well for noise-sensitive applications such as generative models and deep reinforcement learning.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;rethink-the-resaon-behind-the-effectiveness-of-bn&#34;&gt;Rethink the resaon behind the effectiveness of BN&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Why does the BN works so well in CNNs?&lt;/strong&gt; &lt;a href=&#34;https://arxiv.org/pdf/1805.11604.pdf&#34;&gt;This paper&lt;/a&gt; revisits the BN and proposes that the success of BN has little to do with reducing Internal Covariate Shift. Well, the ICS does exist in the deeper neural layers, but adding artifiical ICS after BN into a deep neural network, the added ICS does not affect the good performance of BN, which indicates that the performance of BN has little to do with ICS. Then what does the BN do to improve the training performance? The work mentioned above points out that BN smoothes the optimization landscape and makes the optimizer more easier to find the global minimic solution (c.f. Figure 4 in the paper). For more details, please refer to the paper.&lt;/p&gt;
+&lt;h2 id=&#34;weight-normalization-wn&#34;&gt;Weight Normalization (WN)&lt;/h2&gt;
+&lt;h3 id=&#34;short-description-1&#34;&gt;Short description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1602.07868.pdf&#34;&gt;Weight normalization&lt;/a&gt; is designed to address the disadvantages of BN which are that BN usually introduces too much noise when the mini-batch is small and the mean and variance of each mini-batch is correlated to inputs. It eliminates the correlations by normalizing weight parameters directly instead of mini-batch inputs.&lt;/p&gt;
+&lt;h3 id=&#34;motivation-and-methodology&#34;&gt;Motivation and methodology&lt;/h3&gt;
+&lt;p&gt;The core limitaion of BN is that the mean and variance is correlated to each mini-batch inputs, thus a better way to deal with that is design a normalization without the correlation. To achieve this, Salimans et al. proposed a Weight Normalization which is denoted as:
+$$w = \frac{g}{||v||} v$$
+where $v$ denotes the parameter vector, $||v||$ is the Euclidean norm of $v$, and $g$ is scalar. &lt;strong&gt;This reparameterization has the effect of fixing the Euclidean norm of weight vector $w$, and we now have $||w||=g$ which is totally independent from parameter vector $v$&lt;/strong&gt;. This operation is similar to divide inputs by standard deviation in batch normalization.&lt;/p&gt;
+&lt;p&gt;The mean of neurons still depends on $v$, thus the authors proposed a &lt;strong&gt;&amp;lsquo;mean-only batch normalization&amp;rsquo;&lt;/strong&gt; which only allows the inputs to subtract their mean but not divided by variance. Compared to variance divide, the mean subtraction seems to introduce less noise.&lt;/p&gt;
+&lt;h2 id=&#34;layer-normalization&#34;&gt;Layer Normalization&lt;/h2&gt;
+&lt;h3 id=&#34;short-description-2&#34;&gt;Short description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;(https://arxiv.org/pdf/1607.06450.pdf)&#34;&gt;Layer normalization&lt;/a&gt; is inspired by batch normalization but designed to small mini-batch cases and extend such technique to recurrent neural networks.&lt;/p&gt;
+&lt;h3 id=&#34;motivation-and-methodology-1&#34;&gt;Motivation and methodology&lt;/h3&gt;
+&lt;p&gt;As mentioned in short description. To achieve the goal, &lt;a href=&#34;https://arxiv.org/pdf/1607.06450.pdf&#34;&gt;Hinton et al. 2016&lt;/a&gt; &lt;strong&gt;alter the sum statistic of inputs from batch dimension to feature dimension (multiple channels)&lt;/strong&gt;. For example, in a mini-batch (containing multiple input features), the computation can be described as following picture:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; data-caption=&#34;Fig 1. Layer Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Layer Normalization Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;As can be seen, batch normalization computes the sum statistic of inputs across the batch dimension while layer normalization does across the feature dimension. The computation is almost the same in both normalization cases, but the mean and variance of layer normalization is independent of other examples in the same mini-batch. Experiments show that &lt;strong&gt;layer normalization works well in RNNs&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;instance-normalization-in&#34;&gt;Instance Normalization (IN)&lt;/h2&gt;
+&lt;h3 id=&#34;short-description-3&#34;&gt;Short description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1607.08022.pdf&#34;&gt;Instance normalization&lt;/a&gt; is like layer normalization mentioned above but it goes one step further that &lt;strong&gt;it computes mean and variance of each channel in each input feature&lt;/strong&gt;. In this way, the statistic like mean and variance is independent to each channel. The IN is originally designed for neural style transfer which discovers that stylization network should be agnostic to the contrast of the style image. Thus it is usually specific to image.&lt;/p&gt;
+&lt;h2 id=&#34;group-normalization-gn&#34;&gt;Group Normalization (GN)&lt;/h2&gt;
+&lt;h3 id=&#34;short-description-4&#34;&gt;Short description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1803.08494.pdf&#34;&gt;Group normalization&lt;/a&gt; computes the mean and variance across a group of channels in each training example, which makes it sound like a combination of layer normalization and instance normalization. For example, group normalization becomes layer normalization when all the channels are put into one single group, and becomes instance normalization when each channel is put into one single group.
+The picture below shows the visual comparisons of batch normalization, layer normalization, instance normalization and group normalization.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; data-caption=&#34;Fig 2. Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Normalization Visualization
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;Training small batch size with BN introduces noise into network which decreases the accuary. However, for larger models like object detection, segmentation and video, they have to require small batches considering the memory consumption. In addition, dependence bewteen channels widely exists but it is not extremely like all channels have dependences (layer normalization) or totally no dependence between channels (instance normalization). Based on this oberservation, &lt;a href=&#34;https://arxiv.org/pdf/1803.08494.pdf&#34;&gt;He et al. 2018&lt;/a&gt; proposed a group-wise normalization which divides the channels into groups and makes it flexiable for different applications.&lt;/p&gt;
+&lt;h2 id=&#34;batch-instance-normalization-bin&#34;&gt;Batch-Instance Normalization (BIN)&lt;/h2&gt;
+&lt;h3 id=&#34;short-description-5&#34;&gt;Short description&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1805.07925.pdf&#34;&gt;Batch-instance normalization&lt;/a&gt; is actually a interpolation of BN and IN, and lets the gradient descent to learn a parameter to interploates the weight of BN and IN. The equation below shows the defination of BIN:&lt;/p&gt;
+&lt;p&gt;$$BIN(x) = \gamma (\rho BN(x) + (1-\rho) IN(x)) + \beta$$
+To some extend, this BIN inspires readers that models can learn to adaptively use different normalization methods using gradient descent. Would the network be capable of learning to use even wider range of normalization methods in one single model?&lt;/p&gt;
+&lt;h3 id=&#34;motivation-1&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;Rethinking the instance normalization, &lt;a href=&#34;https://arxiv.org/pdf/1805.07925.pdf&#34;&gt;Nam et al. 2019&lt;/a&gt; regard instance normalization as an effective method to earse unnecessary style information from image and perserve useful styles for tasks like object classification, multi-domain learning and domain adaptation.&lt;/p&gt;
+&lt;h2 id=&#34;switchable-normalization-sn&#34;&gt;Switchable Normalization (SN)&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1811.07727v1.pdf&#34;&gt;Luo et al. 2018&lt;/a&gt; investigated into whether different layers in a CNN needs different normalization methods. Thus they proposed a Switchable Normalization which learns parameters to switch normalizers between BN, LN and IN. As for results, their experiments suggest that (1) using distinct normalizations in different layer indeed improves both learning and generation of a CNN;(2) the normalization choices are more related to depth and batch size but less relevant to parameter initialization, learning rate decay and solver;(3) different tasks and datasets influence tha normalization choices. Additionally, the experiments in general also suggest that IN works well in early layers, LN works better in later layers while BN is preferred in middle layers.&lt;/p&gt;
+&lt;h2 id=&#34;spectral-normalization&#34;&gt;Spectral Normalization&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1802.05957.pdf&#34;&gt;Spectral normalization&lt;/a&gt; (another form of weight normalization) is designed to improve the training of GANs by tuning the Lipschitz constant of the discriminator. The Lipschitz constant is a constant $L$ used in the following equation:
+$$||f(x) - f(y)|| \leqslant L ||x-y||$$&lt;/p&gt;
+&lt;p&gt;The Lipschitz constant is tuned by normalizing the weight matrices where is by their largest eigenvalue. And experiments show that spectral normalization stabilize the training by minimal tuning.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;BN is a millstone research on training deep neural network which makes it much easier and more robust. However, the limitations like small batch size, noise-sensitie applications and distributed training still need to be fixed in further researches. And different applications/tasks may prefer different normalizations respect to accurancy. New dimensions of normalization still need to be discovered.&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference:&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;BN, &lt;a href=&#34;https://arxiv.org/pdf/1502.03167.pdf&#34;&gt;https://arxiv.org/pdf/1502.03167.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;WN, &lt;a href=&#34;https://arxiv.org/pdf/1602.07868.pdf&#34;&gt;https://arxiv.org/pdf/1602.07868.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LN, &lt;a href=&#34;https://arxiv.org/pdf/1607.06450.pdf&#34;&gt;https://arxiv.org/pdf/1607.06450.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;IN, &lt;a href=&#34;https://arxiv.org/pdf/1607.08022.pdf&#34;&gt;https://arxiv.org/pdf/1607.08022.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;GN, &lt;a href=&#34;https://arxiv.org/pdf/1803.08494.pdf&#34;&gt;https://arxiv.org/pdf/1803.08494.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;BIN, &lt;a href=&#34;https://arxiv.org/pdf/1805.07925.pdf&#34;&gt;https://arxiv.org/pdf/1805.07925.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SN, &lt;a href=&#34;https://arxiv.org/pdf/1811.07727v1.pdf&#34;&gt;https://arxiv.org/pdf/1811.07727v1.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1805.11604.pdf&#34;&gt;https://arxiv.org/pdf/1805.11604.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Spectral Normalization, &lt;a href=&#34;https://arxiv.org/pdf/1802.05957.pdf&#34;&gt;https://arxiv.org/pdf/1802.05957.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/34879333&#34;&gt;https://zhuanlan.zhihu.com/p/34879333&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mlexplained.com/2018/11/30/an-overview-of-normalization-methods-in-deep-learning/&#34;&gt;https://mlexplained.com/2018/11/30/an-overview-of-normalization-methods-in-deep-learning/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Test_post1</title>
+      <link>https://Alibabade.github.io/post/test_post1/</link>
+      <pubDate>Mon, 23 Dec 2019 10:15:10 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/test_post1/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;This is the first test blog post, which aims to see how the post creation goes and how to modify the post properties like font, math, diagram and codes.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples:&lt;/h2&gt;
+&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Try code examples:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pandas as pd
+import torch
+print(&amp;quot;hello world!&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;math&#34;&gt;Math&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Try math latex block:&lt;/strong&gt;
+$$L_{total} = \alpha L_c(x, c) + \beta L_s(x, s) + \gamma L_{tv}$$&lt;/p&gt;
+&lt;h3 id=&#34;diagram&#34;&gt;Diagram&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Try diagram example:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;graph TD;
+  A--&amp;gt;B;
+  B--&amp;gt;C;
+  B--&amp;gt;D;
+  C--&amp;gt;E;
+  D--&amp;gt;E;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Single-image Mesh Reconstruction and Pose Estimation via Generative Normal Map</title>
+      <link>https://Alibabade.github.io/publication/xiang-2019-single/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      <guid>https://Alibabade.github.io/publication/xiang-2019-single/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fast photographic style transfer based on convolutional neural networks</title>
+      <link>https://Alibabade.github.io/publication/wang-2018-fast/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>https://Alibabade.github.io/publication/wang-2018-fast/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Photographic style transfer</title>
+      <link>https://Alibabade.github.io/publication/wang-2018-photographic/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>https://Alibabade.github.io/publication/wang-2018-photographic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Regulatory network analysis of microRNAs and genes in neuroblastoma</title>
+      <link>https://Alibabade.github.io/publication/wang-2014-regulatory/</link>
+      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
+      <guid>https://Alibabade.github.io/publication/wang-2014-regulatory/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

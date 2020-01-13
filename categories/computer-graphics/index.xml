@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computer Graphics | Li Wang</title>
+    <link>https://Alibabade.github.io/categories/computer-graphics/</link>
+      <atom:link href="https://Alibabade.github.io/categories/computer-graphics/index.xml" rel="self" type="application/rss+xml" />
+    <description>Computer Graphics</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 05 Jan 2020 12:57:22 +0000</lastBuildDate>
+    <image>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Computer Graphics</title>
+      <link>https://Alibabade.github.io/categories/computer-graphics/</link>
+    </image>
+    
+    <item>
+      <title>Archive_papers</title>
+      <link>https://Alibabade.github.io/post/archive_papers/</link>
+      <pubDate>Sun, 05 Jan 2020 12:57:22 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/archive_papers/</guid>
+      <description>&lt;h2 id=&#34;deep-correlations-for-texture-synthesis-tog2017&#34;&gt;Deep Correlations for Texture Synthesis (TOG2017)&lt;/h2&gt;
+&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;The texture synthesis using &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;deep feature maps&lt;/a&gt; has difficulty to synthesize structure textures, which is a challenge to preserve the non-local structures.&lt;/p&gt;
+&lt;h3 id=&#34;core-ideas&#34;&gt;Core Ideas&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduce a structure matrix to represent the deep correlation among deep features. In another word, &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;Gatys et al.,2015&lt;/a&gt; consider the Gram loss of deep features between channels, while acutally the structure information is included inside each feature channel. Thus  &lt;a href=&#34;https://docs.wixstatic.com/ugd/b1fe6d_f4f1684f6ba647ffbf1148c3721fdfc4.pdf&#34;&gt;Sendik et al., 2017&lt;/a&gt; propose an intra-feature based Gram loss, which is fomulated as:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;\begin{equation}
+R_{i,j}^{l,n} = \sum_{q,m} w_{i,j} f_{q,n}^{l,n} f_{q-i,m-j}^{l,n}
+\end{equation}
+where $R_{i,j}^{l,n}$ denotes the intra-feature Gram loss of $n$th channel in $l$th layer, $i \in [-Q/2, Q/2]$ and $ j \in [-M/2,M/2]$.  This means that $f_{q,m}^{l,n}$ is shifted by $i$ pixels vertically and $j$ pixels horizontally, and applying a point-wise multiplication across the overlapping region, weighted by the inverse of the total amount of overlapping regions, That is
+$$w_{i,j} = [(Q-|i|)(M-|j|)]^{-1}$
+Then the structure loss based on intra-feature Gram loss is denoted as:&lt;/p&gt;
+&lt;p&gt;$$E_{DCor}^l = \frac{1}{4}\sum_{i,j,n}(R_{i,j}^{l,n} - \widetilde{R}_{i,j}^{l,n})^2$$&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Introduce a diversity loss to make sure the method can synthesize a larger texture than input exemplar. The idea is to shift the input deep correlation matrix $f_{i,j}^{l,n}$ to the size of desired output texture.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Introduce an edge-preserving smooth loss, which only penalizes the pixel difference when none of neighbouring pixels are smiliar to the pixel under consideration. The authors claim that this smooth loss is useful to reduce checker artefacts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The total loss function is weighted $E_{DCor}$, Gram loss, diversity loss and edge-preserving smooth loss.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

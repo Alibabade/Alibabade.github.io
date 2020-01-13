@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Li Wang">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Summary of object detection in DL">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://Alibabade.github.io/post/object_detection/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#dc7633">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CLora:400,700%7CEB Garamond%7CRoboto+Mono%7CRoboto:400,400italic,700&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://Alibabade.github.io/post/object_detection/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Li Wang">
+  <meta property="og:url" content="https://Alibabade.github.io/post/object_detection/">
+  <meta property="og:title" content="Object_detection | Li Wang">
+  <meta property="og:description" content="Summary of object detection in DL"><meta property="og:image" content="https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-01-09T12:21:28&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-01-12T22:32:18&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Alibabade.github.io/post/object_detection/"
+  },
+  "headline": "Object_detection",
+  
+  "datePublished": "2020-01-09T12:21:28Z",
+  "dateModified": "2020-01-12T22:32:18Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Li Wang"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Li Wang",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://Alibabade.github.io/"
+    }
+  },
+  "description": "Summary of object detection in DL"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Object_detection | Li Wang</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Li Wang</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Li Wang</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Object_detection</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/admin/">Li Wang</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jan 12, 2020
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    11 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/academic/">Academic</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>This blog contains four parts:</p>
+<ol>
+<li>Introduction: What is Object Detection? and general thoughts/ideas to deal with Object Detection;</li>
+<li>Classic Deep Learning based Methods: multi-stage :RCNN and SPP Net , two-stage: Fast RCNN, Faster RCNN, Mask RCNN;</li>
+<li>Classic One-Stage Methods: YOLOv1-v3, SSD, RetinaNet;</li>
+<li>More Recent Anchor-Free Object Detection Methods (2018-2019);</li>
+</ol>
+<h2 id="1-introduction">1. Introduction</h2>
+<p><strong>What is Object Detection?</strong> Given an image, object detection aims to find the categories of objects contained and their corresponding locations (presented as bounding-boxes) in the image. Thus Object Detection contains two tasks: classification and localization.</p>
+<p><strong>General thoughts/ideas to detect objects.</strong> The classification has been done by CNNs like AlexNet, VGG and ResNet. Then only localization still needs to be done. There are two intuitive ways: 1. Regression: the location of an object is presented by a vector $(x,y,w,h)$ which are the centre coordinates and width/height of an object bounding-box in the given image. For example, given an image, it only contains one object&mdash;cat. To locate the bounding-box, we apply a CNN to predict the vector $(x_p,y_p,w_p,h_p)$ and learn to regress the predicted vector to be close to groundtruth $(x_t,y_t,w_t,h_t)$ by calculating the L2 loss (see Fig 1.).</p>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/object_detection_regression1.png" data-caption="Fig 1. Regression for localization shown in this blog.">
+<img data-src="/img/object_detection_regression1.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 1. Regression for localization shown in <a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">this blog</a>.
+  </figcaption>
+
+
+</figure>
+
+<p>If the initial bounding-box is <strong>randomly chosen</strong> or <strong>there are many objects</strong>, then the entire regression will be much difficult and take lots of training time to correct the predicted vector to groundtruth. Sometime, it may not achieve a good convergence. However, if we select approximately initial box coordinates which probably contains the objects, then the regression of these boxes should be much easier and faster as these initial boxes already have closer coordinates to groundtruth than random ones. Thus, we could divide the problem into Box Selection and Regression, which are called <strong>Region Proposal Selection</strong> and <strong>Bounding-box Regression</strong>(please go post Basic_understanding_dl if you do not know Bounding-box regression) in Object Detection, respectively. Based on this, the early Object Detection methods contain multi-stage tasks like: Region Proposal Selection, Classification and Bounding-box Regression. In this blog, we only focus on the DL-based techniques, thus We do not review any pre-DL methods here.</p>
+<p>There are a few candidate Region Proposal Selection methods (shown in below), and some of them are able to select fewer proposals (nearly hundreds or thousands) and keep high recall.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/Region_Proposal_Selections.png" data-caption="Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.">
+<img data-src="/img/Region_Proposal_Selections.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 2. Comparisons between different Region Proposal Selection methods shown in <a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">this blog</a>.
+  </figcaption>
+
+
+</figure>
+</p>
+<h2 id="2-classic-deep-learning-based-methods">2. Classic Deep Learning based Methods</h2>
+<p>Since using Region Proposal Selection can reduce bounding-box candidates from almost infinite to ~2k for one image with multiple objects, <a href="https://arxiv.org/pdf/1311.2524.pdf">Ross et al. 2014</a> propose the first CNN-based Object Detection method, which uses CNN to extract features of images, classifies the categories and regress bounding-box based on the CNN features.</p>
+<h3 id="21-r-cnn-region-cnn">2.1 R-CNN (Region CNN)</h3>
+<p>The basic procedure of R-CNN model:</p>
+<ol>
+<li>Use <strong>Selective Search</strong> to select ~2k Region Proposals for one image.</li>
+<li><strong>Warp</strong> all the Region Proposals into a <strong>same size</strong> as the fully connection layers in their backbone neural network (i.e., AlexNet) has image size limitation. For example, the FC layers only take 21x21xC feature vector as input, then all the input image size has to be 227x227 if all the Conv + BN + relu layers of a pre-trained AlexNet are preserved.</li>
+<li>Feed the Region Proposals into the pre-trained AlexNet at <strong>each proposal per time</strong> rate, and extract the CNN features from FC7 layer for further <strong>classification</strong> (i.e., SVM).</li>
+<li>The extracted CNN features will also be used for <strong>Bounding-box Regression</strong>.</li>
+</ol>
+<p>Based on the procedure above, there are twice fine-tuning:</p>
+<ol>
+<li>Fine-tune the pre-trained CNN for classification. For example, the pre-trained CNN (i.e., AlexNet) may have 1000 categories, but we may only need it to classify ~20 categories, thus we need to fine-tune the neural network.</li>
+<li>Fine-tune the pre-trained CNN for bounding-box regression. For example, we add a regression head behind the FC7 layer, and we need to fine-tune the network for bounding-box regression task.</li>
+</ol>
+<h4 id="211-some-common-tricks-used">2.1.1 Some common tricks used</h4>
+<p><strong>1. Non-Maximum Suppression</strong></p>
+<p>Commonly, sometimes the RCNN model outputs multiple bounding-boxes to localize the same object in the given image. To choose the best matching one, we use non-maximum suppression technique to avoid repeated detection of the same instance. For example, we sort all the boxes with confidence score, and remove those with low confidence score. Then we choose the box with highest IOU.<br>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/non-max-suppression.png" data-caption="Fig 3. Non-maximum suppression used in RCNN this blog.">
+<img data-src="/img/non-max-suppression.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 3. Non-maximum suppression used in RCNN <a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">this blog</a>.
+  </figcaption>
+
+
+</figure>
+</p>
+<p><strong>2. Hard Negative Mining</strong></p>
+<p>Bounding-box containing no objects (i.e., cat or dog) are considered as negative samples. However, not all of them are equally hard to be identified. For example, some samples purely holding background are &ldquo;easily negative&rdquo; as they are easily distinguished. However, some negative samples may hold other textures or part of objects which makes it more difficult to identify. These samples are likely  &ldquo;Hard Negative&rdquo;.</p>
+<p>These &ldquo;Hard Negative&rdquo; are difficult to be correctly classified. What we can do about it is to find explicitly those false positive samples during training loops and add them into the training data in order to improve the classifier.</p>
+<h4 id="212-problems-of-rcnn">2.1.2 Problems of RCNN</h4>
+<p>RCNN extracts CNN features for each region proposal by feeding each of them into CNN once at a time, and the proposals selected by Selective Search are approximately 2k for each image, thus this process consumes much time. Adding pre-processing Selective Search, RCNN needs ~47 second per image.</p>
+<h3 id="22-spp-net-spatial-pyramid-pooling-network">2.2 SPP Net (Spatial Pyramid Pooling Network)</h3>
+<p>To speedup RCNN, SPPNet focuses on how to fix the problem that each proposal is fed into the CNN once a time. The reason behind the problem is the fully connected layers need fixed feature size (i.e., 1 x 21 x 256 in <a href="https://arxiv.org/pdf/1406.4729.pdf">He et al.,2014</a>) for further classification and regression. Thus SPPNet comes up with an idea that an additional pooling layer called spatial pyramid pooling is inserted right after the last Conv layer and before the Fc layers. The operation of this pooling first projects the region proposals to the Conv features, then divides each feature map (i.e., 60 x 40 x 256 filters) from the last Conv layer into 3 patch scales (i.e., 1,4 and 16 patches, see Fig 4. For example, the patch size is: 60x40 for 1 patch, 30x20 for 4 patches and 15x10 for 16 patches, next operates max pooling on each scaled patch to obtain a 1 x 21(1+4+16) for each feature map, thus we get 1x21x256 fiexd vector for Fc layers.</p>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/SPPNet_spatial_pyramid_pooling_layer.png" data-caption="Fig 4. The spatial pyramid pooling layer in SPPNet.">
+<img data-src="/img/SPPNet_spatial_pyramid_pooling_layer.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 4. The spatial pyramid pooling layer in <a href="https://arxiv.org/pdf/1406.4729.pdf">SPPNet</a>.
+  </figcaption>
+
+
+</figure>
+
+<p>By proposing spatial pyramid pooling layer, SPPNet is able to reuse the feature maps extracted from CNN by passing the image once through because all information that region proposals need is shared in these feature maps. The only thing we could do next is project the region proposals selected by Selective Search onto these feature maps (<strong>How to project Region Proposals to feature maps? Please go to basic_understanding post for ROI pooling.</strong>). This operation extremely saves time consumption compared to extract feature maps per proposal per forward (like RCNN does). The total speedup of SPPNet is about 100 times compared to RCNN.</p>
+<h2 id="fast-rcnn">Fast RCNN</h2>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/fast_rcnn2.png" data-caption="Fig 6. The pipeline of Fast RCNN in this blog.">
+<img data-src="/img/fast_rcnn2.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 6. The pipeline of Fast RCNN in <a href="https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9">this blog</a>.
+  </figcaption>
+
+
+</figure>
+
+<p><a href="https://arxiv.org/pdf/1504.08083.pdf">Fast RCNN</a> attempts to overcome three notable <strong>drawbacks</strong> of RCNN:</p>
+<ol>
+<li><strong>Training a multi-stage pipeline</strong>: fine-tune a ConvNet based on Region Proposals; train SVM classifiers with Conv Features; train bounding-box regressors.</li>
+<li><strong>Training is expensive in space and time</strong>: 2.5 GPU-days for 5k images and hundreds of gigabytes of storage.</li>
+<li><strong>Speed is slow</strong>: ~47 second per image even on GPU.</li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Combine both classification (replace SVM with softmax) and bounding-box regression into one network with multi-task loss.</strong></li>
+<li><strong>Introduce ROI pooling for: 1. reuse Conv feature maps of one image; 2. speedup both training and testing.</strong> Using VGG16 as backbone network, ROI (Region of Interest) pooling converts all different sizes of region proposals into 7x7x512 feature vector fed into Fc layers. Please go to post <strong>basic_understanding_dl</strong> for more details about ROI pooling.</li>
+</ol>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/speed_rcnn_fastrcnn.png" data-caption="Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.">
+<img data-src="/img/speed_rcnn_fastrcnn.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 6. Speed comparison between RCNN and Fast RCNN in <a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">this blog</a>.
+  </figcaption>
+
+
+</figure>
+
+<h3 id="multi-task-loss-for-classification-and-bounding-box-regression">Multi-task Loss for Classification and Bounding-box Regression</h3>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;$</p>
+<p><strong>Symbol Explanation</strong></p>
+<p>$u$       Groundtruth class label, $u \in 0,1,&hellip;,K$; To simplify, all background class has $u=0$.</p>
+<p>$v$       Groundtruth bounding-box regression target, $v=(v_x,v_y,v_w,v_h)$.</p>
+<p>$p$       Descrete probability distribtion (per RoI), $p=(p_0,p_1,&hellip;,p_K)$ over $K+1$ categories. $p$ is computed by a softmax over the $K+1$ outputs of a fully connected layer.</p>
+<p>$t^u$     Predicted bounding-box vector, $t^u=(t_x^u,t_y^u,t_w^u,t_h^u)$.</p>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;$</p>
+<p>The multi-task loss on each RoI is defined as:</p>
+<p>$$L(p,u,t^u,v) = L_{cls}(p,u) + \lambda[u \geqslant 1]L_{loc}(t^u,v)$$
+where $L_{cls}(p,u)$=-log$p_u$ is a log loss for groundtruth class $u$. The Iverson bracket indicator function $[u \geqslant 1]$ is 1 when $u \geqslant 1$ (the predicted class is not background), and is 0 otherwise. The $L_{loc}$ term is using smooth L1 loss, which is denoted as:
+$$L_{loc}(t^u,v)=\sum_{i \in {x,y,w,h}}smooth_{L_1}(t_i^u-v_i)$$ and
+\begin{equation}
+smooth_{L_1}(x) = \begin{cases}
+0.5x^2, &amp;|x| &lt; 1 \newline
+|x|-0.5,&amp;otherwise
+\end{cases}
+\end{equation}
+$smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than $L_2$ loss.</p>
+<h2 id="faster-rcnn">Faster RCNN</h2>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/faster_rcnn.png" data-caption="Fig 7. The pipeline of Faster RCNN in this blog.">
+<img data-src="/img/faster_rcnn.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 7. The pipeline of Faster RCNN in <a href="https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9">this blog</a>.
+  </figcaption>
+
+
+</figure>
+
+<p><a href="https://arxiv.org/pdf/1506.01497.pdf">Faster RCNN</a> focuses on solving the speed bottleneck of Region Proposal Selection as previous RCNN and Fast RCNN separately compute the region proposal by Selective Search on CPU which still consumes much time. To address this problem, a novel subnetwork called RPN (Region Proposal Network) is proposed to combine Region Proposal Selection into ConvNet along with Softmax classifiers and Bounding-box regressors.</p>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/RPN_mechanism.png" data-caption="Fig 8. The pipeline of RPN in the paper.">
+<img data-src="/img/RPN_mechanism.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 8. The pipeline of RPN in <a href="https://arxiv.org/pdf/1506.01497.pdf">the paper</a>.
+  </figcaption>
+
+
+</figure>
+
+<p>To adapt the multi-scale scheme of region proposals, the RPN introduces an anchor box. Specifically, RPN has a classifier and a regressor. The classifier is to predict the probability of a proposal holding an object, and the regressor is to correct the proposal coordinates. Anchor is the centre point of the sliding window. For any image, scale and aspect-ratio are two import factors, where scale is the image size and aspect-ratio is width/height. <a href="https://arxiv.org/pdf/1506.01497.pdf">Ren et al., 2015</a> introduce 9 kinds of anchors, which are scales (1,2,3) and aspect-ratio(1:1,1:2,2:1). Then for the whole image, the number of anchors is $W \times H \times 9$ where $W$ and $H$ are width and height, respectively.</p>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-$</p>
+<p><strong>Symbol  Explanation</strong></p>
+<p><strong>$i$</strong>         the index of an anchor in a mini-batch.</p>
+<p><strong>$p_i$</strong>       the probability that the anchor $i$ being an object.</p>
+<p><strong>$p_i^{*}$</strong>  the groundtruth label $p_i^{*}$ is 1 if the anchor is positive, and is 0 if the anchor is negative.</p>
+<p><strong>$t_i$</strong>       a vector $(x,y,w,h)$ representing the coordinates of predicted bounding box.</p>
+<p><strong>$t_i^{*}$</strong>  that of the groundtruth box associated with a positive anchor.</p>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-$</p>
+<p>The RPN also has a multi-task loss just like in Fast RCNN, which is defined as:</p>
+<p>$$L({p_i},{t_i}) = \frac{1}{N_{cls}} \sum_i L_{cls}(p_i,p_i^{*}) + \lambda \frac{1}{N_{reg}} \sum_i p_i^{*} L_{reg}(t_i, t_i^{*})$$
+where the classification $L_{cls}$ is log loss over two classes (object vs not object). The regression loss $L_{reg}(p_i, p_i^{*}) = smooth_{L1}(t_i - t_i^{*})$. The term $p_i^{*} L_{reg}(t_i, t_i^{*})$ means the regression loss is activated if $p_i^{*}=1$ and is disabled if $p_i^{*}=0$. These two loss term are normalized by $N_{cls}$ and $N_{reg}$ and weighted by a balancing parameter $\lambda$. In implementation, $N_{cls}$ is the number of images in a mini-batch (i.e., $N_{cls}=256$), and the $reg$ term is normalized by the number of anchor locations (i.e., $N_{reg} \sim 2,400$). By default, the $\lambda$ is set to 10.</p>
+<p>Therefore, there are four loss functions in one neural network:</p>
+<ol>
+<li>one is for classifying whether an anchor contains an object or not (anchor good or bad in RPN);</li>
+<li>one is for proposal bounding box regression (anchor -&gt; groundtruth proposal in RPN);</li>
+<li>one is for classifying which category that the object belongs to (over all classes in main network);</li>
+<li>one is for bounding box regression (proposal -&gt; groundtruth bounding-box in main network);</li>
+</ol>
+<p>The total speedup comparison between RCNN, Fast RCNN and Faster RCNN is shown below:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png" data-caption="Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.">
+<img data-src="/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in <a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">this blog</a>.
+  </figcaption>
+
+
+</figure>
+</p>
+<h2 id="mask-rcnn">Mask RCNN</h2>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/mask_rcnn.png" data-caption="Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &#43; Instance Segmentation &#43; improved RoIAlign Pooling.">
+<img data-src="/img/mask_rcnn.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 10. The pipeline of Mask RCNN, which is Faster RCNN + Instance Segmentation + improved RoIAlign Pooling.
+  </figcaption>
+
+
+</figure>
+
+<p><a href="https://arxiv.org/pdf/1703.06870.pdf">Mask RCNN</a> has three branches: RPN for region proposal + a pretrained CNN + Headers for classification and bounding-box regression + Mask Network for pixel-level instance segmentation. Mask RCNN is developed on Faster RCNN and adds RoIAlign Pooling and instance segmentation to output object masks in a pixel-to-pixel manner. The RoIAlign is proposed to improve RoI for pixel-level segmentation as it requires much more fine-grained alignment than Bounding-boxes. The accurate computation of RoIAlign is described in RoIAlign Pooling for Object Detection in Basic_understanding_dl post.</p>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/mask_rcnn_results.png" data-caption="Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper">
+<img data-src="/img/mask_rcnn_results.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 11. Mask RCNN results on the COCO test set. Image source: <a href="https://arxiv.org/pdf/1703.06870.pdf">Mask RCNN paper</a>
+  </figcaption>
+
+
+</figure>
+
+<h3 id="mask-loss">Mask Loss</h3>
+<p>During the training, a multi-task loss on each sampled RoI is defined as : $L=L_{cls} + L_{bbox}+L_{mask}$. The $L_{cls}$ and $L_{bbox}$ are identical as those defined in <a href="https://arxiv.org/pdf/1506.01497.pdf">Faster RCNN</a>.</p>
+<p>The mask branch has a $K\times m^2$ dimensional output for each RoI, which is $K$ binary masks of resolution $m \times m$, one for each the $K$ classes. Since the mask branch learns a mask for every class with a per-pixel <strong>sigmoid</strong> and a <strong>binary cross-entropy loss</strong>, there is no competition among classes for generating masks. Previous semantic segmentation methods (e.g., <a href="https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf">FCN for semantic segmentation</a>) use a <strong>softmax</strong> and a <strong>multinomial cross-entropy loss</strong>, which causes classification competition among classes.</p>
+<p>$L_{mask}$ is defined as the **average binary mask loss**, which **only includes $k$-th class** if the region is associated with the groundtruth class $k$:
+$$L_{mask} = -\frac{1}{m^2} \sum_{1 \leqslant i,j \leqslant m} (y_{ij}log\hat{y}_{ij}^k +(1-y_{ij})log(1-\hat{y}_{ij}^k))$$
+where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask for the region of size $m \times m$, $\hat{y}_{ij}$ is the predicted value in the same cell in the predicted mask learned by the groundtruth class $k$.</p>
+<h2 id="summary-for-r-cnn-based-object-detection-methods">Summary for R-CNN based Object Detection Methods</h2>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/rcnn-family-summary.png" data-caption="Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog">
+<img data-src="/img/rcnn-family-summary.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 12. Summary for R-CNN based Object Detection Methods . Image source: <a href="https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html">this blog</a>
+  </figcaption>
+
+
+</figure>
+
+<h2 id="reference">Reference</h2>
+<ol>
+<li><a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">https://blog.csdn.net/v_JULY_v/article/details/80170182</a></li>
+<li><a href="https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html">https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html</a></li>
+<li><a href="https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9">https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9</a></li>
+<li><a href="https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-">https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/37998710">https://zhuanlan.zhihu.com/p/37998710</a></li>
+</ol>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/computer-vision/">Computer Vision</a>
+  
+  <a class="badge badge-light" href="/tags/dl/">DL</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://Alibabade.github.io/post/object_detection/&amp;text=Object_detection" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://Alibabade.github.io/post/object_detection/&amp;t=Object_detection" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Object_detection&amp;body=https://Alibabade.github.io/post/object_detection/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://Alibabade.github.io/post/object_detection/&amp;title=Object_detection" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Object_detection%20https://Alibabade.github.io/post/object_detection/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://Alibabade.github.io/post/object_detection/&amp;title=Object_detection" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://Alibabade.github.io/">Li Wang</a></h5>
+      <h6 class="card-subtitle">PhD candidate</h6>
+      <p class="card-text">My research focuses on image/video based neural style transfer.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/lwang@bournemouth.ac.uk" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.facebook.com/profile.php?id=100013393752495" target="_blank" rel="noopener">
+        <i class="fab fa-facebook"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=KKNBDWQAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/Alibabade" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.3/mermaid.min.js" integrity="" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

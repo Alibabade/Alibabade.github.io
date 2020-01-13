@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DL | Li Wang</title>
+    <link>https://Alibabade.github.io/categories/dl/</link>
+      <atom:link href="https://Alibabade.github.io/categories/dl/index.xml" rel="self" type="application/rss+xml" />
+    <description>DL</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2020 21:03:10 +0000</lastBuildDate>
+    <image>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>DL</title>
+      <link>https://Alibabade.github.io/categories/dl/</link>
+    </image>
+    
+    <item>
+      <title>Training_tricks_dl</title>
+      <link>https://Alibabade.github.io/post/training_tricks_dl/</link>
+      <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/training_tricks_dl/</guid>
+      <description>&lt;h2 id=&#34;fine-tuning-neural-networks&#34;&gt;Fine-tuning neural networks&lt;/h2&gt;
+&lt;p&gt;In practise, researchers tend to use pre-trained neural networks on datasets like ImageNet to train their own neural network for new tasks due to their dataset perhaps not big enough (compared to millions of images in ImageNet). Thus this type of operation is called fine-tuning the neural network.&lt;/p&gt;
+&lt;p&gt;There are two typical scenarios:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;use the pre-trained CNNs as feature extractors.&lt;/strong&gt; For example, we remove the fully connected layers from a pre-trained image classification CNN, then add a classification operator (i.e., softmax and SVM) at the end of left fully convolutional networks to classify images.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fine-tune the pre-trained CNNs.&lt;/strong&gt; For example, we preserve part/all of the layers in a pre-trained CNNs, and retrain it on our own dataset. In this case, the front layers extract low-level features which can be used for many tasks (i.e., object recognition/detection and image segmentation), and the rear layers extract high-level features related to specific classification task, thus we only need fine-tune the rear layers.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;how-to-fine-tune&#34;&gt;How to fine-tune&lt;/h3&gt;
+&lt;p&gt;There are normally four different situations:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is small and similar to pre-trained dataset.&lt;/strong&gt; Since the dataset is small, then retrain the CNN may cause overfitting. And the new dataset is similar to pre-trained dataset, thus we hope the high-level features are similar as well. In this case, we could just use the features extracted from pre-trained CNN and train a classification operator like softmax.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is small but not similar to pre-trained datasets.&lt;/strong&gt; Since the dataset is small then we can not retrain the CNN. And the new dataset is not similar to pre-trained datasets, then we do not use high-level features which means we do not use rear layers. Thus we can just use front layers as feature extractor and training a classification operator like softmax or SVM.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;New dataset is big and similar to pre-trained datasets.&lt;/strong&gt; We can fine-tune the entire pre-trained CNN.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;dataset is big but not similar to pre-trained datasets.&lt;/strong&gt; We can fine-tune the entire pre-trained CNN.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In practise, a smaller learning-rate is suggested as the weights in network is already smooth and a larger learning-rate may distort the weights of pre-trained CNN.&lt;/p&gt;
+&lt;h3 id=&#34;coding-in-experiments&#34;&gt;Coding in experiments&lt;/h3&gt;
+&lt;p&gt;In Pytorch, you can set &amp;ldquo;param.requires_grad = False&amp;rdquo; to freeze any pre-trained CNN part.
+For example, to freeze some layers in BERT model, you could do something like &lt;a href=&#34;https://github.com/huggingface/transformers/issues/1431&#34;&gt;this&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;   if freeze_embeddings:
+             for param in list(model.bert.embeddings.parameters()):
+                 param.requires_grad = False
+             print (&amp;quot;Froze Embedding Layer&amp;quot;)
+
+   # freeze_layers is a string &amp;quot;1,2,3&amp;quot; representing layer number
+   if freeze_layers is not &amp;quot;&amp;quot;:
+        layer_indexes = [int(x) for x in freeze_layers.split(&amp;quot;,&amp;quot;)]
+        for layer_idx in layer_indexes:
+             for param in list(model.bert.encoder.layer[layer_idx].parameters()):
+                 param.requires_grad = False
+             print (&amp;quot;Froze Layer: &amp;quot;, layer_idx)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Graph_NN</title>
+      <link>https://Alibabade.github.io/post/graph_nn/</link>
+      <pubDate>Sun, 05 Jan 2020 17:26:13 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/graph_nn/</guid>
+      <description>&lt;p&gt;This blog simply clarifies the concepts of graph embedding, graph neural networks and graph convolutional networks.&lt;/p&gt;
+&lt;h2 id=&#34;graph-embedding&#34;&gt;Graph Embedding&lt;/h2&gt;
+&lt;p&gt;Graph Embedding (GE) is in representation learning of neural network, which often contains two types:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;embed each node in a graph into a low-dimension, scalar and dense vector, which can be represented and inferenced for learning tasks.&lt;/li&gt;
+&lt;li&gt;embed the whole graph into a low-dimension, scalar and dense vector, which can be used for graph structure classification.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are three types of method to complete graph embedding:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Matrix  Factorization. A representable matrix of a graph is factorized into vectors, which can be used for learning tasks. The representable matrix of a graph are often adjacency matrix, laplacian matrix etc.&lt;/li&gt;
+&lt;li&gt;Deepwalk. Inspired by word2vec, the deepwalk considers the reached node list by random walk as a word, which is fed into word2vec network to obtain a embeded vector for learning tasks.&lt;/li&gt;
+&lt;li&gt;Graph Neural Network. It is basically a series of neural networks operating on graphs. The graph information like representable matrix is fed into neural networks in order to get embedded vectors for learning tasks.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;graph-neural-networks&#34;&gt;Graph Neural Networks&lt;/h2&gt;
+&lt;p&gt;Graph Neural Networks (GNN) are deep neural networks with graph information as input. In general, the GNN can be divided into different types: 1. Graph Convolutional Networks (GCN); 2. Graph Attention Networks (GAT); 3. Graph Adversarial Networks; 4. Graph LSTM. The basic relationship between GE, GNN,GCN is shown as following picture:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Relation between GE, GNN and GCN in &lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;graph-convolutional-networks&#34;&gt;Graph Convolutional Networks&lt;/h2&gt;
+&lt;p&gt;Graph Convolutional Networks (GCN) operate convolution on graph information like adjacency matrix, which is similar to convolution on pixels in CNN. To better clarify this concept, we will use equations and pictures in the following paragraph.&lt;/p&gt;
+&lt;h3 id=&#34;concepts&#34;&gt;Concepts&lt;/h3&gt;
+&lt;p&gt;There are two concepts should be understood first before GCN.
+&lt;strong&gt;Degree Matrix (D)&lt;/strong&gt;: this matrix ($N \times N$, N is the node number) is a diag matrix in which values in diag line means the degree of each node; &lt;strong&gt;Adjacency Matrix (A)&lt;/strong&gt;: this matrix is also a $N \times N$ matrix in which value $A_{i,j}=1$ means there is an edge between node $i$ and $j$, otherwise $A_{i,j}=0$;&lt;/p&gt;
+&lt;h3 id=&#34;simple-gcn-example&#34;&gt;Simple GCN example&lt;/h3&gt;
+&lt;p&gt;Let&#39;s consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it&#39;s already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;there is no node self information as adjacency matrix $A$ does not contain any information of nodeself.&lt;/li&gt;
+&lt;li&gt;there is no normalization of adjacency matrix. The formulation $AH^{l}$ is actually a linear transformation which scales node feature vectors $H^l$ by summing the features of all neighbour nodes. The nodes having more neighbour nodes has more impact, which should be normalized.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Fix limitation 1.&lt;/strong&gt; We introduce the identity matrix $I$ into adjacency matrix $A$ to add nodeself information. For example, $\hat{A} = A + I_n$ where $I_n$ is the identity matrix with $n \times n$ size.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fix limiation 2.&lt;/strong&gt; Normalizing $A$ means that all rows of $A$ should sum to be one, and we realize this by $D^{-1}A$ where $D$ is the diag degree matrix. In practise, we surprisingly find that using a symmetric normalization, e.g., $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$ is more dynamically more interesting (I still do not get it why use symmetric normalization $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$). Combining these two tricks, we get the propagation rule introduced in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf et al. 2017&lt;/a&gt;:
+$$f(H^l, A) = \sigma(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^lW^l)$$
+where $\hat{A} = I_n + A$ and $\hat{D}$ is the diagonal node degree matrix of $\hat{A}$. In general, whatever matrix multiplies $H^lW^l$ (i.e. $A$, $D^{-1}A$ or $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$) is called Laplacian Matrix, which can be denoted as $L_{i,j}$ the value for $i$th and $j$th node. Taking the laplacian Matrix introduced in Kipf et al. 2017 as an example, the $L_{i,j}$ is as following:
+\begin{equation}
+L_{i,j}^{sym} = \begin{cases}
+1, &amp;amp;i=j, deg(j) \neq 0 \newline
+-\frac{1}{\sqrt{deg(i)deg(j)}}, &amp;amp;i \neq j, j \in \Omega_i \newline
+0, &amp;amp;otherwise
+\end{cases}
+\end{equation}
+where deg($\cdot$) denotes the degree matrix and $\Omega_i$ denotes all the neighbour nodes of node $i$. This symmetric Laplacian matrix not only considers the degree of node $i$ but also takes the degree of its neighbour node $j$ into account, which refers to symmetric normalization. This propagation rule weighs neighbour in the weighted sum higher if the node $i$ has a low-degree and lower if the node $i$ has a high-degree. This may be useful when low-degree neighbours have bigger impact than high-degree neighbours.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-for-simple-gcn&#34;&gt;Code example for simple GCN&lt;/h3&gt;
+&lt;p&gt;Considering the following simple directed graph:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Graph example in &lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Then the Adjacency Matrix $A$ is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A = np.matrix([
+               [0.,1.,0.,1.],
+               [0.,0.,1.,1.],
+               [0.,1.,0.,0.],
+               [1.,0.,1.,0.]],
+               dtype=float)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the identity matrix $I_n$ of $A$ is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;I_n = np.matrix([
+              [1.,0.,0.,0.],
+              [0.,1.,0.,0.],
+              [0.,0.,1.,0.],
+              [0.,0.,0.,1.]],
+              dtype=float)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We assign random weight matrix of one GCN layer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;W = np.matrix([[1,-1],[-1,1]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we randomly give 2 integer features for each node in the graph.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;H = np.matrix([[i,-i] for i in range(A.shape[0])], dtype=float)
+H
+matrix([[ 0.,  0.],
+        [ 1., -1.],
+        [ 2., -2.],
+        [ 3., -3.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now the &lt;strong&gt;unnormalized&lt;/strong&gt; features $\hat{A}H$ are:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat * H
+matrix([[ 1., -1.],
+        [ 6., -6.],
+        [ 3., -3.],
+        [ 5., -5.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the output of this GCN layer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat * H * W
+matrix([[  2.,  -2.],
+        [ 12., -12.],
+        [  6.,  -6.],
+        [ 10., -10.]])
+# f(H,A)=relu(A_hat * H * W)
+relu(A_hat * H * W)
+matrix([ [2., 0.],
+         [12.,0.]
+         [6., 0.],
+         [10., 0]])        
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we apply the propagation rule introduced in Kipf et al. 2017. First, we add self-loop information $\hat{A} = A + I$ is :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;A_hat = A + I_n
+A_hat
+matrix([
+      [1.,1.,0.,0.],
+      [0.,1.,1.,1.],
+      [0.,1.,1.,0.],
+      [1.,0.,1.,1.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Second, we add normalization by computing $\hat{D}$ and $\hat{D}^{-\frac{1}{2}}$ (inverse matrix of square root of $\hat{D}$):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;D_hat = np.array(np.sum(A_hat, axis=0))[0]
+D_hat = np.matrix(np.diag(D_hat))
+D_hat
+matrix([[ 2.,  0.,  0.,  0.],
+        [ 0.,  3.,  0.,  0.],
+        [ 0.,  0.,  3.,  0.],
+        [ 0.,  0.,  0.,  2.]])
+inv_D_hat_sqrtroot = np.linalg.inv(np.sqrt(D_hat))
+inv_D_hat_sqrtroot
+matrix([[ 0.70710678,  0.        ,  0.        ,  0.        ],
+        [ 0.        ,  0.57735027,  0.        ,  0.        ],
+        [ 0.        ,  0.        ,  0.57735027,  0.        ],
+        [ 0.        ,  0.        ,  0.        ,  0.70710678]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we compute the Laplacian matrix of $L = \hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$ and the &lt;strong&gt;nomalized&lt;/strong&gt; features $L * H$ :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;Laplacian_matrix = inv_D_hat_sqrtroot * A_hat * inv_D_hat_sqrtroot
+Laplacian_matrix
+matrix([[ 0.5       ,  0.40824829,  0.        ,  0.        ],
+        [ 0.        ,  0.33333333,  0.33333333,  0.40824829],
+        [ 0.        ,  0.33333333,  0.33333333,  0.        ],
+        [ 0.5       ,  0.        ,  0.40824829,  0.5       ]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# normalized feature vectors
+Laplacian_matrix * H
+matrix([[ 0.40824829, -0.40824829],
+        [ 2.22474487, -2.22474487],
+        [ 1.        , -1.        ],
+        [ 2.31649658, -2.31649658]])        
+#non-normalized feature vectors
+A_hat * H
+matrix([[ 1., -1.],
+        [ 6., -6.],
+        [ 3., -3.],
+        [ 5., -5.]])        
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As can be seen, all the values of feature vectors are scaled to smaller absolute values than Non-normalized feature vectors.&lt;/p&gt;
+&lt;p&gt;Finally, the output of GCN layer with applying the propagation rule:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# f(H,A) = relu(L*H*W)
+relu(Laplacian_matrix*H*W)
+matrix([[ 0.81649658, 0.],
+        [ 4.44948974, 0.],
+        [ 2.        , 0.],
+        [ 4.63299316, 0.]])
+# compared to f(H,A) = relu(A_hat*H*W)
+relu(A_hat*H*W)
+matrix([[  2.,  0.],
+        [ 12.,  0.],
+        [  6.,  0.],
+        [ 10., 0.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I suggest to verify this operation by yourself.&lt;/p&gt;
+&lt;h2 id=&#34;real-example-semi-supervised-classification-with-gcns&#34;&gt;Real example: Semi-Supervised Classification with GCNs&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling ICLR 2017&lt;/a&gt; demonstrates that the propgation rule in GCNs can predict semi-supervised classification for social networks. In this semi-supervised learning example, we assume that we know all the graph information including nodes and their neighbours, but not all the node labels, which means some nodes are labeled but others are not labeled.&lt;/p&gt;
+&lt;p&gt;We train the GCNs on labeled nodes and propagate the node label information to unlabedled nodes by updating weight matrices shared arcoss all nodes. This is done by following steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;perform forward propagation through the GCN layers.&lt;/li&gt;
+&lt;li&gt;apply sigmoid function row-wise at the last layer of GCN.&lt;/li&gt;
+&lt;li&gt;compute the cross entropy loss on known node labels.&lt;/li&gt;
+&lt;li&gt;backpropagate the loss and update the weight matrices $W$ in each layer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;zacharys-karate-club&#34;&gt;Zachary&#39;s Karate Club&lt;/h3&gt;
+&lt;p&gt;Zachary&#39;s Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Graph structure of Karate Club in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;We run a 3-layer GCN with randomly initialized weights. Now before training the weights, we simply insert Adjacency matrix $A$ and feature $H=I$ (i.e., $I$ is the identity matrix) into the model, then perform three propagation steps during the forward pass and effectively convolves the 3rd-order neighbourhood of each node. The model already produces predict results like picture below without any training updates:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. Predicted nodes for Karate Club in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Now we rewrite the propagation rule in layer-wise GCN (in vector form):
+$$h_{i}^{l+1} = \sigma (\sum_{j} \frac{1}{c_{i,j}} h_{j}^{l} W^l)$$
+where $\frac{1}{c_{i,j}}$ originates from $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$ and $h_j^l$ denotes the feature vector of neighbour node $j$. Now the propagation rule is interpreted as a differentiable and parameterized (with $W^l$) variant, if we choose an appropriate non-linear activation and initialize the random weight matrix such that is orthogonal (or using the initialization from &lt;a href=&#34;http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf&#34;&gt;Glorot &amp;amp; Bengio&lt;/a&gt;, AISTATS 2010), this update rule becomes stable in practice (also thanks to the normalization with $c_{i,j}$).&lt;/p&gt;
+&lt;p&gt;Next we simply label one node per class and use the semi-supervised learning algorithm for GCNs introduced in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling, ICLR 2017&lt;/a&gt;, and we start to train for a couple of iterations:
+
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;https://Alibabade.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+The video above shows Semi-supervised classification with GCNs in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;. And the model directly produces a 2-dimensional laten space which we can visualize.&lt;/p&gt;
+&lt;p&gt;Note that we just use random feature vectors (e.g., identity matrix we used here) and random weight matrices, only after a couple of iteration, the model used in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling&lt;/a&gt; is already able to achieve remarkable results. If we choose more serious initial node feature vectors, then the model can achieve state-of-the-art classification results on a various number of graph datasets.&lt;/p&gt;
+&lt;h2 id=&#34;further-reading-on-gcn&#34;&gt;Further Reading on GCN&lt;/h2&gt;
+&lt;p&gt;Well, the GCN is developing rapidly, here are a few papers for further reading:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1706.02216.pdf&#34;&gt;Inductive Representation Learning on Large graph&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1801.10247.pdf&#34;&gt;FastGCN: Fast Learning with Graph Convolutional Networks via Importance Sampling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1802.08888.pdf&#34;&gt;N-GCN: Multi-scale Graph Convolution for Semi-supervised Node Classification&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/89503068&#34;&gt;https://zhuanlan.zhihu.com/p/89503068&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-7d2250723780&#34;&gt;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-7d2250723780&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-62acf5b143d0&#34;&gt;https://towardsdatascience.com/how-to-do-deep-learning-on-graphs-with-graph-convolutional-networks-62acf5b143d0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;https://tkipf.github.io/graph-convolutional-networks/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

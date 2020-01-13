@@ -78,11 +78,6 @@
   </url>
   
   <url>
-    <loc>https://Alibabade.github.io/categories/deep-learning/</loc>
-    <lastmod>2020-01-13T19:17:54+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://Alibabade.github.io/tags/meta-learning-in-dl/</loc>
     <lastmod>2019-12-28T22:25:35+00:00</lastmod>
   </url>
@@ -114,6 +109,11 @@
   
   <url>
     <loc>https://Alibabade.github.io/post/activation_functions_in_dl/</loc>
+    <lastmod>2020-01-13T19:17:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://Alibabade.github.io/categories/deep-learning/</loc>
     <lastmod>2020-01-13T19:17:54+00:00</lastmod>
   </url>
   

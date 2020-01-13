@@ -2,21 +2,509 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DL | Li Wang</title>
-    <link>https://lwang.github.io/categories/dl/</link>
-      <atom:link href="https://lwang.github.io/categories/dl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://Alibabade.github.io/categories/dl/</link>
+      <atom:link href="https://Alibabade.github.io/categories/dl/index.xml" rel="self" type="application/rss+xml" />
     <description>DL</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2020 21:03:10 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 12:21:28 +0000</lastBuildDate>
     <image>
-      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>DL</title>
-      <link>https://lwang.github.io/categories/dl/</link>
+      <link>https://Alibabade.github.io/categories/dl/</link>
     </image>
     
     <item>
+      <title>Object_detection</title>
+      <link>https://Alibabade.github.io/post/object_detection/</link>
+      <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/object_detection/</guid>
+      <description>&lt;p&gt;This blog contains four parts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduction: What is Object Detection? and general thoughts/ideas to deal with Object Detection;&lt;/li&gt;
+&lt;li&gt;Classic Deep Learning based Methods: multi-stage :RCNN and SPP Net , two-stage: Fast RCNN, Faster RCNN, Mask RCNN;&lt;/li&gt;
+&lt;li&gt;Classic One-Stage Methods: YOLOv1-v3, SSD, RetinaNet;&lt;/li&gt;
+&lt;li&gt;More Recent Anchor-Free Object Detection Methods (2018-2019);&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;What is Object Detection?&lt;/strong&gt; Given an image, object detection aims to find the categories of objects contained and their corresponding locations (presented as bounding-boxes) in the image. Thus Object Detection contains two tasks: classification and localization.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;General thoughts/ideas to detect objects.&lt;/strong&gt; The classification has been done by CNNs like AlexNet, VGG and ResNet. Then only localization still needs to be done. There are two intuitive ways: 1. Regression: the location of an object is presented by a vector $(x,y,w,h)$ which are the centre coordinates and width/height of an object bounding-box in the given image. For example, given an image, it only contains one object&amp;mdash;cat. To locate the bounding-box, we apply a CNN to predict the vector $(x_p,y_p,w_p,h_p)$ and learn to regress the predicted vector to be close to groundtruth $(x_t,y_t,w_t,h_t)$ by calculating the L2 loss (see Fig 1.).&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Regression for localization shown in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;If the initial bounding-box is &lt;strong&gt;randomly chosen&lt;/strong&gt; or &lt;strong&gt;there are many objects&lt;/strong&gt;, then the entire regression will be much difficult and take lots of training time to correct the predicted vector to groundtruth. Sometime, it may not achieve a good convergence. However, if we select approximately initial box coordinates which probably contains the objects, then the regression of these boxes should be much easier and faster as these initial boxes already have closer coordinates to groundtruth than random ones. Thus, we could divide the problem into Box Selection and Regression, which are called &lt;strong&gt;Region Proposal Selection&lt;/strong&gt; and &lt;strong&gt;Bounding-box Regression&lt;/strong&gt;(please go post Basic_understanding_dl if you do not know Bounding-box regression) in Object Detection, respectively. Based on this, the early Object Detection methods contain multi-stage tasks like: Region Proposal Selection, Classification and Bounding-box Regression. In this blog, we only focus on the DL-based techniques, thus We do not review any pre-DL methods here.&lt;/p&gt;
+&lt;p&gt;There are a few candidate Region Proposal Selection methods (shown in below), and some of them are able to select fewer proposals (nearly hundreds or thousands) and keep high recall.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Comparisons between different Region Proposal Selection methods shown in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;2-classic-deep-learning-based-methods&#34;&gt;2. Classic Deep Learning based Methods&lt;/h2&gt;
+&lt;p&gt;Since using Region Proposal Selection can reduce bounding-box candidates from almost infinite to ~2k for one image with multiple objects, &lt;a href=&#34;https://arxiv.org/pdf/1311.2524.pdf&#34;&gt;Ross et al. 2014&lt;/a&gt; propose the first CNN-based Object Detection method, which uses CNN to extract features of images, classifies the categories and regress bounding-box based on the CNN features.&lt;/p&gt;
+&lt;h3 id=&#34;21-r-cnn-region-cnn&#34;&gt;2.1 R-CNN (Region CNN)&lt;/h3&gt;
+&lt;p&gt;The basic procedure of R-CNN model:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use &lt;strong&gt;Selective Search&lt;/strong&gt; to select ~2k Region Proposals for one image.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Warp&lt;/strong&gt; all the Region Proposals into a &lt;strong&gt;same size&lt;/strong&gt; as the fully connection layers in their backbone neural network (i.e., AlexNet) has image size limitation. For example, the FC layers only take 21x21xC feature vector as input, then all the input image size has to be 227x227 if all the Conv + BN + relu layers of a pre-trained AlexNet are preserved.&lt;/li&gt;
+&lt;li&gt;Feed the Region Proposals into the pre-trained AlexNet at &lt;strong&gt;each proposal per time&lt;/strong&gt; rate, and extract the CNN features from FC7 layer for further &lt;strong&gt;classification&lt;/strong&gt; (i.e., SVM).&lt;/li&gt;
+&lt;li&gt;The extracted CNN features will also be used for &lt;strong&gt;Bounding-box Regression&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Based on the procedure above, there are twice fine-tuning:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Fine-tune the pre-trained CNN for classification. For example, the pre-trained CNN (i.e., AlexNet) may have 1000 categories, but we may only need it to classify ~20 categories, thus we need to fine-tune the neural network.&lt;/li&gt;
+&lt;li&gt;Fine-tune the pre-trained CNN for bounding-box regression. For example, we add a regression head behind the FC7 layer, and we need to fine-tune the network for bounding-box regression task.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;211-some-common-tricks-used&#34;&gt;2.1.1 Some common tricks used&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;1. Non-Maximum Suppression&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Commonly, sometimes the RCNN model outputs multiple bounding-boxes to localize the same object in the given image. To choose the best matching one, we use non-maximum suppression technique to avoid repeated detection of the same instance. For example, we sort all the boxes with confidence score, and remove those with low confidence score. Then we choose the box with highest IOU.&lt;br&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. Non-maximum suppression used in RCNN &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Hard Negative Mining&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bounding-box containing no objects (i.e., cat or dog) are considered as negative samples. However, not all of them are equally hard to be identified. For example, some samples purely holding background are &amp;ldquo;easily negative&amp;rdquo; as they are easily distinguished. However, some negative samples may hold other textures or part of objects which makes it more difficult to identify. These samples are likely  &amp;ldquo;Hard Negative&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;These &amp;ldquo;Hard Negative&amp;rdquo; are difficult to be correctly classified. What we can do about it is to find explicitly those false positive samples during training loops and add them into the training data in order to improve the classifier.&lt;/p&gt;
+&lt;h4 id=&#34;212-problems-of-rcnn&#34;&gt;2.1.2 Problems of RCNN&lt;/h4&gt;
+&lt;p&gt;RCNN extracts CNN features for each region proposal by feeding each of them into CNN once at a time, and the proposals selected by Selective Search are approximately 2k for each image, thus this process consumes much time. Adding pre-processing Selective Search, RCNN needs ~47 second per image.&lt;/p&gt;
+&lt;h3 id=&#34;22-spp-net-spatial-pyramid-pooling-network&#34;&gt;2.2 SPP Net (Spatial Pyramid Pooling Network)&lt;/h3&gt;
+&lt;p&gt;To speedup RCNN, SPPNet focuses on how to fix the problem that each proposal is fed into the CNN once a time. The reason behind the problem is the fully connected layers need fixed feature size (i.e., 1 x 21 x 256 in &lt;a href=&#34;https://arxiv.org/pdf/1406.4729.pdf&#34;&gt;He et al.,2014&lt;/a&gt;) for further classification and regression. Thus SPPNet comes up with an idea that an additional pooling layer called spatial pyramid pooling is inserted right after the last Conv layer and before the Fc layers. The operation of this pooling first projects the region proposals to the Conv features, then divides each feature map (i.e., 60 x 40 x 256 filters) from the last Conv layer into 3 patch scales (i.e., 1,4 and 16 patches, see Fig 4. For example, the patch size is: 60x40 for 1 patch, 30x20 for 4 patches and 15x10 for 16 patches, next operates max pooling on each scaled patch to obtain a 1 x 21(1+4+16) for each feature map, thus we get 1x21x256 fiexd vector for Fc layers.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. The spatial pyramid pooling layer in &lt;a href=&#34;https://arxiv.org/pdf/1406.4729.pdf&#34;&gt;SPPNet&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;By proposing spatial pyramid pooling layer, SPPNet is able to reuse the feature maps extracted from CNN by passing the image once through because all information that region proposals need is shared in these feature maps. The only thing we could do next is project the region proposals selected by Selective Search onto these feature maps (&lt;strong&gt;How to project Region Proposals to feature maps? Please go to basic_understanding post for ROI pooling.&lt;/strong&gt;). This operation extremely saves time consumption compared to extract feature maps per proposal per forward (like RCNN does). The total speedup of SPPNet is about 100 times compared to RCNN.&lt;/p&gt;
+&lt;h2 id=&#34;fast-rcnn&#34;&gt;Fast RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. The pipeline of Fast RCNN in &lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1504.08083.pdf&#34;&gt;Fast RCNN&lt;/a&gt; attempts to overcome three notable &lt;strong&gt;drawbacks&lt;/strong&gt; of RCNN:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Training a multi-stage pipeline&lt;/strong&gt;: fine-tune a ConvNet based on Region Proposals; train SVM classifiers with Conv Features; train bounding-box regressors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Training is expensive in space and time&lt;/strong&gt;: 2.5 GPU-days for 5k images and hundreds of gigabytes of storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Speed is slow&lt;/strong&gt;: ~47 second per image even on GPU.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Solutions&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Combine both classification (replace SVM with softmax) and bounding-box regression into one network with multi-task loss.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Introduce ROI pooling for: 1. reuse Conv feature maps of one image; 2. speedup both training and testing.&lt;/strong&gt; Using VGG16 as backbone network, ROI (Region of Interest) pooling converts all different sizes of region proposals into 7x7x512 feature vector fed into Fc layers. Please go to post &lt;strong&gt;basic_understanding_dl&lt;/strong&gt; for more details about ROI pooling.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. Speed comparison between RCNN and Fast RCNN in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;multi-task-loss-for-classification-and-bounding-box-regression&#34;&gt;Multi-task Loss for Classification and Bounding-box Regression&lt;/h3&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Symbol Explanation&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$u$       Groundtruth class label, $u \in 0,1,&amp;hellip;,K$; To simplify, all background class has $u=0$.&lt;/p&gt;
+&lt;p&gt;$v$       Groundtruth bounding-box regression target, $v=(v_x,v_y,v_w,v_h)$.&lt;/p&gt;
+&lt;p&gt;$p$       Descrete probability distribtion (per RoI), $p=(p_0,p_1,&amp;hellip;,p_K)$ over $K+1$ categories. $p$ is computed by a softmax over the $K+1$ outputs of a fully connected layer.&lt;/p&gt;
+&lt;p&gt;$t^u$     Predicted bounding-box vector, $t^u=(t_x^u,t_y^u,t_w^u,t_h^u)$.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;$&lt;/p&gt;
+&lt;p&gt;The multi-task loss on each RoI is defined as:&lt;/p&gt;
+&lt;p&gt;$$L(p,u,t^u,v) = L_{cls}(p,u) + \lambda[u \geqslant 1]L_{loc}(t^u,v)$$
+where $L_{cls}(p,u)$=-log$p_u$ is a log loss for groundtruth class $u$. The Iverson bracket indicator function $[u \geqslant 1]$ is 1 when $u \geqslant 1$ (the predicted class is not background), and is 0 otherwise. The $L_{loc}$ term is using smooth L1 loss, which is denoted as:
+$$L_{loc}(t^u,v)=\sum_{i \in {x,y,w,h}}smooth_{L_1}(t_i^u-v_i)$$ and
+\begin{equation}
+smooth_{L_1}(x) = \begin{cases}
+0.5x^2, &amp;amp;|x| &amp;lt; 1 \newline
+|x|-0.5,&amp;amp;otherwise
+\end{cases}
+\end{equation}
+$smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than $L_2$ loss.&lt;/p&gt;
+&lt;h2 id=&#34;faster-rcnn&#34;&gt;Faster RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 7. The pipeline of Faster RCNN in &lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-73930816d8d9&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Faster RCNN&lt;/a&gt; focuses on solving the speed bottleneck of Region Proposal Selection as previous RCNN and Fast RCNN separately compute the region proposal by Selective Search on CPU which still consumes much time. To address this problem, a novel subnetwork called RPN (Region Proposal Network) is proposed to combine Region Proposal Selection into ConvNet along with Softmax classifiers and Bounding-box regressors.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 8. The pipeline of RPN in &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;the paper&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;To adapt the multi-scale scheme of region proposals, the RPN introduces an anchor box. Specifically, RPN has a classifier and a regressor. The classifier is to predict the probability of a proposal holding an object, and the regressor is to correct the proposal coordinates. Anchor is the centre point of the sliding window. For any image, scale and aspect-ratio are two import factors, where scale is the image size and aspect-ratio is width/height. &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Ren et al., 2015&lt;/a&gt; introduce 9 kinds of anchors, which are scales (1,2,3) and aspect-ratio(1:1,1:2,2:1). Then for the whole image, the number of anchors is $W \times H \times 9$ where $W$ and $H$ are width and height, respectively.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Symbol  Explanation&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$i$&lt;/strong&gt;         the index of an anchor in a mini-batch.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$p_i$&lt;/strong&gt;       the probability that the anchor $i$ being an object.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$p_i^{*}$&lt;/strong&gt;  the groundtruth label $p_i^{*}$ is 1 if the anchor is positive, and is 0 if the anchor is negative.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$t_i$&lt;/strong&gt;       a vector $(x,y,w,h)$ representing the coordinates of predicted bounding box.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;$t_i^{*}$&lt;/strong&gt;  that of the groundtruth box associated with a positive anchor.&lt;/p&gt;
+&lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-$&lt;/p&gt;
+&lt;p&gt;The RPN also has a multi-task loss just like in Fast RCNN, which is defined as:&lt;/p&gt;
+&lt;p&gt;$$L({p_i},{t_i}) = \frac{1}{N_{cls}} \sum_i L_{cls}(p_i,p_i^{*}) + \lambda \frac{1}{N_{reg}} \sum_i p_i^{*} L_{reg}(t_i, t_i^{*})$$
+where the classification $L_{cls}$ is log loss over two classes (object vs not object). The regression loss $L_{reg}(p_i, p_i^{*}) = smooth_{L1}(t_i - t_i^{*})$. The term $p_i^{*} L_{reg}(t_i, t_i^{*})$ means the regression loss is activated if $p_i^{*}=1$ and is disabled if $p_i^{*}=0$. These two loss term are normalized by $N_{cls}$ and $N_{reg}$ and weighted by a balancing parameter $\lambda$. In implementation, $N_{cls}$ is the number of images in a mini-batch (i.e., $N_{cls}=256$), and the $reg$ term is normalized by the number of anchor locations (i.e., $N_{reg} \sim 2,400$). By default, the $\lambda$ is set to 10.&lt;/p&gt;
+&lt;p&gt;Therefore, there are four loss functions in one neural network:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;one is for classifying whether an anchor contains an object or not (anchor good or bad in RPN);&lt;/li&gt;
+&lt;li&gt;one is for proposal bounding box regression (anchor -&amp;gt; groundtruth proposal in RPN);&lt;/li&gt;
+&lt;li&gt;one is for classifying which category that the object belongs to (over all classes in main network);&lt;/li&gt;
+&lt;li&gt;one is for bounding box regression (proposal -&amp;gt; groundtruth bounding-box in main network);&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The total speedup comparison between RCNN, Fast RCNN and Faster RCNN is shown below:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in &lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;mask-rcnn&#34;&gt;Mask RCNN&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 10. The pipeline of Mask RCNN, which is Faster RCNN + Instance Segmentation + improved RoIAlign Pooling.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1703.06870.pdf&#34;&gt;Mask RCNN&lt;/a&gt; has three branches: RPN for region proposal + a pretrained CNN + Headers for classification and bounding-box regression + Mask Network for pixel-level instance segmentation. Mask RCNN is developed on Faster RCNN and adds RoIAlign Pooling and instance segmentation to output object masks in a pixel-to-pixel manner. The RoIAlign is proposed to improve RoI for pixel-level segmentation as it requires much more fine-grained alignment than Bounding-boxes. The accurate computation of RoIAlign is described in RoIAlign Pooling for Object Detection in Basic_understanding_dl post.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 11. Mask RCNN results on the COCO test set. Image source: &lt;a href=&#34;https://arxiv.org/pdf/1703.06870.pdf&#34;&gt;Mask RCNN paper&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;mask-loss&#34;&gt;Mask Loss&lt;/h3&gt;
+&lt;p&gt;During the training, a multi-task loss on each sampled RoI is defined as : $L=L_{cls} + L_{bbox}+L_{mask}$. The $L_{cls}$ and $L_{bbox}$ are identical as those defined in &lt;a href=&#34;https://arxiv.org/pdf/1506.01497.pdf&#34;&gt;Faster RCNN&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The mask branch has a $K\times m^2$ dimensional output for each RoI, which is $K$ binary masks of resolution $m \times m$, one for each the $K$ classes. Since the mask branch learns a mask for every class with a per-pixel &lt;strong&gt;sigmoid&lt;/strong&gt; and a &lt;strong&gt;binary cross-entropy loss&lt;/strong&gt;, there is no competition among classes for generating masks. Previous semantic segmentation methods (e.g., &lt;a href=&#34;https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf&#34;&gt;FCN for semantic segmentation&lt;/a&gt;) use a &lt;strong&gt;softmax&lt;/strong&gt; and a &lt;strong&gt;multinomial cross-entropy loss&lt;/strong&gt;, which causes classification competition among classes.&lt;/p&gt;
+&lt;p&gt;$L_{mask}$ is defined as the **average binary mask loss**, which **only includes $k$-th class** if the region is associated with the groundtruth class $k$:
+$$L_{mask} = -\frac{1}{m^2} \sum_{1 \leqslant i,j \leqslant m} (y_{ij}log\hat{y}_{ij}^k +(1-y_{ij})log(1-\hat{y}_{ij}^k))$$
+where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask for the region of size $m \times m$, $\hat{y}_{ij}$ is the predicted value in the same cell in the predicted mask learned by the groundtruth class $k$.&lt;/p&gt;
+&lt;h2 id=&#34;summary-for-r-cnn-based-object-detection-methods&#34;&gt;Summary for R-CNN based Object Detection Methods&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 12. Summary for R-CNN based Object Detection Methods . Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&#34;&gt;this blog&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;https://blog.csdn.net/v_JULY_v/article/details/80170182&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&#34;&gt;https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&#34;&gt;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&#34;&gt;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37998710&#34;&gt;https://zhuanlan.zhihu.com/p/37998710&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Training_tricks_dl</title>
-      <link>https://lwang.github.io/post/training_tricks_dl/</link>
+      <link>https://Alibabade.github.io/post/training_tricks_dl/</link>
       <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
-      <guid>https://lwang.github.io/post/training_tricks_dl/</guid>
+      <guid>https://Alibabade.github.io/post/training_tricks_dl/</guid>
       <description>&lt;h2 id=&#34;fine-tuning-neural-networks&#34;&gt;Fine-tuning neural networks&lt;/h2&gt;
 &lt;p&gt;In practise, researchers tend to use pre-trained neural networks on datasets like ImageNet to train their own neural network for new tasks due to their dataset perhaps not big enough (compared to millions of images in ImageNet). Thus this type of operation is called fine-tuning the neural network.&lt;/p&gt;
 &lt;p&gt;There are two typical scenarios:&lt;/p&gt;
@@ -54,9 +542,9 @@ For example, to freeze some layers in BERT model, you could do something like &l
     
     <item>
       <title>Graph_NN</title>
-      <link>https://lwang.github.io/post/graph_nn/</link>
+      <link>https://Alibabade.github.io/post/graph_nn/</link>
       <pubDate>Sun, 05 Jan 2020 17:26:13 +0000</pubDate>
-      <guid>https://lwang.github.io/post/graph_nn/</guid>
+      <guid>https://Alibabade.github.io/post/graph_nn/</guid>
       <description>&lt;p&gt;This blog simply clarifies the concepts of graph embedding, graph neural networks and graph convolutional networks.&lt;/p&gt;
 &lt;h2 id=&#34;graph-embedding&#34;&gt;Graph Embedding&lt;/h2&gt;
 &lt;p&gt;Graph Embedding (GE) is in representation learning of neural network, which often contains two types:&lt;/p&gt;
@@ -90,8 +578,8 @@ For example, to freeze some layers in BERT model, you could do something like &l
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -146,8 +634,8 @@ where deg($\cdot$) denotes the degree matrix and $\Omega_i$ denotes all the neig
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -296,8 +784,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -328,8 +816,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -366,7 +854,7 @@ where $\frac{1}{c_{i,j}}$ originates from $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^
 
 
 &lt;video controls &gt;
-  &lt;source src=&#34;https://lwang.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  &lt;source src=&#34;https://Alibabade.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;
 The video above shows Semi-supervised classification with GCNs in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;. And the model directly produces a 2-dimensional laten space which we can visualize.&lt;/p&gt;
 &lt;p&gt;Note that we just use random feature vectors (e.g., identity matrix we used here) and random weight matrices, only after a couple of iteration, the model used in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling&lt;/a&gt; is already able to achieve remarkable results. If we choose more serious initial node feature vectors, then the model can achieve state-of-the-art classification results on a various number of graph datasets.&lt;/p&gt;

@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Xiaosong Yang | Li Wang</title>
-    <link>https://lwang.github.io/authors/xiaosong-yang/</link>
-      <atom:link href="https://lwang.github.io/authors/xiaosong-yang/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://Alibabade.github.io/authors/xiaosong-yang/</link>
+      <atom:link href="https://Alibabade.github.io/authors/xiaosong-yang/index.xml" rel="self" type="application/rss+xml" />
     <description>Xiaosong Yang</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Xiaosong Yang</title>
-      <link>https://lwang.github.io/authors/xiaosong-yang/</link>
+      <link>https://Alibabade.github.io/authors/xiaosong-yang/</link>
     </image>
     
     <item>
       <title>Single-image Mesh Reconstruction and Pose Estimation via Generative Normal Map</title>
-      <link>https://lwang.github.io/publication/xiang-2019-single/</link>
+      <link>https://Alibabade.github.io/publication/xiang-2019-single/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://lwang.github.io/publication/xiang-2019-single/</guid>
+      <guid>https://Alibabade.github.io/publication/xiang-2019-single/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Fast photographic style transfer based on convolutional neural networks</title>
-      <link>https://lwang.github.io/publication/wang-2018-fast/</link>
+      <link>https://Alibabade.github.io/publication/wang-2018-fast/</link>
       <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>https://lwang.github.io/publication/wang-2018-fast/</guid>
+      <guid>https://Alibabade.github.io/publication/wang-2018-fast/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Photographic style transfer</title>
-      <link>https://lwang.github.io/publication/wang-2018-photographic/</link>
+      <link>https://Alibabade.github.io/publication/wang-2018-photographic/</link>
       <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>https://lwang.github.io/publication/wang-2018-photographic/</guid>
+      <guid>https://Alibabade.github.io/publication/wang-2018-photographic/</guid>
       <description></description>
     </item>
     

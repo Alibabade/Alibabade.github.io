@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Normalization--Neual Network Optimization | Li Wang</title>
-    <link>https://lwang.github.io/tags/normalization-neual-network-optimization/</link>
-      <atom:link href="https://lwang.github.io/tags/normalization-neual-network-optimization/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://Alibabade.github.io/tags/normalization-neual-network-optimization/</link>
+      <atom:link href="https://Alibabade.github.io/tags/normalization-neual-network-optimization/index.xml" rel="self" type="application/rss+xml" />
     <description>Normalization--Neual Network Optimization</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 23 Dec 2019 11:26:06 +0000</lastBuildDate>
     <image>
-      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Normalization--Neual Network Optimization</title>
-      <link>https://lwang.github.io/tags/normalization-neual-network-optimization/</link>
+      <link>https://Alibabade.github.io/tags/normalization-neual-network-optimization/</link>
     </image>
     
     <item>
       <title>Normalization_in_DL</title>
-      <link>https://lwang.github.io/post/normalizaion_in_dl/</link>
+      <link>https://Alibabade.github.io/post/normalizaion_in_dl/</link>
       <pubDate>Mon, 23 Dec 2019 11:26:06 +0000</pubDate>
-      <guid>https://lwang.github.io/post/normalizaion_in_dl/</guid>
+      <guid>https://Alibabade.github.io/post/normalizaion_in_dl/</guid>
       <description>&lt;h2 id=&#34;batch-normalization-bn&#34;&gt;Batch Normalization (BN)&lt;/h2&gt;
 &lt;h3 id=&#34;short-description&#34;&gt;Short Description&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1502.03167.pdf&#34;&gt;Batch Normalization&lt;/a&gt; is a basic method to initialize inputs to neural networks. In the early years, the neural network is sensitive to the hyperparameters, which makes it difficult to train and stabilize. To address this problem, Loffe et al. proposed a novel normalization method to accelerate the neural network trianing process.&lt;/p&gt;
@@ -94,8 +94,8 @@ where $v$ denotes the parameter vector, $||v||$ is the Euclidean norm of $v$, an
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/layer_normalization.png&#34; data-caption=&#34;Fig 1. Layer Normalization Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/layer_normalization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; data-caption=&#34;Fig 1. Layer Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -133,8 +133,8 @@ The picture below shows the visual comparisons of batch normalization, layer nor
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/normalization_visualization.png&#34; data-caption=&#34;Fig 2. Normalization Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/normalization_visualization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; data-caption=&#34;Fig 2. Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   

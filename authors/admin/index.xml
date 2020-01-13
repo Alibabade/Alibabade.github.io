@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Li Wang</title>
-    <link>https://lwang.github.io/authors/admin/</link>
-      <atom:link href="https://lwang.github.io/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://Alibabade.github.io/authors/admin/</link>
+      <atom:link href="https://Alibabade.github.io/authors/admin/index.xml" rel="self" type="application/rss+xml" />
     <description>Li Wang</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 12:21:28 +0000</lastBuildDate>
     <image>
-      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Li Wang</title>
-      <link>https://lwang.github.io/authors/admin/</link>
+      <link>https://Alibabade.github.io/authors/admin/</link>
     </image>
     
     <item>
       <title>Object_detection</title>
-      <link>https://lwang.github.io/post/object_detection/</link>
+      <link>https://Alibabade.github.io/post/object_detection/</link>
       <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
-      <guid>https://lwang.github.io/post/object_detection/</guid>
+      <guid>https://Alibabade.github.io/post/object_detection/</guid>
       <description>&lt;p&gt;This blog contains four parts:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Introduction: What is Object Detection? and general thoughts/ideas to deal with Object Detection;&lt;/li&gt;
@@ -45,8 +45,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -78,8 +78,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -127,8 +127,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -165,8 +165,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -198,8 +198,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -240,8 +240,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -291,8 +291,8 @@ $smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -323,8 +323,8 @@ $smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -374,8 +374,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -406,8 +406,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -438,8 +438,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -476,8 +476,8 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -502,9 +502,9 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
     
     <item>
       <title>Training_tricks_dl</title>
-      <link>https://lwang.github.io/post/training_tricks_dl/</link>
+      <link>https://Alibabade.github.io/post/training_tricks_dl/</link>
       <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
-      <guid>https://lwang.github.io/post/training_tricks_dl/</guid>
+      <guid>https://Alibabade.github.io/post/training_tricks_dl/</guid>
       <description>&lt;h2 id=&#34;fine-tuning-neural-networks&#34;&gt;Fine-tuning neural networks&lt;/h2&gt;
 &lt;p&gt;In practise, researchers tend to use pre-trained neural networks on datasets like ImageNet to train their own neural network for new tasks due to their dataset perhaps not big enough (compared to millions of images in ImageNet). Thus this type of operation is called fine-tuning the neural network.&lt;/p&gt;
 &lt;p&gt;There are two typical scenarios:&lt;/p&gt;
@@ -542,9 +542,9 @@ For example, to freeze some layers in BERT model, you could do something like &l
     
     <item>
       <title>Graph_NN</title>
-      <link>https://lwang.github.io/post/graph_nn/</link>
+      <link>https://Alibabade.github.io/post/graph_nn/</link>
       <pubDate>Sun, 05 Jan 2020 17:26:13 +0000</pubDate>
-      <guid>https://lwang.github.io/post/graph_nn/</guid>
+      <guid>https://Alibabade.github.io/post/graph_nn/</guid>
       <description>&lt;p&gt;This blog simply clarifies the concepts of graph embedding, graph neural networks and graph convolutional networks.&lt;/p&gt;
 &lt;h2 id=&#34;graph-embedding&#34;&gt;Graph Embedding&lt;/h2&gt;
 &lt;p&gt;Graph Embedding (GE) is in representation learning of neural network, which often contains two types:&lt;/p&gt;
@@ -578,8 +578,8 @@ For example, to freeze some layers in BERT model, you could do something like &l
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -634,8 +634,8 @@ where deg($\cdot$) denotes the degree matrix and $\Omega_i$ denotes all the neig
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -784,8 +784,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -816,8 +816,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -854,7 +854,7 @@ where $\frac{1}{c_{i,j}}$ originates from $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^
 
 
 &lt;video controls &gt;
-  &lt;source src=&#34;https://lwang.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  &lt;source src=&#34;https://Alibabade.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;
 The video above shows Semi-supervised classification with GCNs in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;. And the model directly produces a 2-dimensional laten space which we can visualize.&lt;/p&gt;
 &lt;p&gt;Note that we just use random feature vectors (e.g., identity matrix we used here) and random weight matrices, only after a couple of iteration, the model used in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling&lt;/a&gt; is already able to achieve remarkable results. If we choose more serious initial node feature vectors, then the model can achieve state-of-the-art classification results on a various number of graph datasets.&lt;/p&gt;
@@ -877,9 +877,9 @@ The video above shows Semi-supervised classification with GCNs in &lt;a href=&#3
     
     <item>
       <title>Archive_papers</title>
-      <link>https://lwang.github.io/post/archive_papers/</link>
+      <link>https://Alibabade.github.io/post/archive_papers/</link>
       <pubDate>Sun, 05 Jan 2020 12:57:22 +0000</pubDate>
-      <guid>https://lwang.github.io/post/archive_papers/</guid>
+      <guid>https://Alibabade.github.io/post/archive_papers/</guid>
       <description>&lt;h2 id=&#34;deep-correlations-for-texture-synthesis-tog2017&#34;&gt;Deep Correlations for Texture Synthesis (TOG2017)&lt;/h2&gt;
 &lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
 &lt;p&gt;The texture synthesis using &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;deep feature maps&lt;/a&gt; has difficulty to synthesize structure textures, which is a challenge to preserve the non-local structures.&lt;/p&gt;
@@ -910,9 +910,9 @@ Then the structure loss based on intra-feature Gram loss is denoted as:&lt;/p&gt
     
     <item>
       <title>Attention</title>
-      <link>https://lwang.github.io/post/attention/</link>
+      <link>https://Alibabade.github.io/post/attention/</link>
       <pubDate>Sat, 28 Dec 2019 22:03:15 +0000</pubDate>
-      <guid>https://lwang.github.io/post/attention/</guid>
+      <guid>https://Alibabade.github.io/post/attention/</guid>
       <description>&lt;h2 id=&#34;attention&#34;&gt;Attention&lt;/h2&gt;
 &lt;p&gt;The attention mechanism was created to simulate the human visual attention on images or understanding attention on texts. It was firstly born for solving a problem that widely exists in natural language processing (NLP) models like seq2seq, which NLP models often tend to forget the first part of processed sentences.&lt;/p&gt;
 &lt;h3 id=&#34;seq2seq-model&#34;&gt;Seq2seq model&lt;/h3&gt;
@@ -943,8 +943,8 @@ Then the structure loss based on intra-feature Gram loss is denoted as:&lt;/p&gt
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/attention_encoder-decoder-attention.png&#34; data-caption=&#34;Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/attention_encoder-decoder-attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; data-caption=&#34;Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -986,8 +986,8 @@ $$score(s_t, h_i) = v_a^T tanh(W_a[s_t;h_i])$$&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/self_attention.png&#34; data-caption=&#34;Fig 2. An example of self-attention mechanism in Cheng et al., 2016&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/self_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/self_attention.png&#34; data-caption=&#34;Fig 2. An example of self-attention mechanism in Cheng et al., 2016&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/self_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1019,8 +1019,8 @@ $$score(s_t, h_i) = v_a^T tanh(W_a[s_t;h_i])$$&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/soft_attention.png&#34; data-caption=&#34;Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/soft_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; data-caption=&#34;Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1061,8 +1061,8 @@ Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires m
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/global_local_attention.png&#34; data-caption=&#34;Fig 1. The global and local attention architecture in Luong et al., 2015&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/global_local_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; data-caption=&#34;Fig 1. The global and local attention architecture in Luong et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1083,17 +1083,17 @@ Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires m
     
     <item>
       <title>Meta_learning_in_dl</title>
-      <link>https://lwang.github.io/post/meta_learning_in_dl/</link>
+      <link>https://Alibabade.github.io/post/meta_learning_in_dl/</link>
       <pubDate>Fri, 27 Dec 2019 20:41:16 +0000</pubDate>
-      <guid>https://lwang.github.io/post/meta_learning_in_dl/</guid>
+      <guid>https://Alibabade.github.io/post/meta_learning_in_dl/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Record_discrete_knowledge</title>
-      <link>https://lwang.github.io/post/record_discrete_knowledge/</link>
+      <title>Archive_discrete_knowledge</title>
+      <link>https://Alibabade.github.io/post/record_discrete_knowledge/</link>
       <pubDate>Wed, 25 Dec 2019 10:27:43 +0000</pubDate>
-      <guid>https://lwang.github.io/post/record_discrete_knowledge/</guid>
+      <guid>https://Alibabade.github.io/post/record_discrete_knowledge/</guid>
       <description>&lt;h2 id=&#34;basic-knowledge-in-neural-networks&#34;&gt;Basic knowledge in neural networks&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Graph Neural Network&lt;/li&gt;
@@ -1130,9 +1130,9 @@ Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires m
     
     <item>
       <title>Activation_functions_in_dl</title>
-      <link>https://lwang.github.io/post/activation_functions_in_dl/</link>
+      <link>https://Alibabade.github.io/post/activation_functions_in_dl/</link>
       <pubDate>Tue, 24 Dec 2019 21:15:41 +0000</pubDate>
-      <guid>https://lwang.github.io/post/activation_functions_in_dl/</guid>
+      <guid>https://Alibabade.github.io/post/activation_functions_in_dl/</guid>
       <description>&lt;h2 id=&#34;activation-functions&#34;&gt;Activation functions&lt;/h2&gt;
 &lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
 &lt;p&gt;Activation functions works like an on-off button that determines whether the output of a neuron or what information should be passed to next layer. In biology, it works like synaptic in brain which decides what information it passes from one neuron cell to next one. There are several activation functions widely used in neural networks.&lt;/p&gt;
@@ -1168,8 +1168,8 @@ f(x) = {1, if x &amp;gt; T; 0, otherwise}.&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/sigmoid.png&#34; data-caption=&#34;Fig 1. Sigmoid Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/sigmoid.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/sigmoid.png&#34; data-caption=&#34;Fig 1. Sigmoid Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/sigmoid.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1235,8 +1235,8 @@ Derivative (with respect to $x$): $$tanh^{&#39;}(x) = 1 -tanh(x)^2$$&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/relu.png&#34; data-caption=&#34;Fig 2. ReLU Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/relu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relu.png&#34; data-caption=&#34;Fig 2. ReLU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/relu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1289,8 +1289,8 @@ However, to some extent, dying ReLU problem makes input values sparse which is h
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/elu.png&#34; data-caption=&#34;Fig 3. ELU Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/elu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/elu.png&#34; data-caption=&#34;Fig 3. ELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/elu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1347,8 +1347,8 @@ ELU(x) + \alpha, &amp;amp; x \leqslant 0 \newline
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/lrelu.png&#34; data-caption=&#34;Fig 4. LReLU Visualization ($\alpha=0.1$)&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/lrelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/lrelu.png&#34; data-caption=&#34;Fig 4. LReLU Visualization ($\alpha=0.1$)&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/lrelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1406,8 +1406,8 @@ LReLU^{&#39;}(x) = \begin{cases}
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/selu.png&#34; data-caption=&#34;Fig 5. SELU Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/selu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/selu.png&#34; data-caption=&#34;Fig 5. SELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/selu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1460,8 +1460,8 @@ Need more applications to prove its performance on CNNs and RNNs.&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/gelu.png&#34; data-caption=&#34;Fig 6. GELU Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/gelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/gelu.png&#34; data-caption=&#34;Fig 6. GELU Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/gelu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1495,10 +1495,10 @@ Need more applications to prove its performance.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Basic_understanding_dl</title>
-      <link>https://lwang.github.io/post/basic_understanding_dl/</link>
+      <title>Discrete_specific_techniques_dl</title>
+      <link>https://Alibabade.github.io/post/basic_understanding_dl/</link>
       <pubDate>Tue, 24 Dec 2019 15:52:34 +0000</pubDate>
-      <guid>https://lwang.github.io/post/basic_understanding_dl/</guid>
+      <guid>https://Alibabade.github.io/post/basic_understanding_dl/</guid>
       <description>&lt;h2 id=&#34;bag-of-words-bow&#34;&gt;Bag of words (BOW)&lt;/h2&gt;
 &lt;p&gt;BOW is a method to extract features from text documents, which is usually used in &lt;strong&gt;NLP&lt;/strong&gt;, &lt;strong&gt;Information retrieve (IR) from documents&lt;/strong&gt; and &lt;strong&gt;document classification&lt;/strong&gt;. In general, BOW summarizes words in documents into a vocabulary (like dict type in python) that &lt;strong&gt;collects all the words in the documents along with word counts but disregarding the order they appear.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;For examples, two sentences:&lt;/p&gt;
@@ -1566,8 +1566,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/IOU.png&#34; data-caption=&#34;Fig 1. IOU Visualization in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/IOU.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/IOU.png&#34; data-caption=&#34;Fig 1. IOU Visualization in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/IOU.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1599,8 +1599,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/Bounding-box1.png&#34; data-caption=&#34;Fig 2. Predicted box for airplane and its corresponding groudtruth in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/Bounding-box1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; data-caption=&#34;Fig 2. Predicted box for airplane and its corresponding groudtruth in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1631,8 +1631,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/bounding_box2.png&#34; data-caption=&#34;Fig 3. Bounding box regression in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/bounding_box2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; data-caption=&#34;Fig 3. Bounding box regression in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1677,8 +1677,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/deconvolution_stride1.gif&#34; data-caption=&#34;Fig 4. Visualization of Deconvolution in this Quora answer.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/deconvolution_stride1.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; data-caption=&#34;Fig 4. Visualization of Deconvolution in this Quora answer.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1715,8 +1715,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/roi_visualization.gif&#34; data-caption=&#34;Fig 5. Visualization of ROI pooling in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/roi_visualization.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; data-caption=&#34;Fig 5. Visualization of ROI pooling in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1753,8 +1753,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RoI_misalignments.png&#34; data-caption=&#34;Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/RoI_misalignments.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; data-caption=&#34;Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1785,8 +1785,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RoIAlign_computation2.png&#34; data-caption=&#34;Fig 6. Visualization of one sampled value computation in RoI Align.&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/RoIAlign_computation2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; data-caption=&#34;Fig 6. Visualization of one sampled value computation in RoI Align.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1808,9 +1808,9 @@ where area0=(2.3995-2)x(17.76325-17)=0.304918375, area1=(3-2.3995)x(17.76325-17)
     
     <item>
       <title>Normalization_in_DL</title>
-      <link>https://lwang.github.io/post/normalizaion_in_dl/</link>
+      <link>https://Alibabade.github.io/post/normalizaion_in_dl/</link>
       <pubDate>Mon, 23 Dec 2019 11:26:06 +0000</pubDate>
-      <guid>https://lwang.github.io/post/normalizaion_in_dl/</guid>
+      <guid>https://Alibabade.github.io/post/normalizaion_in_dl/</guid>
       <description>&lt;h2 id=&#34;batch-normalization-bn&#34;&gt;Batch Normalization (BN)&lt;/h2&gt;
 &lt;h3 id=&#34;short-description&#34;&gt;Short Description&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1502.03167.pdf&#34;&gt;Batch Normalization&lt;/a&gt; is a basic method to initialize inputs to neural networks. In the early years, the neural network is sensitive to the hyperparameters, which makes it difficult to train and stabilize. To address this problem, Loffe et al. proposed a novel normalization method to accelerate the neural network trianing process.&lt;/p&gt;
@@ -1888,8 +1888,8 @@ where $v$ denotes the parameter vector, $||v||$ is the Euclidean norm of $v$, an
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/layer_normalization.png&#34; data-caption=&#34;Fig 1. Layer Normalization Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/layer_normalization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; data-caption=&#34;Fig 1. Layer Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/layer_normalization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -1927,8 +1927,8 @@ The picture below shows the visual comparisons of batch normalization, layer nor
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/normalization_visualization.png&#34; data-caption=&#34;Fig 2. Normalization Visualization&#34;&gt;
-&lt;img data-src=&#34;https://lwang.github.io/img/normalization_visualization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; data-caption=&#34;Fig 2. Normalization Visualization&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/normalization_visualization.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   

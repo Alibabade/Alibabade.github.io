@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects | Li Wang</title>
+    <link>https://Alibabade.github.io/project/</link>
+      <atom:link href="https://Alibabade.github.io/project/index.xml" rel="self" type="application/rss+xml" />
+    <description>Projects</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 13 Jan 2020 21:34:39 +0000</lastBuildDate>
+    <image>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Projects</title>
+      <link>https://Alibabade.github.io/project/</link>
+    </image>
+    
+    <item>
+      <title>Fast_photographic_style_transfer</title>
+      <link>https://Alibabade.github.io/project/fast_photographic_style_transfer/</link>
+      <pubDate>Mon, 13 Jan 2020 21:34:39 +0000</pubDate>
+      <guid>https://Alibabade.github.io/project/fast_photographic_style_transfer/</guid>
+      <description>&lt;p&gt;This project aims to implement a torch version for fast photographic style transfer based on &lt;a href=&#34;https://cs.stanford.edu/people/jcjohns/eccv16/&#34;&gt;Fast-Neural-Style&lt;/a&gt;. The teaser image is a stylized result by the algorithm described in this project, which takes around 1.40 seconds for $852 \times 480$ resolution image on a single NVIDIA 1080Ti card.&lt;/p&gt;
+&lt;p&gt;In this project, I also provide a torch implementation of the Domain Transform (Recursive Filter) which is described in the paper:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Domain Transform for Edge-Aware Image and Video Processing
+Eduardo S. L. Gastal and Manuel M. Oliveira
+ACM Transactions on Graphics. Volume 30 (2011), Number 4.
+Proceedings of SIGGRAPH 2011, Article 69.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Photographic style transfer aims to transfer only the colour information from a given reference image to a source image without detail distortions. However, neural style transfer methods (i.e., &lt;a href=&#34;https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf&#34;&gt;Neural-Style&lt;/a&gt; and &lt;a href=&#34;https://cs.stanford.edu/people/jcjohns/eccv16/&#34;&gt;Fast-Neural-Style&lt;/a&gt;) usually tend to distort the details of source image to complete artistic transformation (including colours and textures) for reference images. Thus preserving details or structures in source images withour affecting colour transformation is the key to photographic style transfer.&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;p&gt;To be continued&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

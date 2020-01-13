@@ -2,77 +2,77 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags | Li Wang</title>
-    <link>https://Alibabade.github.io/tags/</link>
-      <atom:link href="https://Alibabade.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/tags/</link>
+      <atom:link href="https://lwang.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <description>Tags</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 12:21:28 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Tags</title>
-      <link>https://Alibabade.github.io/tags/</link>
+      <link>https://lwang.github.io/tags/</link>
     </image>
     
     <item>
       <title>Computer Vision</title>
-      <link>https://Alibabade.github.io/tags/computer-vision/</link>
+      <link>https://lwang.github.io/tags/computer-vision/</link>
       <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/computer-vision/</guid>
+      <guid>https://lwang.github.io/tags/computer-vision/</guid>
       <description></description>
     </item>
     
     <item>
       <title>DL</title>
-      <link>https://Alibabade.github.io/tags/dl/</link>
+      <link>https://lwang.github.io/tags/dl/</link>
       <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/dl/</guid>
+      <guid>https://lwang.github.io/tags/dl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Academic</title>
-      <link>https://Alibabade.github.io/tags/academic/</link>
+      <link>https://lwang.github.io/tags/academic/</link>
       <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/academic/</guid>
+      <guid>https://lwang.github.io/tags/academic/</guid>
       <description></description>
     </item>
     
     <item>
       <title>attention in dl</title>
-      <link>https://Alibabade.github.io/tags/attention-in-dl/</link>
+      <link>https://lwang.github.io/tags/attention-in-dl/</link>
       <pubDate>Sat, 28 Dec 2019 22:03:15 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/attention-in-dl/</guid>
+      <guid>https://lwang.github.io/tags/attention-in-dl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Meta-learning in dl</title>
-      <link>https://Alibabade.github.io/tags/meta-learning-in-dl/</link>
+      <link>https://lwang.github.io/tags/meta-learning-in-dl/</link>
       <pubDate>Fri, 27 Dec 2019 20:41:16 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/meta-learning-in-dl/</guid>
+      <guid>https://lwang.github.io/tags/meta-learning-in-dl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Activation functions in DL</title>
-      <link>https://Alibabade.github.io/tags/activation-functions-in-dl/</link>
+      <link>https://lwang.github.io/tags/activation-functions-in-dl/</link>
       <pubDate>Tue, 24 Dec 2019 21:15:41 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/activation-functions-in-dl/</guid>
+      <guid>https://lwang.github.io/tags/activation-functions-in-dl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Discrete knowledge in ML/DL</title>
-      <link>https://Alibabade.github.io/tags/discrete-knowledge-in-ml/dl/</link>
+      <link>https://lwang.github.io/tags/discrete-knowledge-in-ml/dl/</link>
       <pubDate>Tue, 24 Dec 2019 15:52:34 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/discrete-knowledge-in-ml/dl/</guid>
+      <guid>https://lwang.github.io/tags/discrete-knowledge-in-ml/dl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Normalization--Neual Network Optimization</title>
-      <link>https://Alibabade.github.io/tags/normalization-neual-network-optimization/</link>
+      <link>https://lwang.github.io/tags/normalization-neual-network-optimization/</link>
       <pubDate>Mon, 23 Dec 2019 11:26:06 +0000</pubDate>
-      <guid>https://Alibabade.github.io/tags/normalization-neual-network-optimization/</guid>
+      <guid>https://lwang.github.io/tags/normalization-neual-network-optimization/</guid>
       <description></description>
     </item>
     

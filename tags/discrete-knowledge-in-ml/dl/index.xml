@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Discrete knowledge in ML/DL | Li Wang</title>
-    <link>https://Alibabade.github.io/tags/discrete-knowledge-in-ml/dl/</link>
-      <atom:link href="https://Alibabade.github.io/tags/discrete-knowledge-in-ml/dl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/tags/discrete-knowledge-in-ml/dl/</link>
+      <atom:link href="https://lwang.github.io/tags/discrete-knowledge-in-ml/dl/index.xml" rel="self" type="application/rss+xml" />
     <description>Discrete knowledge in ML/DL</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 24 Dec 2019 15:52:34 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Discrete knowledge in ML/DL</title>
-      <link>https://Alibabade.github.io/tags/discrete-knowledge-in-ml/dl/</link>
+      <link>https://lwang.github.io/tags/discrete-knowledge-in-ml/dl/</link>
     </image>
     
     <item>
       <title>Basic_understanding_dl</title>
-      <link>https://Alibabade.github.io/post/basic_understanding_dl/</link>
+      <link>https://lwang.github.io/post/basic_understanding_dl/</link>
       <pubDate>Tue, 24 Dec 2019 15:52:34 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/basic_understanding_dl/</guid>
+      <guid>https://lwang.github.io/post/basic_understanding_dl/</guid>
       <description>&lt;h2 id=&#34;bag-of-words-bow&#34;&gt;Bag of words (BOW)&lt;/h2&gt;
 &lt;p&gt;BOW is a method to extract features from text documents, which is usually used in &lt;strong&gt;NLP&lt;/strong&gt;, &lt;strong&gt;Information retrieve (IR) from documents&lt;/strong&gt; and &lt;strong&gt;document classification&lt;/strong&gt;. In general, BOW summarizes words in documents into a vocabulary (like dict type in python) that &lt;strong&gt;collects all the words in the documents along with word counts but disregarding the order they appear.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;For examples, two sentences:&lt;/p&gt;
@@ -84,8 +84,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/IOU.png&#34; data-caption=&#34;Fig 1. IOU Visualization in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/IOU.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/IOU.png&#34; data-caption=&#34;Fig 1. IOU Visualization in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/IOU.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -117,8 +117,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; data-caption=&#34;Fig 2. Predicted box for airplane and its corresponding groudtruth in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/Bounding-box1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/Bounding-box1.png&#34; data-caption=&#34;Fig 2. Predicted box for airplane and its corresponding groudtruth in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/Bounding-box1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -149,8 +149,8 @@ where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; data-caption=&#34;Fig 3. Bounding box regression in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/bounding_box2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/bounding_box2.png&#34; data-caption=&#34;Fig 3. Bounding box regression in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/bounding_box2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -195,8 +195,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; data-caption=&#34;Fig 4. Visualization of Deconvolution in this Quora answer.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/deconvolution_stride1.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/deconvolution_stride1.gif&#34; data-caption=&#34;Fig 4. Visualization of Deconvolution in this Quora answer.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/deconvolution_stride1.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -233,8 +233,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; data-caption=&#34;Fig 5. Visualization of ROI pooling in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/roi_visualization.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/roi_visualization.gif&#34; data-caption=&#34;Fig 5. Visualization of ROI pooling in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/roi_visualization.gif&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -271,8 +271,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; data-caption=&#34;Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/RoI_misalignments.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RoI_misalignments.png&#34; data-caption=&#34;Fig 7. Visualization of RoI quantization/misaligments and RoIAlign corrections.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/RoI_misalignments.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -303,8 +303,8 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$&lt;/
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; data-caption=&#34;Fig 6. Visualization of one sampled value computation in RoI Align.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/RoIAlign_computation2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RoIAlign_computation2.png&#34; data-caption=&#34;Fig 6. Visualization of one sampled value computation in RoI Align.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/RoIAlign_computation2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   

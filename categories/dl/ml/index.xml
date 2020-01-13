@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DL/ML | Li Wang</title>
-    <link>https://Alibabade.github.io/categories/dl/ml/</link>
-      <atom:link href="https://Alibabade.github.io/categories/dl/ml/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/categories/dl/ml/</link>
+      <atom:link href="https://lwang.github.io/categories/dl/ml/index.xml" rel="self" type="application/rss+xml" />
     <description>DL/ML</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 25 Dec 2019 10:27:43 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>DL/ML</title>
-      <link>https://Alibabade.github.io/categories/dl/ml/</link>
+      <link>https://lwang.github.io/categories/dl/ml/</link>
     </image>
     
     <item>
       <title>Record_discrete_knowledge</title>
-      <link>https://Alibabade.github.io/post/record_discrete_knowledge/</link>
+      <link>https://lwang.github.io/post/record_discrete_knowledge/</link>
       <pubDate>Wed, 25 Dec 2019 10:27:43 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/record_discrete_knowledge/</guid>
+      <guid>https://lwang.github.io/post/record_discrete_knowledge/</guid>
       <description>&lt;h2 id=&#34;basic-knowledge-in-neural-networks&#34;&gt;Basic knowledge in neural networks&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Graph Neural Network&lt;/li&gt;

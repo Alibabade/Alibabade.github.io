@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Computer Graphics | Li Wang</title>
-    <link>https://Alibabade.github.io/categories/computer-graphics/</link>
-      <atom:link href="https://Alibabade.github.io/categories/computer-graphics/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/categories/computer-graphics/</link>
+      <atom:link href="https://lwang.github.io/categories/computer-graphics/index.xml" rel="self" type="application/rss+xml" />
     <description>Computer Graphics</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 05 Jan 2020 12:57:22 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Computer Graphics</title>
-      <link>https://Alibabade.github.io/categories/computer-graphics/</link>
+      <link>https://lwang.github.io/categories/computer-graphics/</link>
     </image>
     
     <item>
       <title>Archive_papers</title>
-      <link>https://Alibabade.github.io/post/archive_papers/</link>
+      <link>https://lwang.github.io/post/archive_papers/</link>
       <pubDate>Sun, 05 Jan 2020 12:57:22 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/archive_papers/</guid>
+      <guid>https://lwang.github.io/post/archive_papers/</guid>
       <description>&lt;h2 id=&#34;deep-correlations-for-texture-synthesis-tog2017&#34;&gt;Deep Correlations for Texture Synthesis (TOG2017)&lt;/h2&gt;
 &lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
 &lt;p&gt;The texture synthesis using &lt;a href=&#34;https://papers.nips.cc/paper/5633-texture-synthesis-using-convolutional-neural-networks.pdf&#34;&gt;deep feature maps&lt;/a&gt; has difficulty to synthesize structure textures, which is a challenge to preserve the non-local structures.&lt;/p&gt;

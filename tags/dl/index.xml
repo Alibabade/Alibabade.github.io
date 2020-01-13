@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DL | Li Wang</title>
-    <link>https://Alibabade.github.io/tags/dl/</link>
-      <atom:link href="https://Alibabade.github.io/tags/dl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/tags/dl/</link>
+      <atom:link href="https://lwang.github.io/tags/dl/index.xml" rel="self" type="application/rss+xml" />
     <description>DL</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 12:21:28 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>DL</title>
-      <link>https://Alibabade.github.io/tags/dl/</link>
+      <link>https://lwang.github.io/tags/dl/</link>
     </image>
     
     <item>
       <title>Object_detection</title>
-      <link>https://Alibabade.github.io/post/object_detection/</link>
+      <link>https://lwang.github.io/post/object_detection/</link>
       <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/object_detection/</guid>
+      <guid>https://lwang.github.io/post/object_detection/</guid>
       <description>&lt;p&gt;This blog contains four parts:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Introduction: What is Object Detection? and general thoughts/ideas to deal with Object Detection;&lt;/li&gt;
@@ -45,8 +45,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/object_detection_regression1.png&#34; data-caption=&#34;Fig 1. Regression for localization shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/object_detection_regression1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -78,8 +78,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/Region_Proposal_Selections.png&#34; data-caption=&#34;Fig 2. Comparisons between different Region Proposal Selection methods shown in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/Region_Proposal_Selections.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -127,8 +127,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/non-max-suppression.png&#34; data-caption=&#34;Fig 3. Non-maximum suppression used in RCNN this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/non-max-suppression.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -165,8 +165,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; data-caption=&#34;Fig 4. The spatial pyramid pooling layer in SPPNet.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/SPPNet_spatial_pyramid_pooling_layer.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -198,8 +198,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/fast_rcnn2.png&#34; data-caption=&#34;Fig 6. The pipeline of Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/fast_rcnn2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -240,8 +240,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/speed_rcnn_fastrcnn.png&#34; data-caption=&#34;Fig 6. Speed comparison between RCNN and Fast RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/speed_rcnn_fastrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -291,8 +291,8 @@ $smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/faster_rcnn.png&#34; data-caption=&#34;Fig 7. The pipeline of Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/faster_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -323,8 +323,8 @@ $smooth_{L_1}(x)$ is a robust $L_1$ loss that is less sensitive to outliers than
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/RPN_mechanism.png&#34; data-caption=&#34;Fig 8. The pipeline of RPN in the paper.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/RPN_mechanism.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -374,8 +374,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; data-caption=&#34;Fig 9. The speedup comparison between RCNN, Fast RCNN and Faster RCNN in this blog.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/comparison_speedup_rcnn_fastrcnn_fasterrcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -406,8 +406,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/mask_rcnn.png&#34; data-caption=&#34;Fig 10. The pipeline of Mask RCNN, which is Faster RCNN &amp;#43; Instance Segmentation &amp;#43; improved RoIAlign Pooling.&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/mask_rcnn.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -438,8 +438,8 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/mask_rcnn_results.png&#34; data-caption=&#34;Fig 11. Mask RCNN results on the COCO test set. Image source: Mask RCNN paper&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/mask_rcnn_results.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -476,8 +476,8 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/rcnn-family-summary.png&#34; data-caption=&#34;Fig 12. Summary for R-CNN based Object Detection Methods . Image source: this blog&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/rcnn-family-summary.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   

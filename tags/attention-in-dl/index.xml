@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>attention in dl | Li Wang</title>
-    <link>https://Alibabade.github.io/tags/attention-in-dl/</link>
-      <atom:link href="https://Alibabade.github.io/tags/attention-in-dl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/tags/attention-in-dl/</link>
+      <atom:link href="https://lwang.github.io/tags/attention-in-dl/index.xml" rel="self" type="application/rss+xml" />
     <description>attention in dl</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 28 Dec 2019 22:03:15 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>attention in dl</title>
-      <link>https://Alibabade.github.io/tags/attention-in-dl/</link>
+      <link>https://lwang.github.io/tags/attention-in-dl/</link>
     </image>
     
     <item>
       <title>Attention</title>
-      <link>https://Alibabade.github.io/post/attention/</link>
+      <link>https://lwang.github.io/post/attention/</link>
       <pubDate>Sat, 28 Dec 2019 22:03:15 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/attention/</guid>
+      <guid>https://lwang.github.io/post/attention/</guid>
       <description>&lt;h2 id=&#34;attention&#34;&gt;Attention&lt;/h2&gt;
 &lt;p&gt;The attention mechanism was created to simulate the human visual attention on images or understanding attention on texts. It was firstly born for solving a problem that widely exists in natural language processing (NLP) models like seq2seq, which NLP models often tend to forget the first part of processed sentences.&lt;/p&gt;
 &lt;h3 id=&#34;seq2seq-model&#34;&gt;Seq2seq model&lt;/h3&gt;
@@ -47,8 +47,8 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; data-caption=&#34;Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/attention_encoder-decoder-attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/attention_encoder-decoder-attention.png&#34; data-caption=&#34;Fig 1. The encoder-decoder architecture in Bahdanau et al. 2015&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/attention_encoder-decoder-attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -90,8 +90,8 @@ $$score(s_t, h_i) = v_a^T tanh(W_a[s_t;h_i])$$&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/self_attention.png&#34; data-caption=&#34;Fig 2. An example of self-attention mechanism in Cheng et al., 2016&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/self_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/self_attention.png&#34; data-caption=&#34;Fig 2. An example of self-attention mechanism in Cheng et al., 2016&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/self_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -123,8 +123,8 @@ $$score(s_t, h_i) = v_a^T tanh(W_a[s_t;h_i])$$&lt;/p&gt;
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; data-caption=&#34;Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/soft_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/soft_attention.png&#34; data-caption=&#34;Fig 2. The visulation of attention mechanism for image caption generation in Xu et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/soft_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -165,8 +165,8 @@ Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires m
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; data-caption=&#34;Fig 1. The global and local attention architecture in Luong et al., 2015&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/global_local_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/global_local_attention.png&#34; data-caption=&#34;Fig 1. The global and local attention architecture in Luong et al., 2015&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/global_local_attention.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   

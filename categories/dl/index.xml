@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DL | Li Wang</title>
-    <link>https://Alibabade.github.io/categories/dl/</link>
-      <atom:link href="https://Alibabade.github.io/categories/dl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://lwang.github.io/categories/dl/</link>
+      <atom:link href="https://lwang.github.io/categories/dl/index.xml" rel="self" type="application/rss+xml" />
     <description>DL</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2020 21:03:10 +0000</lastBuildDate>
     <image>
-      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://lwang.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>DL</title>
-      <link>https://Alibabade.github.io/categories/dl/</link>
+      <link>https://lwang.github.io/categories/dl/</link>
     </image>
     
     <item>
       <title>Training_tricks_dl</title>
-      <link>https://Alibabade.github.io/post/training_tricks_dl/</link>
+      <link>https://lwang.github.io/post/training_tricks_dl/</link>
       <pubDate>Wed, 08 Jan 2020 21:03:10 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/training_tricks_dl/</guid>
+      <guid>https://lwang.github.io/post/training_tricks_dl/</guid>
       <description>&lt;h2 id=&#34;fine-tuning-neural-networks&#34;&gt;Fine-tuning neural networks&lt;/h2&gt;
 &lt;p&gt;In practise, researchers tend to use pre-trained neural networks on datasets like ImageNet to train their own neural network for new tasks due to their dataset perhaps not big enough (compared to millions of images in ImageNet). Thus this type of operation is called fine-tuning the neural network.&lt;/p&gt;
 &lt;p&gt;There are two typical scenarios:&lt;/p&gt;
@@ -54,9 +54,9 @@ For example, to freeze some layers in BERT model, you could do something like &l
     
     <item>
       <title>Graph_NN</title>
-      <link>https://Alibabade.github.io/post/graph_nn/</link>
+      <link>https://lwang.github.io/post/graph_nn/</link>
       <pubDate>Sun, 05 Jan 2020 17:26:13 +0000</pubDate>
-      <guid>https://Alibabade.github.io/post/graph_nn/</guid>
+      <guid>https://lwang.github.io/post/graph_nn/</guid>
       <description>&lt;p&gt;This blog simply clarifies the concepts of graph embedding, graph neural networks and graph convolutional networks.&lt;/p&gt;
 &lt;h2 id=&#34;graph-embedding&#34;&gt;Graph Embedding&lt;/h2&gt;
 &lt;p&gt;Graph Embedding (GE) is in representation learning of neural network, which often contains two types:&lt;/p&gt;
@@ -90,8 +90,8 @@ For example, to freeze some layers in BERT model, you could do something like &l
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; data-caption=&#34;Fig 3. Relation between GE, GNN and GCN in this blog&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/relation_GE_GNN_GCN.jpg&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -146,8 +146,8 @@ where deg($\cdot$) denotes the degree matrix and $\Omega_i$ denotes all the neig
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/graph_example.png&#34; data-caption=&#34;Fig 2. Graph example in this blog&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/graph_example.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -296,8 +296,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_club.png&#34; data-caption=&#34;Fig 3. Graph structure of Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/karate_club.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -328,8 +328,8 @@ matrix([[  2.,  0.],
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
-&lt;img data-src=&#34;https://Alibabade.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://lwang.github.io/img/karate_emb.png&#34; data-caption=&#34;Fig 4. Predicted nodes for Karate Club in this blog&#34;&gt;
+&lt;img data-src=&#34;https://lwang.github.io/img/karate_emb.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
@@ -366,7 +366,7 @@ where $\frac{1}{c_{i,j}}$ originates from $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^
 
 
 &lt;video controls &gt;
-  &lt;source src=&#34;https://Alibabade.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  &lt;source src=&#34;https://lwang.github.io/img/video_karate_gcn.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;
 The video above shows Semi-supervised classification with GCNs in &lt;a href=&#34;https://tkipf.github.io/graph-convolutional-networks/&#34;&gt;this blog&lt;/a&gt;. And the model directly produces a 2-dimensional laten space which we can visualize.&lt;/p&gt;
 &lt;p&gt;Note that we just use random feature vectors (e.g., identity matrix we used here) and random weight matrices, only after a couple of iteration, the model used in &lt;a href=&#34;https://arxiv.org/pdf/1609.02907.pdf&#34;&gt;Kipf &amp;amp; Welling&lt;/a&gt; is already able to achieve remarkable results. If we choose more serious initial node feature vectors, then the model can achieve state-of-the-art classification results on a various number of graph datasets.&lt;/p&gt;

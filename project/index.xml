@@ -25,9 +25,215 @@ ACM Transactions on Graphics. Volume 30 (2011), Number 4.
 Proceedings of SIGGRAPH 2011, Article 69.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Photographic style transfer aims to transfer only the colour information from a given reference image to a source image without detail distortions. However, neural style transfer methods (i.e., &lt;a href=&#34;https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf&#34;&gt;Neural-Style&lt;/a&gt; and &lt;a href=&#34;https://cs.stanford.edu/people/jcjohns/eccv16/&#34;&gt;Fast-Neural-Style&lt;/a&gt;) usually tend to distort the details of source image to complete artistic transformation (including colours and textures) for reference images. Thus preserving details or structures in source images withour affecting colour transformation is the key to photographic style transfer.&lt;/p&gt;
+&lt;p&gt;Photographic style transfer aims to transfer only the colour information from a given reference image to a source image without detail distortions. However, neural style transfer methods (i.e., &lt;a href=&#34;https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf&#34;&gt;Neural-Style&lt;/a&gt; and &lt;a href=&#34;https://cs.stanford.edu/people/jcjohns/eccv16/&#34;&gt;Fast-Neural-Style&lt;/a&gt;) usually tend to distort the details of source image to complete artistic transformation (including colours and textures) for reference images. Thus preserving details or structures in source images without affecting colour transformation is the key to photographic style transfer.&lt;/p&gt;
 &lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
-&lt;p&gt;To be continued&amp;hellip;&lt;/p&gt;
+&lt;p&gt;The idea behind this method is purely strightforward, which preserves the artistic style transformation but matches the colour distribution of reference images better to the source image. Fast-Neural-Style (or Neural-Style) tends to keep the structure details of source images on a single high-level conv layer, which distorts these details and transforms the textures (including colours) of reference images to unexpected regions in source images. In experiments, an interesting thing is found that simply &lt;strong&gt;restricting the structure details of source images in multiple conv layers (both low-level and high level) is able to suppress texture (of reference image) expression and match better colour distribution on generated images&lt;/strong&gt;. However, this still causes the detail loss of source images. To address this problem, &lt;strong&gt;a post-processing step is introduced to extract the detail information from original source image and transfer it to transformed images&lt;/strong&gt;. In image processing, an image is composed by its colour and detail information, in math, $I=C+D$ where $C$ and $D$ denotes the colour and detail information, respectively. Thus $D = I - C$ where $C$ is obtained from image smoothing technique like DTRF in this case.&lt;/p&gt;
+&lt;p&gt;In total, the proposed method consists of two steps:1. Fast-Neural-Style with multiple conv layers restriction on detail preservation and a similarity loss; 2, Post-processing Refinement with detail extraction and exchange to transformed image from step 1. The training stage and testing stage are illustrated in below figures:&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;training.png&#34; data-caption=&#34;Fig 1. Training Stage.&#34;&gt;
+&lt;img data-src=&#34;training.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Training Stage.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;testing.png&#34; data-caption=&#34;Fig 2. Testing Stage.&#34;&gt;
+&lt;img data-src=&#34;testing.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. Testing Stage.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;more-results&#34;&gt;More results&lt;/h2&gt;
+&lt;p&gt;Here are more stylized examples by this method:
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example1.png&#34; &gt;
+&lt;img data-src=&#34;example1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example2.png&#34; &gt;
+&lt;img data-src=&#34;example2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example3.png&#34; &gt;
+&lt;img data-src=&#34;example3.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example4.png&#34; &gt;
+&lt;img data-src=&#34;example4.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example5.png&#34; &gt;
+&lt;img data-src=&#34;example5.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;example6.png&#34; &gt;
+&lt;img data-src=&#34;example6.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;limitations&#34;&gt;Limitations&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;The source image and reference image should share a similar semantic contents, otherwise the transformation will fail to generate faithful results as we do not apply semantic masks for input images.&lt;/li&gt;
+&lt;li&gt;This method works well for photography images which basically have 1-3 colour tones. To extreme colourful images, this approach usually fails to achieve faithful results.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;one-more-thing&#34;&gt;One more thing&lt;/h2&gt;
+&lt;p&gt;The github code is released in &lt;a href=&#34;https://github.com/Alibabade/Fast-photographic-style-transfer&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

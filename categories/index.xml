@@ -5,12 +5,28 @@
     <link>https://Alibabade.github.io/categories/</link>
       <atom:link href="https://Alibabade.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <description>Categories</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 13 Jan 2020 21:34:39 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 15 Jan 2020 12:48:30 +0000</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Categories</title>
       <link>https://Alibabade.github.io/categories/</link>
     </image>
+    
+    <item>
+      <title>Python</title>
+      <link>https://Alibabade.github.io/categories/python/</link>
+      <pubDate>Wed, 15 Jan 2020 12:48:30 +0000</pubDate>
+      <guid>https://Alibabade.github.io/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software release</title>
+      <link>https://Alibabade.github.io/categories/software-release/</link>
+      <pubDate>Wed, 15 Jan 2020 12:48:30 +0000</pubDate>
+      <guid>https://Alibabade.github.io/categories/software-release/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Computer Vision</title>

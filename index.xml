@@ -726,6 +726,8 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 
 &lt;/figure&gt;
 
+&lt;h2 id=&#34;classic-one-stage-methods&#34;&gt;Classic One-Stage Methods&lt;/h2&gt;
+&lt;p&gt;To be continued&amp;hellip;&lt;/p&gt;
 &lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;https://blog.csdn.net/v_JULY_v/article/details/80170182&lt;/a&gt;&lt;/li&gt;

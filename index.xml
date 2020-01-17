@@ -345,7 +345,7 @@ Proceedings of SIGGRAPH 2011, Article 69.
 &lt;/ol&gt;
 &lt;h4 id=&#34;211-some-common-tricks-used&#34;&gt;2.1.1 Some common tricks used&lt;/h4&gt;
 &lt;p&gt;&lt;strong&gt;1. Non-Maximum Suppression&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Commonly, sometimes the RCNN model outputs multiple bounding-boxes to localize the same object in the given image. To choose the best matching one, we use non-maximum suppression technique to avoid repeated detection of the same instance. For example, we sort all the boxes with confidence score, and remove those with low confidence score. Then we choose the box with highest IOU.&lt;br&gt;
+&lt;p&gt;Commonly, sometimes the RCNN model outputs multiple bounding-boxes to localize the same object in the given image. To choose the best matching one, we use non-maximum suppression technique to avoid repeated detection of the same instance. For example, we have a set $B$ of candidate boxes, and a set $S$ of corresponding scores, then we choose the best box by following steps: 1. sort all the boxes with the scores, and remove the box $M$ with highest score from $B$, and add to set $D$; 2. check any box $b_i$ left in $B$, if the IoU of $b_i$ and $M$, remove $b_i$ from $B$; 3. repeat 1-2 until $B$ is empty. The box in $D$ is what we want.   &lt;br&gt;
 
 
 
@@ -735,6 +735,7 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 &lt;li&gt;&lt;a href=&#34;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&#34;&gt;https://medium.com/egen/region-proposal-network-rpn-backbone-of-faster-r-cnn-4a744a38d7f9&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&#34;&gt;https://towardsdatascience.com/deep-learning-for-object-detection-a-comprehensive-review-&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37998710&#34;&gt;https://zhuanlan.zhihu.com/p/37998710&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.csdn.net/heiheiya/article/details/81169758&#34;&gt;https://blog.csdn.net/heiheiya/article/details/81169758&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
     </item>

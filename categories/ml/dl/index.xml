@@ -321,6 +321,22 @@ where area0=(2.3995-2)x(17.76325-17)=0.304918375, area1=(3-2.3995)x(17.76325-17)
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/61317964&#34;&gt;https://zhuanlan.zhihu.com/p/61317964&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
+&lt;h2 id=&#34;map-mean-average-precision-in-object-detection&#34;&gt;mAP (mean average precision) in Object Detection&lt;/h2&gt;
+&lt;p&gt;mAP is a measurement metric for the accuracy of object detectors, and it actually computes the mean average precision values along with recall from 0 to 1. Before going deep into mAP, a few concepts should be introduced first, i.e., True Positive, True Negative, False Positive, False Negative, Precision and Recall.&lt;/p&gt;
+&lt;p&gt;For example, there is a classification task to distinguish whether an image contains apples, then for an image dataset:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;True Positive (TP)&lt;/strong&gt;: is how many images containing apples (True) and you predict them contain apples (Positive).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;True Negative (TN)&lt;/strong&gt;: is how many images containing apples (True) but you predict them &lt;strong&gt;NOT&lt;/strong&gt; contain apples (Negative).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;False Positive (FP)&lt;/strong&gt;: is how many images not containing apples (False) but you predict them contain apples (Positive).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;False Negative (FN)&lt;/strong&gt;: is how many images not containing apples (False) and you predict them &lt;strong&gt;NOT&lt;/strong&gt; contain apples (Negative).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Precision&lt;/strong&gt;: is the percentage of TP among the total number of images that you predict containing apples, which is denoted in math as:
+$$P = \frac{TP}{TP+FP}$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Recall&lt;/strong&gt;: is the percentage of TP among how many images you predict correctly including TP and FN. Correct prediction consists of two parts: 1. you predict an image contains apples and the fact is that it indeed contains apples (this is actually TP); 2. you predict an image not contain apples and the fact is that it indeed not contain apples (this is actually FN). Thus recall is denoted as:
+$$R = \frac{TP}{TP+FN}$$&lt;/p&gt;
+&lt;h3 id=&#34;ap&#34;&gt;AP&lt;/h3&gt;
+&lt;h3 id=&#34;reference-5&#34;&gt;Reference&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&#34;&gt;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     

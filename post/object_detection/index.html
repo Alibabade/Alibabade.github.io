@@ -238,7 +238,7 @@
     
       <meta property="article:published_time" content="2020-01-09T12:21:28&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-01-19T14:48:40&#43;00:00">
+    <meta property="article:modified_time" content="2020-01-19T22:30:14&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Object_detection",
   
   "datePublished": "2020-01-09T12:21:28Z",
-  "dateModified": "2020-01-19T14:48:40Z",
+  "dateModified": "2020-01-19T22:30:14Z",
   
   "author": {
     "@type": "Person",
@@ -585,7 +585,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    12 min read
+    14 min read
   </span>
   
 
@@ -1100,7 +1100,6 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 <h2 id="3-classic-one-stage-methods">3. Classic One-Stage Methods</h2>
 <h3 id="31-yolo-you-only-look-once">3.1 YOLO (You Only Look Once)</h3>
 <p><strong>Introduction.</strong> YOLO is the first approach removing region proposal and learns an object detector in an end-to-end manner. Due to no region proposal, it frames object detection as a total regression problem which spatially separates bounding boxes and associated class probabilities. The proposed YOLO performs extremely fast (around 45 FPS), but less accuracy than main approaches like Faster RCNN.</p>
-<h4 id="311-pipeline">3.1.1 Pipeline</h4>
 
 
 
@@ -1119,35 +1118,71 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 <figure>
 
 
-  <a data-fancybox="" href="/img/yolo.png" data-caption="Fig 13. YOLO pipeline. Image source: original paper">
+  <a data-fancybox="" href="/img/yolo.png" data-caption="Fig 13. YOLO pipeline. Image source: original paper.">
 <img data-src="/img/yolo.png" class="lazyload" alt="" ></a>
 
 
   
   
   <figcaption>
-    Fig 13. YOLO pipeline. Image source: <a href="https://arxiv.org/pdf/1506.02640.pdf">original paper</a>
+    Fig 13. YOLO pipeline. Image source: <a href="https://arxiv.org/pdf/1506.02640.pdf">original paper.</a>
   </figcaption>
 
 
 </figure>
 
+<h4 id="311-pipeline">3.1.1 Pipeline</h4>
 <ol>
 <li>
 <p>Resize input image from 224x224 to 448x448;</p>
 </li>
 <li>
-<p>Pre-train a single CNN (DarkNet: 24 conv layer + 2 fc) on ImageNet for classification.</p>
+<p>Pre-train a single CNN (<strong>DarkNet similar to GoogLeNet: 24 conv layer + 2 fc</strong>) on ImageNet for classification.</p>
 </li>
 <li>
 <p>Split the input image into $S \times S$ grid, for each cell in the grids:</p>
-<p>3.1. predict coordinates of B boxes, for each box coordiantes: $(x,y,w,h)$ where $x$ and $y$ are the centre location of box, $w$ and $h$ are the width and height of box.</p>
-<p>3.2. predict a confidence score, $Pr(obj) \times IoU(trurh, pred)$ where $Pr(obj)$ denote whether the cell contains an object, $Pr(obj)=1$ if it contains an object, otherwise $Pr(obj)=0$. $IoU(truth, pred)$ is the interaction under union.</p>
+<p>3.1. predict coordinates of B boxes, for each box coordinates: $(x,y,w,h)$ where $x$ and $y$ are the centre location of box, $w$ and $h$ are the width and height of box.</p>
+<p>3.2. predict a confidence score, $C = Pr(obj) \times IoU(trurh, pred)$ where $Pr(obj)$ denote whether the cell contains an object, $Pr(obj)=1$ if it contains an object, otherwise $Pr(obj)=0$. $IoU(truth, pred)$ is the interaction under union.</p>
+<p>3.3. predict a probability for every class, $p(c_i)$ where $i$ $\in$ {$1,2,&hellip;,K$} if a cell contains an object. During this stage, each cell only predicts one set of class probabilities regardless of the number of predicted bounding boxes $B$.</p>
+</li>
+<li>
+<p>Output a $S \times S \times (5B + K)$ shape tensor after the last FC layer in total, then compute the loss.</p>
+</li>
+<li>
+<p>In inference time, the network maybe outputs multiple candidate bounding boxes for one same object, then it uses non-maximum suppression to preserve the best match box.</p>
 </li>
 </ol>
 <h4 id="312-loss-functions">3.1.2 Loss functions</h4>
-<h4 id="313-difference">3.1.3 Difference</h4>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-$</p>
+<p><strong>Symbol  Explanation</strong></p>
+<p>$\mathbb{1}_{ij}^{obj}$:    an indicator function. It's 1 when there is an object contained in the $j$-th predicted box of the $i$-th cell and <strong>$j$-th predicted box has the largest overlap region with the groundtruth box</strong>, otherwise it's 0.</p>
+<p>{$x_{ij}^p, y_{ij}^p, w_{ij}^p, h_{ij}^p$}:  the centre coordinates and (width, height) of the predicted $j$-th bounding box in $i$-th cell.</p>
+<p>{$x_{ij}^t, y_{ij}^t, w_{ij}^t, h_{ij}^t$}:  the centre coordinates and (width, height) of the groundtruth $j$-th bounding box in $i$-th cell.</p>
+<p>$C_{ij}^p$: the predicted confidence score for the $j$-th bounding box in $i$-th cell.</p>
+<p>$C_{ij}^t$: the groundtruth confidence score for the $j$-th bounding box in $i$-th cell.</p>
+<p>$p_i^{p}(c)$:  the predicted class probability for $i$-th class category.</p>
+<p>$p_i^{t}(c)$:  the groundtruth class probability for $i$-th class category.</p>
+<p>$\lambda_{coord}$: a weight parameter for coordinate loss. The default value is 5.</p>
+<p>$\lambda_{noobj}$:  a weight parameter for confidence score loss. The default value is 5.</p>
+<p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-$</p>
+<p>The loss functions basically consists of three parts: coordinates $(x,y,w,h)$, confidence score $C$ and class probabilities $p(c_i)$, $i \in$ {$1,&hellip;,K$}. The total loss is denoted as:
+$$\begin{eqnarray}
+L_{total} &amp;=&amp; L_{loc} + L_{cls} \\\<br>
+&amp;=&amp; \lambda_{coor} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{obj} ((x_{ij}^p - x_{ij}^t)^2 + (y_{ij}^p - y_{ij}^t)^2 + (\sqrt{w_{ij}^p} - \sqrt{w_{ij}^t})^2 + (\sqrt{h_{ij}^p} - \sqrt{h_{ij}^t})^2) \\\<br>
+&amp;+&amp; \sum_{i=0}^{S^2} \sum_{ij}^{B}  (\mathbb{1}_{ij}^{obj} + \lambda_{noobj} (1 - \mathbb{1}_{ij}^{obj})) (C_{ij}^p - C_{ij}^t)^2 \\\<br>
+&amp;+&amp; \sum_{i=0}^{S^2} \mathbb{1}_{ij}^{obj} \sum_{c\in classes} (p_i^p(c) - p_i^t(c))^2
+\end{eqnarray}$$</p>
+<h4 id="313-differences--or-contributions">3.1.3 Differences ( or contributions)</h4>
+<ol>
+<li>remove region proposal and complete the object detection task in an end-to-end manner.</li>
+<li>the first approach achieves real-time speed.</li>
+</ol>
 <h4 id="314-limitations">3.1.4 Limitations</h4>
+<ol>
+<li>Less accurate prediction for irregular shapes of object due to a limited box candidates.</li>
+<li>Less accurate prediction for small objects.</li>
+</ol>
+<h3 id="ssd-single-shot-multibox-detector">SSD (single shot multibox detector)</h3>
 <h2 id="reference">Reference</h2>
 <ol>
 <li><a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">https://blog.csdn.net/v_JULY_v/article/details/80170182</a></li>

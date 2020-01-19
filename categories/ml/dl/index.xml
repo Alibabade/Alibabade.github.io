@@ -333,10 +333,42 @@ $$P = \frac{TP}{TP+FP}$$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Recall&lt;/strong&gt;: is the percentage of TP among how many images you predict correctly including TP and FN. Correct prediction consists of two parts: 1. you predict an image contains apples and the fact is that it indeed contains apples (this is actually TP); 2. you predict an image not contain apples and the fact is that it indeed not contain apples (this is actually FN). Thus recall is denoted as:
 $$R = \frac{TP}{TP+FN}$$&lt;/p&gt;
 &lt;h3 id=&#34;ap&#34;&gt;AP&lt;/h3&gt;
+&lt;p&gt;AP is the &lt;strong&gt;exact area under the precision-recall curve&lt;/strong&gt;. In object detection, the prediction is correct if IoU $\geqslant$ 0.5, which means the True Positive is when your prediction satisfies IoU $\geqslant$ 0.5. Then False Positive is IoU &amp;lt; 0.5. For example, if we have a precision-recall curve (red line) like below figure, we first smooth out the zigzag pattern, then at each recall level, we replace each precision value with the maximum precision value to the right of that recall level.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mAP.png&#34; data-caption=&#34;Fig 7. Visualization of mAP.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mAP.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 7. Visualization of mAP.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;We first smooth out the precision zigzag pattern (recall between 0.3 and 0.6,0.6 and 0.8) by replacing maximum precision value to the right of that recall level (blue line). This happens when the FP number increases first then TP number increases. ($Precision = \frac{TP}{TP+FP}$, FP $\uparrow$, Precision $\downarrow$. TP $\uparrow$, Precision $\uparrow$. ). Then $AP = \frac{1}{10}(1 \times 3 + 0.7 \times 3 + 0.6 \times 4)=0.75$ (green area).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;mAP is the average of AP&lt;/strong&gt;. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in &lt;strong&gt;COCO context&lt;/strong&gt;, AP is averaged over all categories, which means &lt;strong&gt;there is no difference between mAP and AP&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;reference-5&#34;&gt;Reference&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&#34;&gt;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&#34;&gt;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

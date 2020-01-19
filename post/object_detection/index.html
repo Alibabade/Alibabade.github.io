@@ -238,7 +238,7 @@
     
       <meta property="article:published_time" content="2020-01-09T12:21:28&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-01-17T21:34:48&#43;00:00">
+    <meta property="article:modified_time" content="2020-01-19T14:48:40&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Object_detection",
   
   "datePublished": "2020-01-09T12:21:28Z",
-  "dateModified": "2020-01-17T21:34:48Z",
+  "dateModified": "2020-01-19T14:48:40Z",
   
   "author": {
     "@type": "Person",
@@ -576,7 +576,7 @@
           Last updated on
       
     
-    Jan 17, 2020
+    Jan 19, 2020
   </span>
   
 
@@ -1027,7 +1027,7 @@ where the classification $L_{cls}$ is log loss over two classes (object vs not o
 
 </figure>
 
-<p><a href="https://arxiv.org/pdf/1703.06870.pdf">Mask RCNN</a> has three branches: RPN for region proposal + a pretrained CNN + Headers for classification and bounding-box regression + Mask Network for pixel-level instance segmentation. Mask RCNN is developed on Faster RCNN and adds RoIAlign Pooling and instance segmentation to output object masks in a pixel-to-pixel manner. The RoIAlign is proposed to improve RoI for pixel-level segmentation as it requires much more fine-grained alignment than Bounding-boxes. The accurate computation of RoIAlign is described in RoIAlign Pooling for Object Detection in Basic_understanding_dl post.</p>
+<p><a href="https://arxiv.org/pdf/1703.06870.pdf">Mask RCNN</a> has three branches: RPN for region proposal + (a pretrained CNN + Headers for classification and bounding-box regression) + Mask Network for pixel-level instance segmentation. Mask RCNN is developed on Faster RCNN and adds RoIAlign Pooling and instance segmentation to output object masks in a pixel-to-pixel manner. The RoIAlign is proposed to improve RoI for pixel-level segmentation as it requires much more fine-grained alignment than Bounding-boxes. The accurate computation of RoIAlign is described in RoIAlign Pooling for Object Detection in Basic_understanding_dl post.</p>
 
 
 
@@ -1097,8 +1097,57 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 
 </figure>
 
-<h2 id="classic-one-stage-methods">Classic One-Stage Methods</h2>
-<p>To be continued&hellip;</p>
+<h2 id="3-classic-one-stage-methods">3. Classic One-Stage Methods</h2>
+<h3 id="31-yolo-you-only-look-once">3.1 YOLO (You Only Look Once)</h3>
+<p><strong>Introduction.</strong> YOLO is the first approach removing region proposal and learns an object detector in an end-to-end manner. Due to no region proposal, it frames object detection as a total regression problem which spatially separates bounding boxes and associated class probabilities. The proposed YOLO performs extremely fast (around 45 FPS), but less accuracy than main approaches like Faster RCNN.</p>
+<h4 id="311-pipeline">3.1.1 Pipeline</h4>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/yolo.png" data-caption="Fig 13. YOLO pipeline. Image source: original paper">
+<img data-src="/img/yolo.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 13. YOLO pipeline. Image source: <a href="https://arxiv.org/pdf/1506.02640.pdf">original paper</a>
+  </figcaption>
+
+
+</figure>
+
+<ol>
+<li>
+<p>Resize input image from 224x224 to 448x448;</p>
+</li>
+<li>
+<p>Pre-train a single CNN (DarkNet: 24 conv layer + 2 fc) on ImageNet for classification.</p>
+</li>
+<li>
+<p>Split the input image into $S \times S$ grid, for each cell in the grids:</p>
+<p>3.1. predict coordinates of B boxes, for each box coordiantes: $(x,y,w,h)$ where $x$ and $y$ are the centre location of box, $w$ and $h$ are the width and height of box.</p>
+<p>3.2. predict a confidence score, $Pr(obj) \times IoU(trurh, pred)$ where $Pr(obj)$ denote whether the cell contains an object, $Pr(obj)=1$ if it contains an object, otherwise $Pr(obj)=0$. $IoU(truth, pred)$ is the interaction under union.</p>
+</li>
+</ol>
+<h4 id="312-loss-functions">3.1.2 Loss functions</h4>
+<h4 id="313-difference">3.1.3 Difference</h4>
+<h4 id="314-limitations">3.1.4 Limitations</h4>
 <h2 id="reference">Reference</h2>
 <ol>
 <li><a href="https://blog.csdn.net/v_JULY_v/article/details/80170182">https://blog.csdn.net/v_JULY_v/article/details/80170182</a></li>

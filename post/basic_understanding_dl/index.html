@@ -238,7 +238,7 @@
     
       <meta property="article:published_time" content="2019-12-24T15:52:34&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-01-18T22:10:08&#43;00:00">
+    <meta property="article:modified_time" content="2020-01-19T14:48:40&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Discrete_specific_techniques_dl",
   
   "datePublished": "2019-12-24T15:52:34Z",
-  "dateModified": "2020-01-18T22:10:08Z",
+  "dateModified": "2020-01-19T14:48:40Z",
   
   "author": {
     "@type": "Person",
@@ -576,7 +576,7 @@
           Last updated on
       
     
-    Jan 18, 2020
+    Jan 19, 2020
   </span>
   
 
@@ -585,7 +585,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    10 min read
+    11 min read
   </span>
   
 
@@ -941,10 +941,42 @@ $$P = \frac{TP}{TP+FP}$$</p>
 <p><strong>Recall</strong>: is the percentage of TP among how many images you predict correctly including TP and FN. Correct prediction consists of two parts: 1. you predict an image contains apples and the fact is that it indeed contains apples (this is actually TP); 2. you predict an image not contain apples and the fact is that it indeed not contain apples (this is actually FN). Thus recall is denoted as:
 $$R = \frac{TP}{TP+FN}$$</p>
 <h3 id="ap">AP</h3>
+<p>AP is the <strong>exact area under the precision-recall curve</strong>. In object detection, the prediction is correct if IoU $\geqslant$ 0.5, which means the True Positive is when your prediction satisfies IoU $\geqslant$ 0.5. Then False Positive is IoU &lt; 0.5. For example, if we have a precision-recall curve (red line) like below figure, we first smooth out the zigzag pattern, then at each recall level, we replace each precision value with the maximum precision value to the right of that recall level.</p>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/mAP.png" data-caption="Fig 7. Visualization of mAP.">
+<img data-src="/img/mAP.png" class="lazyload" alt="" ></a>
+
+
+  
+  
+  <figcaption>
+    Fig 7. Visualization of mAP.
+  </figcaption>
+
+
+</figure>
+
+<p>We first smooth out the precision zigzag pattern (recall between 0.3 and 0.6,0.6 and 0.8) by replacing maximum precision value to the right of that recall level (blue line). This happens when the FP number increases first then TP number increases. ($Precision = \frac{TP}{TP+FP}$, FP $\uparrow$, Precision $\downarrow$. TP $\uparrow$, Precision $\uparrow$. ). Then $AP = \frac{1}{10}(1 \times 3 + 0.7 \times 3 + 0.6 \times 4)=0.75$ (green area).</p>
+<p><strong>mAP is the average of AP</strong>. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in <strong>COCO context</strong>, AP is averaged over all categories, which means <strong>there is no difference between mAP and AP</strong>.</p>
 <h3 id="reference-5">Reference</h3>
-<ol>
-<li><a href="https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173">https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173</a></li>
-</ol>
+<p><a href="https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173">https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173</a></p>
 
     </div>
 

@@ -787,6 +787,13 @@ where $Pr(animal \ | \ physical \ object)$ is the confidence score, predicted se
 &lt;li&gt;Dimension clustering and direct location prediction gives the most contribution of increasing mAP.&lt;/li&gt;
 &lt;li&gt;Word Tree is a creative thing in YOLO9000.&lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4 id=&#34;334-limitations--or-unsolved-problems&#34;&gt;3.3.4 Limitations ( or unsolved problems)&lt;/h4&gt;
+&lt;p&gt;During training, the significant imbalance number between positive anchor boxes containing objects and negative boxes containing background still hinders further improvement of detection accuracy.&lt;/p&gt;
+&lt;h3 id=&#34;4-retinanet&#34;&gt;4. RetinaNet&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1708.02002.pdf&#34;&gt;RetinaNet&lt;/a&gt; is an one-stage object detector, which proposes two critical contributions: 1. focal loss for addressing class imbalance between foreground containing objects of interest and background containing no object; 2. FPN + ResNet as backbone network for detecting objects at different scales.&lt;/p&gt;
+&lt;h4 id=&#34;41-focal-loss&#34;&gt;4.1 Focal Loss&lt;/h4&gt;
+&lt;p&gt;The extreme imbalance between training examples is one critical issue for object detection. To address the problem,  a focal loss is designed to increase weights for hard yet easily misclassified examples (e.g., background )&lt;/p&gt;
+&lt;p&gt;TO BE CONTINUED&amp;hellip;&lt;/p&gt;
 &lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&#34;https://blog.csdn.net/v_JULY_v/article/details/80170182&#34;&gt;https://blog.csdn.net/v_JULY_v/article/details/80170182&lt;/a&gt;&lt;/li&gt;

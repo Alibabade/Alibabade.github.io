@@ -13,6 +13,190 @@
     </image>
     
     <item>
+      <title>Specific_math</title>
+      <link>https://Alibabade.github.io/post/specific_math/</link>
+      <pubDate>Tue, 28 Jan 2020 20:50:01 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/specific_math/</guid>
+      <description>&lt;p&gt;This post is an archive for some specific and easy forgotten mathematic knowledge like linear algebra and optimization behind ML/DL.&lt;/p&gt;
+&lt;h2 id=&#34;1-linear-algebra&#34;&gt;1. Linear Algebra&lt;/h2&gt;
+&lt;h3 id=&#34;11-rank-of-a-matrix&#34;&gt;1.1 Rank of a matrix&lt;/h3&gt;
+&lt;p&gt;Given $n$ number of math functions with $m$ variables and it is written as following:&lt;/p&gt;
+&lt;p&gt;\begin{eqnarray}
+&amp;amp;a_{11} x_1 + a_{12} x_2 + &amp;amp;a_{13} x_3 + &amp;amp;\cdot \cdot \cdot + a_{1m} x_{m} &amp;amp;= b_1 \\\&lt;br&gt;
+&amp;amp;a_{21} x_1 + a_{22} x_2 + &amp;amp;a_{23} x_3 + &amp;amp;\cdot \cdot \cdot + a_{2m} x_{m} &amp;amp;= b_2 \\\&lt;br&gt;
+&amp;amp;a_{31} x_1 + a_{32} x_2 + &amp;amp;a_{33} x_3 + &amp;amp;\cdot \cdot \cdot + a_{3m} x_{m} &amp;amp;= b_3 \\\&lt;br&gt;
+&amp;amp;\cdot \cdot \cdot         &amp;amp;\cdot \cdot \cdot    &amp;amp;\cdot \cdot \cdot        &amp;amp;\cdot \cdot \cdot    \\\&lt;br&gt;
+&amp;amp;a_{n1} x_1 + a_{n2} x_2 + &amp;amp;a_{n3} x_3 + &amp;amp;\cdot \cdot \cdot + a_{nm} x_{m} &amp;amp;= b_n \\\&lt;br&gt;
+\end{eqnarray}&lt;/p&gt;
+&lt;p&gt;If we extract all the coefficient from the math functions above, and name each row of coefficient as $\alpha_i$ where $i=(1,2,&amp;hellip;,n)$, then we have a column of vectors ($\alpha_1, \alpha_2, &amp;hellip;, \alpha_n$) and each of them is as following:&lt;/p&gt;
+&lt;p&gt;\begin{eqnarray}
+&amp;amp;(a_{11}, a_{12}, \cdot \cdot \cdot, a_{1m}) &amp;amp;= \alpha_1 \\\&lt;br&gt;
+&amp;amp;(a_{21}, a_{22}, \cdot \cdot \cdot, a_{2m}) &amp;amp;= \alpha_2 \\\&lt;br&gt;
+&amp;amp;\cdot\cdot\cdot                                         \\\&lt;br&gt;
+&amp;amp;(a_{n1}, a_{n2}, \cdot \cdot \cdot, a_{nm}) &amp;amp;= \alpha_n \\\&lt;br&gt;
+\end{eqnarray}&lt;/p&gt;
+&lt;p&gt;Now we explain a noun called &lt;strong&gt;linear independent set&lt;/strong&gt; consisting of $\alpha_i$. If each coefficient $k_i \in \mathbb{R}$ where $i=(1,2,&amp;hellip;,s)$ have to be 0 like $k_1 = k_2 = \cdot \cdot \cdot = k_s = 0$ in order to make the following equation equal 0:
+$$k_1 \alpha_1 + k_2 \alpha_2 + \cdot \cdot \cdot + k_s \alpha_s = 0$$
+then we say $(\alpha_1,\alpha_2,&amp;hellip;,\alpha_s)$ is a linear independent set.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;For a matrix, the Rank is the maximum number of $\alpha$ to be a linear independent set. In other words, Rank is the number of $\alpha$ in the maximal linear independent set.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, only if $k_1$ and $k_2$ have to be 0 to make sure $k_1 \alpha_1 + k_2 \alpha_2=0$, then we say $(\alpha_1, \alpha_2)$ is a linear independent set, and the number of this linear independent set is 2. Next, only if $k_1=k_2=k_3=0$ makes sure $k_1 \alpha_1 + k_2 \alpha_2 + k_3 \alpha_3=0$, then we say $(\alpha_1, \alpha_2, \alpha_3)$ is a linear independent set, and the number is 3. Continue, we &lt;strong&gt;firstly&lt;/strong&gt; find that &lt;strong&gt;NOT&lt;/strong&gt; all of $k_1$,$k_2$,&amp;hellip;,$k_s$ and $k_{s+1}$ have to be 0 and it still makes $k_1 \alpha_1 + k_2 \alpha_2 + k_3 \alpha_3 + \cdot \cdot \cdot + k_s \alpha_s=0$ happen, then we say $(\alpha_1, \alpha_2, \alpha_3,&amp;hellip;,\alpha_{s+1})$ is not a linear independent set. And we call $(\alpha_1, \alpha_2, \alpha_3,&amp;hellip;,\alpha_{s})$ as the maximal linear independent set, and the number is $s$. If each $\alpha_i$ contains one row of coefficient in a series of equations, then the Rank of the matrix composed by all the coefficient is $s$.&lt;/p&gt;
+&lt;h3 id=&#34;12-inverse-of-a-matrix&#34;&gt;1.2 Inverse of a matrix&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;If a matrix $A$ has $n$ rows and $n$ columns&lt;/strong&gt;, which is named $A_{n \times n}$, and rank of $A_{n \times n}$ is equal to $n$, then the matrix has an inverse matrix. The definition of inverse of a matrix is, there is a matrix $B_{n \times n}$, which makes sure the following equation:
+$$AB=BA=I_n$$
+where $I_n$ is the identity matrix (or unit matrix), of size $n \times n$ , with ones on the main diagonal and zeros elsewhere.&lt;/p&gt;
+&lt;h3 id=&#34;13-positive-definite-and-positive-semi-definite-matrix&#34;&gt;1.3 Positive Definite and Positive Semi-Definite Matrix&lt;/h3&gt;
+&lt;p&gt;Definition of Positive Definite Matrix: Given a $n \times n$ matrix $A$, and $A$ is a real symmetric matrix (e.g., $A \in \mathbb{R}^{n \times n}$). If $\forall x \in \mathbb{R}^n$ made:
+$$x^T A x &amp;gt; 0$$,
+then matrix $A$ is a &lt;strong&gt;positive definite matrix&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Definition of Positive Semi-Definite Matrix: Given a $n \times n$ matrix $A$, and $A$ is a real symmetric matrix (e.g., $A \in \mathbb{R}^{n \times n}$). If $\forall x \in \mathbb{R}^n$ made:
+$$x^T A x \geq 0$$,
+then matrix $A$ is a &lt;strong&gt;positive semi-definite matrix&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;2-convex-optimization&#34;&gt;2. Convex Optimization&lt;/h2&gt;
+&lt;p&gt;An optimization is a convex optimization problem only if the objective function is a convex function and the range of variables is a convex set/domain.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The advantage of a convex optimization is that perhaps there are many local mimic points (where the gradient is equal to 0) but all of them are the best minimal point, which makes it easier to find a solution to an optimization problem.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;21-convex-setdomain&#34;&gt;2.1 Convex Set/Domain&lt;/h3&gt;
+&lt;p&gt;Then &lt;strong&gt;what is a convex set/domain?&lt;/strong&gt; Definition: if there is a set of vectors called $C$ and the length of each vector is $n$, and for $\forall x,y \in C$, and one real number $\theta$ falls in the range of [0,1] (e.g., $0 \leq \theta \leq 1 $), the linear combination of $x$ and $y$:
+$$\theta x + (1-\theta) y \in C$$
+then we call $C$ is a &lt;strong&gt;convex set/domain&lt;/strong&gt;(see figure below).&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/convex_set.png&#34; data-caption=&#34;Fig 1. A simple illustration of a convex set/domain.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/convex_set.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. A simple illustration of a convex set/domain.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;A few sets we&#39;ve already known are convex sets. For example, &lt;strong&gt;a real number set $\mathbb{R}$&lt;/strong&gt;. It&#39;s obvious that $\forall x,y \in \mathbb{R}$, and $\forall \theta \in \mathbb{R}$ and $0 \leq \theta \leq 1$:
+$$\theta x + (1-\theta) y \in \mathbb{R}$$
+&lt;strong&gt;An affine subspace $\mathbb{R}^n$&lt;/strong&gt;. Given a $n \times m$ matrix $A$ and a vector $b$ of length $m$, then an affine subspace is such a set consisting of the following elements:&lt;br&gt;
+$$\{x \in \mathbb{R}^n: Ax=b\}$$
+Now we give the proof that an affine subspace is a convex set/domain. For $\forall x,y \in \mathbb{R}^n$, and
+$$Ax=b, \ Ay=b$$
+then $\forall \theta$ and $0 \leq \theta \leq 1$:
+$$A(\theta x + (1-\theta)y) = A\theta x + A (1-\theta)y = \theta Ax + (1-\theta) Ay = \theta b + (1-\theta)b = b$$
+thus, an affine subspace $\mathbb{R}^n$ is a convex set/domain.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;A polyhedron space $\mathbb{R}^n$&lt;/strong&gt;. Similar to an affine space, given a $n \times m$ matrix $A$ and a vector $b$ of length $m$, then a polyhedron space is such a set consisting of the following elements:
+$$\{x \in \mathbb{R}^n: Ax \leq b\}$$
+Now we give the proof that a polyhedron space is a convex set/domain. For $\forall x,y \in \mathbb{R}^n$, and
+$$Ax \leq b, \ Ay \leq b$$
+then $\forall \theta$ and $0 \leq \theta \leq 1$:
+$$A(\theta x + (1-\theta)y) = A\theta x + A (1-\theta)y = \theta Ax + (1-\theta) Ay \leq \theta b + (1-\theta)b = b$$
+thus, a polyhedron space $\mathbb{R}^n$ is a convex set/domain.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The interaction of convex sets/domains is still a convex set.&lt;/strong&gt; For an optimization problem, if all the variable sets/domains of constrains for the objective function are convex sets/domains, then the variable set satisfying all the constrains is still a convex set/domain.&lt;/p&gt;
+&lt;h3 id=&#34;22-convex-function&#34;&gt;2.2 Convex Function&lt;/h3&gt;
+&lt;p&gt;Then &lt;strong&gt;what is a convex function?&lt;/strong&gt; Definition: in the domain of function, $\forall x,y$ and $0 \leq \theta \leq 1$, they always satisfy the following equation:
+$$f(\theta x + (1-\theta)y) \leq \theta f(x) + (1-\theta) f(y)$$
+then function $f(x)$ is a convex function (see figure below).&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/convex_function.png&#34; data-caption=&#34;Fig 2. A simple illustration of a convex function.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/convex_function.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. A simple illustration of a convex function.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;How to determine whether a function is a convex function?&lt;/strong&gt; For a function $f(x)$ with only one variable, if its second-derivative is equal or greater than 0, then this function is a convex function. For a function $f(x_1,x_2,&amp;hellip;,x_n)$ with multiple variables, if the Hessian Matrix is a positive semi-definite matrix, then the function is a convex function.&lt;/p&gt;
+&lt;p&gt;For a function $f(x_1,x_2,&amp;hellip;,x_n)$ contains multiple variables, its Hessian matrix is the partial derivative matrix:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/Hessian_matrix.png&#34; &gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/Hessian_matrix.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Since $\frac{\partial^2 f}{\partial x_i \partial x_j} = \frac{\partial^2 f}{\partial x_j \partial x_i}$ where $i,j \in $ {$1,2,&amp;hellip;,n$}, then the Hessian matrix is symmetric matrix.&lt;/p&gt;
+&lt;p&gt;Next, if there is a point $M$=( $x_1^{&#39;}$, $x_2^{&#39;}$,&amp;hellip;,$x_n^{&#39;}$)  satisfies $\lim_{x_i \to x_i^{&#39;}} \frac{\partial f}{\partial x_i}=0$ where $i \in $ {$1,2,&amp;hellip;,n$}, and if :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the Hessian Matrix is &lt;strong&gt;positive semi-definite or positive definite&lt;/strong&gt;, then the value of $f(x_1^{&#39;},x_2^{&#39;},&amp;hellip;,x_n^{&#39;})$ is the &lt;strong&gt;global minimal value&lt;/strong&gt;, and $M$ is the &lt;strong&gt;global mimic point&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;the Hessian Matrix is &lt;strong&gt;negative semi-definite or negative definite&lt;/strong&gt;, then the value of $f(x_1^{&#39;},x_2^{&#39;},&amp;hellip;,x_n^{&#39;})$ is the &lt;strong&gt;global maximal value&lt;/strong&gt;, and $M$ is the &lt;strong&gt;global maximal point&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;the Hessian Matrix is &lt;strong&gt;non-definite&lt;/strong&gt;, then $M$ is a &lt;strong&gt;Saddle point&lt;/strong&gt; of function $f(x_1,x_2,&amp;hellip;,x_n)$.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;23-sub-level-set-of-a-convex-function&#34;&gt;2.3 Sub-level Set of a Convex Function&lt;/h3&gt;
+&lt;p&gt;Given a convex function $f(x)$, and a real number $\alpha \in \mathbb{R}$, a sub-level set $S$ is defined as the set of variable $x$ that satisfies the values of $f(x)$ is equal or lower than $\alpha$:&lt;/p&gt;
+&lt;p&gt;$$\{ x \in S: f(x) \leq \alpha \}$$
+According to the definition of a polyhedron set above, &lt;strong&gt;the sub-level set $S$ is a polyhedron set, which is also a convex set&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;24-convex-optimization&#34;&gt;2.4 Convex Optimization&lt;/h3&gt;
+&lt;p&gt;In general, a convex optimization is written as:
+$$\min_{x \in C} f(x)$$
+where $f(x)$ is the objective convex function, $x$ is the variable and $C$ is a convex set/domain. To prove this optimization to be a convex optimization, we need to prove the objective function is a convex function and its variable set is a convex set. Another general format of a convex optimization is denoted as:&lt;/p&gt;
+&lt;p&gt;$$\min f(x)$$
+and the constrains are:
+$$g_i(x) \leq 0, \ i=(1,2,&amp;hellip;,m) \ and \ h_i(x)=0, \ i=(1,2,&amp;hellip;,n)$$
+according to the definitions above, if $g_i(x)$ is a convex function, then the variable set of $g_i(x)$ is a polyhedron set which is a convex set. $h_i(x)$ is an affine subspace, which is also a convex set. Then the interaction of these two convex sets is still a convex set.&lt;/p&gt;
+&lt;p&gt;The most important property of a convex optimization is that &lt;strong&gt;if we find a point that makes the gradient at this point to be 0, then this point is the global optimal solution. There are perhaps many points in variable set, but if we can find one of them, then we can stop&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;25-the-convex-optimization-used-in-machine-learning&#34;&gt;2.5 The convex optimization used in Machine Learning&lt;/h3&gt;
+&lt;h4 id=&#34;251-linear-regression&#34;&gt;2.5.1 Linear regression&lt;/h4&gt;
+&lt;p&gt;TO BE CONTINUED&amp;hellip;&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference:&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37108430&#34;&gt;https://zhuanlan.zhihu.com/p/37108430&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Object_detection</title>
       <link>https://Alibabade.github.io/post/object_detection/</link>
       <pubDate>Thu, 09 Jan 2020 12:21:28 +0000</pubDate>
@@ -2310,7 +2494,8 @@ $$P = \frac{TP}{TP+FP}$$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Recall&lt;/strong&gt;: is the percentage of TP among how many images you predict correctly including TP and FN. Correct prediction consists of two parts: 1. you predict an image contains apples and the fact is that it indeed contains apples (this is actually TP); 2. you predict an image not contain apples and the fact is that it indeed not contain apples (this is actually FN). Thus recall is denoted as:
 $$R = \frac{TP}{TP+FN}$$&lt;/p&gt;
 &lt;h3 id=&#34;ap&#34;&gt;AP&lt;/h3&gt;
-&lt;p&gt;AP is the &lt;strong&gt;exact area under the precision-recall curve&lt;/strong&gt;. In object detection, the prediction is correct if IoU $\geqslant$ 0.5, which means the True Positive is when your prediction satisfies IoU $\geqslant$ 0.5. Then False Positive is IoU &amp;lt; 0.5. For example, if we have a precision-recall curve (red line) like below figure, we first smooth out the zigzag pattern, then at each recall level, we replace each precision value with the maximum precision value to the right of that recall level.&lt;/p&gt;
+&lt;p&gt;AP is the &lt;strong&gt;exact area under the precision-recall curve&lt;/strong&gt;. In object detection, the prediction is correct if IoU $\geqslant$ 0.5, which means the True Positive is when your prediction satisfies IoU $\geqslant$ 0.5. Then False Positive is IoU &amp;lt; 0.5. For example, if we have a precision-recall curve (red line) like below figure, we first smooth out the zigzag pattern, then at each recall level, we replace each precision value with the maximum precision value to the right of that recall level.
+s
 
 
 
@@ -2341,7 +2526,7 @@ $$R = \frac{TP}{TP+FN}$$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
+&lt;/p&gt;
 &lt;p&gt;We first smooth out the precision zigzag pattern (recall between 0.3 and 0.6,0.6 and 0.8) by replacing maximum precision value to the right of that recall level (blue line). This happens when the FP number increases first then TP number increases. ($Precision = \frac{TP}{TP+FP}$, FP $\uparrow$, Precision $\downarrow$. TP $\uparrow$, Precision $\uparrow$. ). Then $AP = \frac{1}{10}(1 \times 3 + 0.7 \times 3 + 0.6 \times 4)=0.75$ (green area).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;mAP is the average of AP&lt;/strong&gt;. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in &lt;strong&gt;COCO context&lt;/strong&gt;, AP is averaged over all categories, which means &lt;strong&gt;there is no difference between mAP and AP&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;reference-5&#34;&gt;Reference&lt;/h3&gt;

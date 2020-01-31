@@ -238,7 +238,7 @@
     
       <meta property="article:published_time" content="2020-01-28T20:50:01&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-01-30T22:26:14&#43;00:00">
+    <meta property="article:modified_time" content="2020-01-31T10:54:47&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Specific_math",
   
   "datePublished": "2020-01-28T20:50:01Z",
-  "dateModified": "2020-01-30T22:26:14Z",
+  "dateModified": "2020-01-31T10:54:47Z",
   
   "author": {
     "@type": "Person",
@@ -576,7 +576,7 @@
           Last updated on
       
     
-    Jan 30, 2020
+    Jan 31, 2020
   </span>
   
 
@@ -585,7 +585,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    8 min read
+    9 min read
   </span>
   
 
@@ -798,7 +798,77 @@ according to the definitions above, if $g_i(x)$ is a convex function, then the v
 <p>The most important property of a convex optimization is that <strong>if we find a point that makes the gradient at this point to be 0, then this point is the global optimal solution. There are perhaps many points in variable set, but if we can find one of them, then we can stop</strong>.</p>
 <h3 id="25-the-convex-optimization-used-in-machine-learning">2.5 The convex optimization used in Machine Learning</h3>
 <h4 id="251-linear-regression">2.5.1 Linear regression</h4>
-<p>TO BE CONTINUED&hellip;</p>
+<p>In machine learning, linear regression is a simple supervised learning algorithm. Given feature vectors $x_i$ and its corresponding groundtruth labels $y_i$ where $i =$ {$1,2,&hellip;,N$}, then the linear function can be written as:
+$$f(x)=w^T x + b$$
+and the loss function is denoted as the mean square error between the value $f(x_i)$ and its corresponding label $y_i$:
+$$L = \frac{1}{2N} \sum_{i=0}^{N} (f(x_i) - y_i)^2$$
+then we replace $f(x_i)$ with its function and get:
+$$L = \frac{1}{2N} \sum_{i=0}^{N} (w^T x_i + b - y_i)^2$$
+if we assume that:
+$$[w, b] \rightarrow w, \ and \ [x, 1] \rightarrow x$$
+then we get:
+$$L = \frac{1}{2N} \sum_{i=0}^{N} (w^T x_i  - y_i)^2$$
+and we get:
+$$L = \frac{1}{2N} \sum_{i=0}^{N} ((w^T x_i)^2 - 2 w^T x_i y_i + y_i^2)$$
+and the partial derivative is:
+$$\frac{\partial^2 L}{\partial w_i \partial w_i} = \frac{1}{N} \sum_{k=1}^N x_{k,i}x_{k,j}$$
+then the Hessian Matrix is:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/linear_regression_hessianmatrix.png" >
+<img data-src="/img/linear_regression_hessianmatrix.png" class="lazyload" alt="" ></a>
+
+
+
+</figure>
+
+the Hessian Matrix can be written in matrix-format:</p>
+<p>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/img/hessianmatrix_in_matrix.png" >
+<img data-src="/img/hessianmatrix_in_matrix.png" class="lazyload" alt="" ></a>
+
+
+
+</figure>
+
+where $X$ is a column of vector $x_i$ ($i =$ {$1,2,&hellip;,N$}), we can prove that this Hessian Matrix is a positive semi-definite matrix. For example, $\forall x \in \mathbb{R}^N$ and $x \neq 0$:
+$$x^TX^TXx = (Xx)^T Xx \geq 0$$
+thus <strong>the loss function of linear regression is a convex function without any constrains, we can find the global optimal solution by SGD or other methods</strong>.</p>
+<h3 id="252-other-ml-algorithms">2.5.2 Other ML algorithms</h3>
+<p>Similarly, we can use the same way to prove that the optimization problem of <em>Logistic Regression</em> $f(x)=\frac{1}{1+e^{-x}}$, <em>Softmax Regression</em> $f(x) = \frac{e^{x_i}}{\sum_{j=0}^N e^{x_j}}$ and SVM is also a convex optimization. However, the optimization using Deep Neural Network is not a convex optimization thus people do not understand the mathematic behind it and regard it as a black-box.</p>
 <h3 id="reference">Reference:</h3>
 <p><a href="https://zhuanlan.zhihu.com/p/37108430">https://zhuanlan.zhihu.com/p/37108430</a></p>
 

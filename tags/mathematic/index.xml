@@ -202,7 +202,7 @@ then we get:
 $$L = \frac{1}{2N} \sum_{i=0}^{N} (w^T x_i  - y_i)^2$$
 and we get:
 $$L = \frac{1}{2N} \sum_{i=0}^{N} ((w^T x_i)^2 - 2 w^T x_i y_i + y_i^2)$$
-and the partial derivative is:
+and the partial derivative (I still do not know how to compute this partial derivative) is:
 $$\frac{\partial^2 L}{\partial w_i \partial w_i} = \frac{1}{N} \sum_{k=1}^N x_{k,i}x_{k,j}$$
 then the Hessian Matrix is:
 
@@ -260,7 +260,7 @@ where $X$ is a column of vector $x_i$ ($i =$ {$1,2,&amp;hellip;,N$}), we can pro
 $$x^TX^TXx = (Xx)^T Xx \geq 0$$
 thus &lt;strong&gt;the loss function of linear regression is a convex function without any constrains, we can find the global optimal solution by SGD or other methods&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;252-other-ml-algorithms&#34;&gt;2.5.2 Other ML algorithms&lt;/h3&gt;
-&lt;p&gt;Similarly, we can use the same way to prove that the optimization problem of &lt;em&gt;Logistic Regression&lt;/em&gt; $f(x)=\frac{1}{1+e^{-x}}$, &lt;em&gt;Softmax Regression&lt;/em&gt; $f(x) = \frac{e^{x_i}}{\sum_{j=0}^N e^{x_j}}$ and SVM is also a convex optimization. However, the optimization using Deep Neural Network is not a convex optimization thus people do not understand the mathematic behind it and regard it as a black-box.&lt;/p&gt;
+&lt;p&gt;Similarly, we can use the same way to prove that the optimization problem of &lt;em&gt;Logistic Regression&lt;/em&gt; $f(x)=\frac{1}{1+e^{-x}}$, &lt;em&gt;Softmax&lt;/em&gt; $f(x) = \frac{e^{x_i}}{\sum_{j=0}^N e^{x_j}}$ and SVM is also a convex optimization. However, the optimization using Deep Neural Network is not a convex optimization thus people do not understand the mathematic behind it and regard it as a black-box.&lt;/p&gt;
 &lt;h3 id=&#34;reference&#34;&gt;Reference:&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37108430&#34;&gt;https://zhuanlan.zhihu.com/p/37108430&lt;/a&gt;&lt;/p&gt;
 </description>

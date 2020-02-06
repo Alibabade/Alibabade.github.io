@@ -370,6 +370,49 @@ s
 &lt;p&gt;&lt;strong&gt;mAP is the average of AP&lt;/strong&gt;. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in &lt;strong&gt;COCO context&lt;/strong&gt;, AP is averaged over all categories, which means &lt;strong&gt;there is no difference between mAP and AP&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;reference-5&#34;&gt;Reference&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&#34;&gt;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;cross-validation&#34;&gt;Cross Validation&lt;/h2&gt;
+&lt;h3 id=&#34;model-vs-learner&#34;&gt;Model vs Learner&lt;/h3&gt;
+&lt;p&gt;Model is general a mapping function from input to output, and it could be a machine learning algorithm (e.g., Logistic regression/SVM) or deep neural network (e.g., CNN/GCN/GAN). While Learner is general a model with learned weights which is a learned model after training.&lt;/p&gt;
+&lt;h3 id=&#34;hyperparameters-vs-parameters-in-model&#34;&gt;Hyperparameters vs parameters in Model&lt;/h3&gt;
+&lt;p&gt;Hyperparameters are the user pre-defined parameters of a model before training (e.g., learning-rate), while parameters are the learned weights after training, for example, $w^T$ in linear regression $f(x) = w^T x + b$.&lt;/p&gt;
+&lt;h3 id=&#34;k-fold-cross-validation&#34;&gt;K-fold Cross Validation&lt;/h3&gt;
+&lt;p&gt;Given a dataset, we first divide it into training set and testing set which is not accessible to model during training stage. Then we further divide the training set into a training part and a validate part by k-fold cross validation.&lt;/p&gt;
+&lt;p&gt;For example, if we choose $k=5$ then the training set will be divided into 5 parts of equal size, like part 1, part 2, part 3, part 4 and part 5. During training, we take part 1 as validate samples and the rest as true training samples, which means the model will be trained with the part 2-4 and validated by part 1. Then we choose part 2 as validate samples and the rest as true training samples, which means the model will be trained with part1,3-5 and validated by part 2. Continue, until each part has been chosen as validate samples. Thus this process is repeated $k=5$ times. After this, the model has been trained with all the samples of the training set (though it is not in once time). Then we use mean of mean square error:
+$$cv_{k} = \frac{1}{k} \sum_{i=1}^k MSE(x_i)$$
+to see the cross validate score. The illustration is as follow:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/k-fold_cross_validate.png&#34; data-caption=&#34;Fig 8. A simple illustration of k-fold cross validation ($k=5$ in this case).&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/k-fold_cross_validate.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 8. A simple illustration of k-fold cross validation ($k=5$ in this case).
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;references-1&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/24825503&#34;&gt;https://zhuanlan.zhihu.com/p/24825503&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

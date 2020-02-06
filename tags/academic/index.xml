@@ -5,12 +5,803 @@
     <link>https://Alibabade.github.io/tags/academic/</link>
       <atom:link href="https://Alibabade.github.io/tags/academic/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 28 Jan 2020 20:50:01 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 03 Feb 2020 21:50:00 +0000</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>https://Alibabade.github.io/tags/academic/</link>
     </image>
+    
+    <item>
+      <title>EfficientNet_mobilenet_shufflenet</title>
+      <link>https://Alibabade.github.io/post/fast_mobilenet_shufflenet/</link>
+      <pubDate>Mon, 03 Feb 2020 21:50:00 +0000</pubDate>
+      <guid>https://Alibabade.github.io/post/fast_mobilenet_shufflenet/</guid>
+      <description>&lt;h2 id=&#34;1-background&#34;&gt;1. Background&lt;/h2&gt;
+&lt;p&gt;In this post, we use the following symbols for all sections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$W$: width, $H$: height&lt;/li&gt;
+&lt;li&gt;$N$: input channel, $M$: output channel&lt;/li&gt;
+&lt;li&gt;$K$: convolution kernel size.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;11-params-for-a-neural-network&#34;&gt;1.1 Params for a neural network&lt;/h3&gt;
+&lt;p&gt;Params is related to the model size, the unit is Million in float32, thus the model size is approximately 4 times of params. For a standard convolution operation, the params = $(K^2 \times N + 1)M$, without bias: $K^2 \times NM$. For a standard fully connection layer, the params = $(N+1)M$, without bias: $NM$.&lt;/p&gt;
+&lt;h3 id=&#34;12-computation-complexity-flops&#34;&gt;1.2 Computation complexity (FLOPs)&lt;/h3&gt;
+&lt;p&gt;Computational complexity (or cost) is related to speed (but indirect), and it is usually written as FLOPs. Here only multiplication-adds is considered. For a standard convolution operation, the FLOPs = $WHN \times K^2M$. For a fully connection layer, the FLOPs = $(N+1)M$, without bias: $NM$.
+&lt;strong&gt;Here we can see that the FLOPs is nearly $WH$ times of Params for a conv operation&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;13-compute-the-params-and-flops-in-pytorch&#34;&gt;1.3 Compute the params and FLOPs in PyTorch&lt;/h3&gt;
+&lt;p&gt;In pytorch, opCounter library can be used to compute the params and FLOPs of a model.
+Install opCouter first:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;pip install thop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For instance, computing these numbers can be done by following code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from torchvision.models import resnet50
+from thop import profile
+
+model = resnet50()
+input = torch.randn(1,3,224,224)
+flops, params = profile(model, inputs=(input,))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;2-computational-cost-for-convolution-layers&#34;&gt;2. Computational cost for convolution layers&lt;/h2&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/computation_conv.png&#34; data-caption=&#34;Fig 1. The illustration of computational cost in a convolution operation. Image source:this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/computation_conv.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. The illustration of computational cost in a convolution operation. Image source:&lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;We will check on the computation of a general convolution operation. For example, in Fig 1, the input feature has the dimensions like width $W$ $\times$ height $H$ $\times$ N (input channels), the convolution kernel has dimension like $K \times K$ (kernel size) $\times$ M (output channels) and the convolutional operation has stride=1 and padding=1 which keeps the width and height same between input and output, thus the output feature will have the dimension $W \times H \times M$. Then the &lt;strong&gt;multiply-add computation&lt;/strong&gt; (standard computational cost) of a general conv operation is $WHN \times K^2 M$.&lt;/p&gt;
+&lt;h3 id=&#34;21-computation-cost-of-conv-3-times-3-and-conv-1-times-1&#34;&gt;2.1 Computation cost of conv $3 \times 3$ and conv $1 \times 1$&lt;/h3&gt;
+&lt;p&gt;Normally, the most used conv kernel in modern neural network is $3 \times 3$, which is denoted as conv $3 \times 3$. Its computational cost is $WHN3^2M$ when the convolution operates on both spatial and channel domain. If we illustrate the computation cost on spatial and channel domain, the following fig could be a better visualization. We can there is a fully connection between input channels and output channels.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/computation_cost1.png&#34; data-caption=&#34;Fig 2. The illustration of computational cost for conv $3\times3$ and conv $1\times1$ operation. Image recreated from this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/computation_cost1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 2. The illustration of computational cost for conv $3\times3$ and conv $1\times1$ operation. Image recreated from &lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;For conv $1\times1$, the spatial connect is $1\times1$ linear projection while channel projection is still fully connected, which leads to computational cost $WHN \times 1^2 M$. Compared to conv $3 \times 3$, the computation is reduced by $\frac{1}{K^3} = \frac{1}{9}$ in this case.&lt;/p&gt;
+&lt;h3 id=&#34;22-computation-cost-of-group-convolution&#34;&gt;2.2 Computation cost of group convolution&lt;/h3&gt;
+&lt;p&gt;Group convolution is firstly introduced in &lt;a href=&#34;https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf&#34;&gt;AlexNet&lt;/a&gt; to deal with the insufficient GPU memory and, to some extent, reduce the learned number of parameters. Grouped convolution operates on channel domain, which divides the channels into $G$ groups and the information in different groups is not shared. In each group, the connection still follows the fully connection way.
+The computation costs for grouped conv $3\times3$ and conv $1\times1$ are as following:
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/computation_cost2.png&#34; data-caption=&#34;Fig 3. The illustration of computational cost for grouped conv $3\times3$ where $G=2$ in this case. Image recreated from this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/computation_cost2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 3. The illustration of computational cost for grouped conv $3\times3$ where $G=2$ in this case. Image recreated from &lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Compared to standard conv, the grouped conv $3\times3$ (where $G=2$) reduce the connection in channel domain by factor $G$, which results in $\frac{1}{G}$ times of standard conv.&lt;/p&gt;
+&lt;h3 id=&#34;23-computation-cost-of-depthwise-convolution&#34;&gt;2.3 Computation cost of depthwise convolution&lt;/h3&gt;
+&lt;p&gt;Depthwise convolution is firstly introduced in &lt;a href=&#34;https://arxiv.org/pdf/1704.04861.pdf&#34;&gt;MobileNet v1&lt;/a&gt;, which performs the convolution operation independently to for each of input channels. Actually, this can be regarded as a special case of grouped conv when $G=N$. Usually, output channel $M &amp;raquo; K^2$, thus depthwise conv significantly reduces the computational cost compared to standard conv operation.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/computation_cost3.png&#34; data-caption=&#34;Fig 4. The illustration of computational cost for depthwise conv $3\times3$. Image recreated from this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/computation_cost3.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 4. The illustration of computational cost for depthwise conv $3\times3$. Image recreated from &lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;24-channel-shuffle&#34;&gt;2.4 Channel shuffle&lt;/h3&gt;
+&lt;p&gt;Channel shuffle is an operation introduced in &lt;a href=&#34;https://arxiv.org/pdf/1707.01083.pdf&#34;&gt;ShuffleNet v1&lt;/a&gt; to deal with the large computational cost by conv $1\times1$ in &lt;a href=&#34;https://arxiv.org/pdf/1611.05431.pdf&#34;&gt;ResNeXt network&lt;/a&gt;. In this section, we basic show how channel shuffle works and introduce more details in Section 5.
+The operation is first divide the input channels $N$ into $G$ groups, which results in $G \times N^{`}$ channels. Usually, the $N^{`}$ is a certain times of $G$. In this case, $N^{`}=9$ and $G=3$. Then one certain channel in a group will stay in the same group, but each of the rest channel in a group will be separately assigned to other groups. The figure below illustrates the channel shuffle operation.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/computation_cost4.png&#34; data-caption=&#34;Fig 5. The illustration of channel shuffle operation. Image recreated from this blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/computation_cost4.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 5. The illustration of channel shuffle operation. Image recreated from &lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;this blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;3-resnet-resnext&#34;&gt;3. ResNet, ResNeXt&lt;/h2&gt;
+&lt;h3 id=&#34;31-bottleneck-architecture-comparison&#34;&gt;3.1 Bottleneck architecture comparison&lt;/h3&gt;
+&lt;p&gt;Basic idea in ResNeXt is to replace standard conv $3\times3$ by group conv $3\times3$.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnet_resnext.png&#34; data-caption=&#34;Fig 6. Architecture comparison of ResNet and ResNeXt.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnet_resnext.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 6. Architecture comparison of ResNet and ResNeXt.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;32-flops-comparison&#34;&gt;3.2 FLOPs comparison&lt;/h3&gt;
+&lt;p&gt;Note that FLOPs of ResNeXt is only reduced by a small budget of computational cost and it&#39;s up to group number $G$ when $N_r=N_x$ and $M_r=M_x$.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnet_resnext_1.png&#34; data-caption=&#34;Fig 7. FLOPs comparison of ResNet and ResNeXt.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnet_resnext_1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 7. FLOPs comparison of ResNet and ResNeXt.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;4-mobilenet-v1-vs-v2&#34;&gt;4. MobileNet v1 vs v2&lt;/h2&gt;
+&lt;h3 id=&#34;41-mobilenet-v1-vgg&#34;&gt;4.1 MobileNet v1 (VGG)&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Key point is to replace all standard conv $3\times3$ with depthwise conv $3\times3$ + conv $1\times1$ in standard VGGNet&lt;/strong&gt;. &lt;a href=&#34;https://cloud.tencent.com/developer/article/1461275&#34;&gt;This blog&lt;/a&gt; says that the ReLU is also replaced by ReLU6 (ReLU6 = $max(max(0,x),6)$) in MobileNet v1, but the original paper does not say anything about it. Perhaps in engineering projects, people usually use ReLU6.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/vgg_mobilenetv1_1.png&#34; data-caption=&#34;Fig 8. Comparison of standard conv $3\times3$ in VGG and Separable Depthwise conv $3\times4$ &amp;#43; conv $1\times1$ in MobileNetv1. Image recreated from original paper.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/vgg_mobilenetv1_1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 8. Comparison of standard conv $3\times3$ in VGG and Separable Depthwise conv $3\times4$ + conv $1\times1$ in MobileNetv1. Image recreated from &lt;a href=&#34;https://arxiv.org/pdf/1704.04861.pdf&#34;&gt;original paper&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Therefore, the FLOPs is reduced about $\frac{1}{8}$ ~ $\frac{1}{9}$ in MobileNetv1 compared to VGGNet.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/vgg_mobilenetv1.png&#34; data-caption=&#34;Fig 9. FLOPs Comparison of standard conv $3\times3$ in VGG and Separable Depthwise conv $3\times4$ &amp;#43; conv $1\times1$ in MobileNetv1. Image recreated from This blog.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/vgg_mobilenetv1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 9. FLOPs Comparison of standard conv $3\times3$ in VGG and Separable Depthwise conv $3\times4$ + conv $1\times1$ in MobileNetv1. Image recreated from &lt;a href=&#34;https://cloud.tencent.com/developer/article/1461275&#34;&gt;This blog&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;42-mobilenet-v2-resnet&#34;&gt;4.2 MobileNet v2 (ResNet)&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Key point is to replace the last ReLU with linear bottleneck and introduce an inverted residual block in ResNet&lt;/strong&gt;. The reason behind of replacing relu with a linear transformation is that relu causes much information loss when input dimension is low. The inverted residual block consists of a conv $1\times1$ (expanse low dimension input channels to high dimension channels) + a depthwiseconv $3\times3$ + a conv $1\times1$ (decrease high dimension input channels to low dimension (original) channels).
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mobilenet2_relu.png&#34; data-caption=&#34;Fig 10. Reason behind of replacing relu with linear botthleneck. Image source from original paper.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mobilenet2_relu.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 10. Reason behind of replacing relu with linear botthleneck. Image source from &lt;a href=&#34;https://arxiv.org/pdf/1801.04381.pdf&#34;&gt;original paper&lt;/a&gt;.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Inverted residual block in Mobilenet v2 (see figure 9). Only the last ReLU is replaced by a linear transformation, because the input dimensions of conv $1\times1$ and depthwise conv $3\times$ are increased compared to original dimension, thus relu works fine. But when the input dimension is decreased by the last conv $1\times1$, relu will lose much information, thus we replace relu with a linear transformation to preserve as much as original information.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnet_mobilenetv2.png&#34; data-caption=&#34;Fig 11. Comparison of standard residual block in ResNet and inverted residual block in MobileNetv2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnet_mobilenetv2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 11. Comparison of standard residual block in ResNet and inverted residual block in MobileNetv2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Here we compute the FLOPs for a standard residual block in ResNet and an inverted residual block in MobileNet v2. As can be seen, when the ResNet input channel $N_r$ and output channel $M_r$ is equal to MobileNet v2 input channel $N_{m2}$ and output channel $M_{m2}$, MobileNet v2 has a larger FLOPs than ResNet. However, the advantage of MobileNet v2 is that it only needs a much smaller input channel and output channel while achieves similar accuracy of ResNet, which eventually leads to smaller FLOPs than ResNet.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnet_mobilenetv2_1.png&#34; data-caption=&#34;Fig 12. FLOPs Comparison of standard residual block in ResNet and inverted residual block in MobileNetv2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnet_mobilenetv2_1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 12. FLOPs Comparison of standard residual block in ResNet and inverted residual block in MobileNetv2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;43-comparison&#34;&gt;4.3 Comparison&lt;/h3&gt;
+&lt;p&gt;Here shows the convolution block in MobileNet v1 and v2, and their FLOPs comparison.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mobilenet_v1-2.png&#34; data-caption=&#34;Fig 13. Comparison of a convolution block in MobileNet v1 and two types of inverted residual block in MobileNetv2. There is no shortcut connection when stride=2 in DepthwiseConv $3\times3$ in MobileNet v2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mobilenet_v1-2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 13. Comparison of a convolution block in MobileNet v1 and two types of inverted residual block in MobileNetv2. There is no shortcut connection when stride=2 in DepthwiseConv $3\times3$ in MobileNet v2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Note that the FLOPs for a single inverted residual block has an extra term ($N_{m2}$) as there is an extra conv $1\times1$ used compared to MobileNet v1. However, MobileNet v2 still has smaller params and FLOPs than MobileNet v1 as the input channel $N_{m2}$ and output channel $M_{m2}$ could be smaller than $N_{m1}$ and $M_{m1}$ of MobileNet v1. Please refer to Table 3 in original &lt;a href=&#34;https://arxiv.org/pdf/1801.04381.pdf&#34;&gt;MobileNet v2 paper&lt;/a&gt; for more details.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/mobilenet_v1-2-FLOPs.png&#34; data-caption=&#34;Fig 14. Comparison of FLOPs of a convolution block in MobileNet v1 and an inverted residual block in MobileNetv2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/mobilenet_v1-2-FLOPs.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 14. Comparison of FLOPs of a convolution block in MobileNet v1 and an inverted residual block in MobileNetv2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why MobileNet v2 is not faster than MobileNet v1 on Desktop computer?&lt;/strong&gt; On desktop, the separable depthwise convolution is not directly supported in GPU firmware (cuDNN library). While MobileNet v2 could be slightly slower than MobileNet v1 as V2 has more separable depthwise convolution operations and more larger input channels (96/192/384/768/1536) of using separable depthwise convolution than V1 (64/128/256/512/1024).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why MobileNet is not as fast as FLOPs indicates in practice?&lt;/strong&gt; One reason could be the application of memory takes much time (according to some interviews).&lt;/p&gt;
+&lt;h2 id=&#34;5-shufflenet-v1-vs-v2&#34;&gt;5. ShuffleNet v1 vs v2&lt;/h2&gt;
+&lt;h3 id=&#34;51-shufflenet-v1-resnext&#34;&gt;5.1 ShuffleNet v1 (ResNeXt)&lt;/h3&gt;
+&lt;p&gt;ResNeXt is an efficient model for ResNet by introducing group conv $3\times3$ to reduce computational cost. However, the computational cost of conv $1\times1$ become the operation consuming most of time. To reduce the FLOPs of conv $1\times1$, &lt;a href=&#34;https://arxiv.org/pdf/1707.01083.pdf&#34;&gt;ShuffleNet v1&lt;/a&gt; introduce group conv $1\times1$ tp replace the standard conv $1\times1$. However, the features won&#39;t be shared between groups by using group conv $1\times1$, which causes less feature reuse and accuracy. To address this problem, a channel shuffle operation is introduced to share features between groups. The basic blocks of ResNeXt and ShuffleNet v1 is shown in the below figure.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnext_shufflenetv1.png&#34; data-caption=&#34;Fig 15. Comparison of a residual block in ResNeXt and ShuffleNet v1.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnext_shufflenetv1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 15. Comparison of a residual block in ResNeXt and ShuffleNet v1.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Here we also give the computational cost of each method:&lt;/p&gt;
+&lt;p&gt;ResNeXt FLOPs = $WH(2N_r M_r + 9M_r^2/G)$&lt;/p&gt;
+&lt;p&gt;ShuffleNet v1 FLOPs = $WH(2N_{s1}M_{s1}/G + 9M_{s1})$, where $G$ is the group number.&lt;/p&gt;
+&lt;p&gt;It is obviously that ShuffleNet v1 FLOPs &amp;lt; ResNeXt FLOPs when $N_r=N_{s1}$ and $M_r = M_{s1}$.&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/resnext_shufflenetv1_1.png&#34; data-caption=&#34;Fig 16. FLOPs comparison of a residual block in ResNeXt and ShuffleNet v1.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/resnext_shufflenetv1_1.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 16. FLOPs comparison of a residual block in ResNeXt and ShuffleNet v1.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;52-shufflenet-v2&#34;&gt;5.2 ShuffleNet v2&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1807.11164.pdf&#34;&gt;ShuffleNet v2&lt;/a&gt; points out that FLOPs is an indirect metric to evaluate computational cost of a model since the run time should also contain the &lt;em&gt;memory access cost (MAC)&lt;/em&gt; , &lt;em&gt;degree of parallelism&lt;/em&gt; and even &lt;em&gt;hardware platform&lt;/em&gt; (e.g., GPU and ARM). Thus shufflenet v2 introduces a few rules to evaluate the computational cost of a model by considering the factors above.&lt;/p&gt;
+&lt;h4 id=&#34;521-guidelines-for-evaluating-computational-cost&#34;&gt;5.2.1 Guidelines for evaluating computational cost&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;G1. MAC is minimal when input channel is equal to output channel&lt;/strong&gt;. Let $WHN$ denote input feature, $WHM$ be output feature. Then FLOPs $F=WHNM$ when conv kernel is $1\times1$. We simply assume that input feature occupies $WHN$ memory, output feature occupies $WHM$ memory, and conv kernels occupy $NM$ memory. Then MAC can be denoted as:
+\begin{eqnarray}
+MAC &amp;amp;=&amp;amp; WHN + WHM +NM \\\&lt;br&gt;
+&amp;amp;=&amp;amp; WH(N+M) + NM \\\&lt;br&gt;
+&amp;amp;=&amp;amp; \sqrt{(WH)^2(N+M)^2} + \frac{F}{WH} \\\&lt;br&gt;
+&amp;amp;\geqslant&amp;amp; \sqrt{(WH)^2\times 4NM} + \frac{F}{WH} \\\&lt;br&gt;
+&amp;amp;=&amp;amp; \sqrt{(WH)\times 4WHNM} + \frac{F}{WH} \\\&lt;br&gt;
+&amp;amp;=&amp;amp; \sqrt{(WH)\times 4F} + \frac{F}{WH} \\\&lt;br&gt;
+\end{eqnarray}
+Thus MAC achieves the minimal value when input channel $N$ is equal to output channel $M$ under same FLOPs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G2. MAC increases when the number of group increases&lt;/strong&gt;. FLOPs $F=WH \times N \times M/G$. Then MAC is denoted as:
+\begin{eqnarray}
+MAC &amp;amp;=&amp;amp; WHN + WHM + \frac{NM}{G} \\\&lt;br&gt;
+&amp;amp;=&amp;amp; F\times \frac{G}{M} + F \times \frac{G}{N} + \frac{F}{WH} \\\&lt;br&gt;
+\end{eqnarray}
+Thus MAC increase with the growth of $G$.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G3. Network fragmentation reduces degree of parallelism&lt;/strong&gt;. More fragmentation causes more computational cost in GPU. For example, under the same FLOPs, the computation efficiency is as following order: 1-fragmentation &amp;gt; 2-fragmentation-series &amp;gt; 2-fragmentation-parallel &amp;gt; 4-fragmentation-series &amp;gt; 4-fragmentation-parallel.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/shufflenetv2_guideline3.png&#34; data-caption=&#34;Fig 17. Computational cost of different network fragmentations.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/shufflenetv2_guideline3.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 17. Computational cost of different network fragmentations.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G4. Element-wise operations consume much time&lt;/strong&gt;. Except convolution operations, the element-wise operation is the second operation consuming much time.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/shufflenetv2_guideline4.png&#34; data-caption=&#34;Fig 18. Computational cost of different operations.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/shufflenetv2_guideline4.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 18. Computational cost of different operations.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Based on the guidelines above, we can analyse that shufflenet v1 introduces group convolutions which is against G1, and if it uses bottleneck-like blocks (using conv$1\times1$ change input channels) then it is against G1. MobileNet v2 introduces an inverted residual bottleneck which is against G1. And it uses depthwise conv $3\times3$ and ReLU on expansed features and leads to more element-wise operation which violates G4. The autogenerated structures (&lt;a href=&#34;https://arxiv.org/pdf/1802.01548.pdf&#34;&gt;searched network&lt;/a&gt;) add more fragmentations which violates G3.&lt;/p&gt;
+&lt;h4 id=&#34;522-shufflenet-v2-architecture&#34;&gt;5.2.2 ShuffleNet v2 architecture&lt;/h4&gt;
+&lt;p&gt;Following the guidelines in aforementioned section, shufflenet v2 introduces their new version of shufflenet.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/shufflenetv2.png&#34; data-caption=&#34;Fig 19. Architecture of ShuffleNet v1 and ShuffleNet v2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/shufflenetv2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 19. Architecture of ShuffleNet v1 and ShuffleNet v2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+Since the channel split, concat and channel shuffle are basic not multiplication-adds operations, the FLOPs is computed in the block inside. Note that $N_{s2}=M_{s2}=\frac{N_{s1}}{2}$, thus shuffleNet v2 is more efficient than ShuffleNet v1 ($G=4$) even under FLOPs evaluation.
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/FLOPs_shufflenetv1_2.png&#34; data-caption=&#34;Fig 20. FLOPs comparison of ShuffleNet v1 and ShuffleNet v2.&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/FLOPs_shufflenetv1_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 20. FLOPs comparison of ShuffleNet v1 and ShuffleNet v2.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/shufflenetv1_2.png&#34; data-caption=&#34;Fig 21. Architecture comparison of Shufflenet v1 and v2. Image source: original paper&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/shufflenetv1_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 21. Architecture comparison of Shufflenet v1 and v2. Image source: &lt;a href=&#34;https://arxiv.org/pdf/1807.11164.pdf&#34;&gt;original paper&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;53-comparison-to-other-state-of-the-art-methods&#34;&gt;5.3 Comparison to other state-of-the-art methods&lt;/h3&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/shufflenetv2_comparison.png&#34; data-caption=&#34;Fig 22. Comparison to other state-of-the-art methods. Image source: original paper&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/shufflenetv2_comparison.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 22. Comparison to other state-of-the-art methods. Image source: &lt;a href=&#34;https://arxiv.org/pdf/1807.11164.pdf&#34;&gt;original paper&lt;/a&gt;
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;523-one-more-thing&#34;&gt;5.2.3 One more thing&lt;/h4&gt;
+&lt;p&gt;ShuffleNet v2 shares the similar idea with DenseNet that is strong feature reuse, which makes ShuffleNet v2 achieve similar high accuracy as DenseNet but in a more efficient manner. More recently, a &lt;a href=&#34;https://arxiv.org/pdf/1711.09224.pdf&#34;&gt;CondenseNet&lt;/a&gt; (upgraded DenseNet) points out that the more short distance features the more important they are to current layer features. Similar to Condensenet, feature map at $j$-th bottleneck building in ShuffleNet v2 reuses $\frac{c_i}{2^{j-i}}$ of feature maps at $i$-th bottleneck building, which reuses more feature maps when $j$ is more close to $i$.&lt;/p&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37074222&#34;&gt;https://zhuanlan.zhihu.com/p/37074222&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&#34;&gt;https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/51566209&#34;&gt;https://zhuanlan.zhihu.com/p/51566209&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1461275&#34;&gt;https://cloud.tencent.com/developer/article/1461275&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Specific_math</title>
@@ -202,7 +993,7 @@ then we get:
 $$L = \frac{1}{2N} \sum_{i=0}^{N} (w^T x_i  - y_i)^2$$
 and we get:
 $$L = \frac{1}{2N} \sum_{i=0}^{N} ((w^T x_i)^2 - 2 w^T x_i y_i + y_i^2)$$
-and the partial derivative is:
+and the partial derivative (I still do not know how to compute this partial derivative) is:
 $$\frac{\partial^2 L}{\partial w_i \partial w_i} = \frac{1}{N} \sum_{k=1}^N x_{k,i}x_{k,j}$$
 then the Hessian Matrix is:
 
@@ -260,7 +1051,7 @@ where $X$ is a column of vector $x_i$ ($i =$ {$1,2,&amp;hellip;,N$}), we can pro
 $$x^TX^TXx = (Xx)^T Xx \geq 0$$
 thus &lt;strong&gt;the loss function of linear regression is a convex function without any constrains, we can find the global optimal solution by SGD or other methods&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;252-other-ml-algorithms&#34;&gt;2.5.2 Other ML algorithms&lt;/h3&gt;
-&lt;p&gt;Similarly, we can use the same way to prove that the optimization problem of &lt;em&gt;Logistic Regression&lt;/em&gt; $f(x)=\frac{1}{1+e^{-x}}$, &lt;em&gt;Softmax Regression&lt;/em&gt; $f(x) = \frac{e^{x_i}}{\sum_{j=0}^N e^{x_j}}$ and SVM is also a convex optimization. However, the optimization using Deep Neural Network is not a convex optimization thus people do not understand the mathematic behind it and regard it as a black-box.&lt;/p&gt;
+&lt;p&gt;Similarly, we can use the same way to prove that the optimization problem of &lt;em&gt;Logistic Regression&lt;/em&gt; $f(x)=\frac{1}{1+e^{-x}}$, &lt;em&gt;Softmax&lt;/em&gt; $f(x) = \frac{e^{x_i}}{\sum_{j=0}^N e^{x_j}}$ and SVM is also a convex optimization. However, the optimization using Deep Neural Network is not a convex optimization thus people do not understand the mathematic behind it and regard it as a black-box.&lt;/p&gt;
 &lt;h3 id=&#34;reference&#34;&gt;Reference:&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/37108430&#34;&gt;https://zhuanlan.zhihu.com/p/37108430&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -2826,6 +3617,49 @@ s
 &lt;p&gt;&lt;strong&gt;mAP is the average of AP&lt;/strong&gt;. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in &lt;strong&gt;COCO context&lt;/strong&gt;, AP is averaged over all categories, which means &lt;strong&gt;there is no difference between mAP and AP&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;reference-5&#34;&gt;Reference&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&#34;&gt;https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;cross-validation&#34;&gt;Cross Validation&lt;/h2&gt;
+&lt;h3 id=&#34;model-vs-learner&#34;&gt;Model vs Learner&lt;/h3&gt;
+&lt;p&gt;Model is general a mapping function from input to output, and it could be a machine learning algorithm (e.g., Logistic regression/SVM) or deep neural network (e.g., CNN/GCN/GAN). While Learner is general a model with learned weights which is a learned model after training.&lt;/p&gt;
+&lt;h3 id=&#34;hyperparameters-vs-parameters-in-model&#34;&gt;Hyperparameters vs parameters in Model&lt;/h3&gt;
+&lt;p&gt;Hyperparameters are the user pre-defined parameters of a model before training (e.g., learning-rate), while parameters are the learned weights after training, for example, $w^T$ in linear regression $f(x) = w^T x + b$.&lt;/p&gt;
+&lt;h3 id=&#34;k-fold-cross-validation&#34;&gt;K-fold Cross Validation&lt;/h3&gt;
+&lt;p&gt;Given a dataset, we first divide it into training set and testing set which is not accessible to model during training stage. Then we further divide the training set into a training part and a validate part by k-fold cross validation.&lt;/p&gt;
+&lt;p&gt;For example, if we choose $k=5$ then the training set will be divided into 5 parts of equal size, like part 1, part 2, part 3, part 4 and part 5. During training, we take part 1 as validate samples and the rest as true training samples, which means the model will be trained with the part 2-4 and validated by part 1. Then we choose part 2 as validate samples and the rest as true training samples, which means the model will be trained with part1,3-5 and validated by part 2. Continue, until each part has been chosen as validate samples. Thus this process is repeated $k=5$ times. After this, the model has been trained with all the samples of the training set (though it is not in once time). Then we use mean of mean square error:
+$$cv_{k} = \frac{1}{k} \sum_{i=1}^k MSE(x_i)$$
+to see the cross validate score. The illustration is as follow:&lt;/p&gt;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/k-fold_cross_validate.png&#34; data-caption=&#34;Fig 8. A simple illustration of k-fold cross validation ($k=5$ in this case).&#34;&gt;
+&lt;img data-src=&#34;https://Alibabade.github.io/img/k-fold_cross_validate.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 8. A simple illustration of k-fold cross validation ($k=5$ in this case).
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;references-1&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/24825503&#34;&gt;https://zhuanlan.zhihu.com/p/24825503&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -5,12 +5,170 @@
     <link>https://Alibabade.github.io/authors/admin/</link>
       <atom:link href="https://Alibabade.github.io/authors/admin/index.xml" rel="self" type="application/rss+xml" />
     <description>Li Wang</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 03 Feb 2020 21:50:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 06 Feb 2020 21:35:55 +0000</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Li Wang</title>
       <link>https://Alibabade.github.io/authors/admin/</link>
     </image>
+    
+    <item>
+      <title>Stable_video_style_transfer</title>
+      <link>https://Alibabade.github.io/project/stable_video_style_transfer/</link>
+      <pubDate>Thu, 06 Feb 2020 21:35:55 +0000</pubDate>
+      <guid>https://Alibabade.github.io/project/stable_video_style_transfer/</guid>
+      <description>&lt;p&gt;This project aims to deal with the &lt;strong&gt;flickering problem&lt;/strong&gt; caused by naively applying per-frame stylization methods (e.g., &lt;a href=&#34;http://svl.stanford.edu/assets/papers/JohnsonECCV16.pdf&#34;&gt;Fast-Neural-Style&lt;/a&gt; and &lt;a href=&#34;https://arxiv.org/pdf/1703.06868.pdf&#34;&gt;AdaIN&lt;/a&gt;) on videos.&lt;/p&gt;
+&lt;h2 id=&#34;1-background&#34;&gt;1. Background&lt;/h2&gt;
+&lt;p&gt;In 2016, &lt;a href=&#34;https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf&#34;&gt;Gatys et al.&lt;/a&gt; are the first to propose an image style transfer algorithm using deep neural networks, which is capable of transforming artistic style (e.g., colours, textures and brush strokes) from a given artistic image to arbitrary photos. The visual appealing results and elegant design of their approach motivate many researchers to dig in this field which is called Neural Artistic Style Transfer by followers. Along with the speedup (nearly real-time) of similar methods, researchers gradually turn their focus to video applications. However, &lt;strong&gt;naively applying these per-frame styling methods causes bad flickering problem which reflects on inconsistent textures among video adjacent frames.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To address the flickering problem, a few approaches made their attempts to achieve coherent video transfer results. In early stage, &lt;a href=&#34;https://arxiv.org/pdf/1605.08153.pdf&#34;&gt;Anderson et al.&lt;/a&gt; and &lt;a href=&#34;https://arxiv.org/pdf/1604.08610.pdf&#34;&gt;Ruder et al.&lt;/a&gt; are the very first to introduce temporal consistency by optical flow into video style transfer, and they achieve high coherent results but along with worse ghosting artefacts. Besides, their methods need 3 or 5 mins for each video frame which is less practical in video applications. &lt;a href=&#34;http://openaccess.thecvf.com/content_cvpr_2017/papers/Huang_Real-Time_Neural_Style_CVPR_2017_paper.pdf&#34;&gt;Huang et al.&lt;/a&gt; and &lt;a href=&#34;http://openaccess.thecvf.com/content_ICCV_2017/papers/Gupta_Characterizing_and_Improving_ICCV_2017_paper.pdf&#34;&gt;Gupta et al.&lt;/a&gt; propose real-time video style transfer by combining &lt;a href=&#34;http://svl.stanford.edu/assets/papers/JohnsonECCV16.pdf&#34;&gt;Fast-Neural-Style&lt;/a&gt; and temporal consistency. More recently, &lt;a href=&#34;https://arxiv.org/pdf/1703.09211.pdf&#34;&gt;Chen et al.&lt;/a&gt; and &lt;a href=&#34;https://arxiv.org/pdf/1708.04538.pdf&#34;&gt;Ruder et al.&lt;/a&gt; propose their methods to achieve more coherent results but sacrifice speed.&lt;/p&gt;
+&lt;h2 id=&#34;2-motivation&#34;&gt;2. Motivation&lt;/h2&gt;
+&lt;p&gt;We notice that all the methods aforementioned above are built upon feed-forward networks which are sensitive to small perturbations among adjacent frames, for example, lighting, noises and motions may cause large variations in stylised video frames. Thus &lt;strong&gt;there are still space to be improved&lt;/strong&gt;. Besides, their networks are all &lt;strong&gt;in a per-network-per-style pattern&lt;/strong&gt;, which means a training process is needed for each style and the training time may range from hours to days. In contrary, optimisation-based approaches are more stable for perturbations and naturally made for arbitrary styles. Thus we follow the optimisation-based routine.&lt;/p&gt;
+&lt;p&gt;Now we need to deal with the problems such as slow runtime and ghosting artefacts. We dig into the reason behind these problems, and observe that there are two drawbacks of previous optimisation-based methods (e.g., &lt;a href=&#34;https://arxiv.org/pdf/1605.08153.pdf&#34;&gt;Anderson et al.&lt;/a&gt; and &lt;a href=&#34;https://arxiv.org/pdf/1604.08610.pdf&#34;&gt;Ruder et al.&lt;/a&gt;): &lt;strong&gt;1. their methods complete the entire style transformation for each video frame, which causes 3 or 5 mins; 2. they have too much temporal consistency constraints between adjacent frames, which causes ghosting artefacts.&lt;/strong&gt; To avoid these drawbacks, we come up with a straightforward idea that we only constrain loose temporal consistency among already stylised frames.&lt;/p&gt;
+&lt;p&gt;Following this idea, we need to handle another two problems: &lt;strong&gt;1. inconsistent textures between adjacent stylised frames due to flow errors (ghosting artefacts); 2. image degeneration after long-term running (blurriness artefacts).&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;3-methodology&#34;&gt;3. Methodology&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Prevent flow errors (ghosting artefacts) via multi-scale flow, incremental mask and multi-frame fusion.&lt;/li&gt;
+&lt;li&gt;Prevent image degeneration (blurriness artefacts) via sharpness loss consists of perceptual losses and pixel loss.&lt;/li&gt;
+&lt;li&gt;Enhance temporal consistency with loose constraints on both rgb-level and feature level.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;4-qualitative-evaluation&#34;&gt;4. Qualitative Evaluation&lt;/h2&gt;
+&lt;h3 id=&#34;41-ablation-study&#34;&gt;4.1 Ablation study&lt;/h3&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;11.png&#34; data-caption=&#34;Ablation study on proposed mask techniques.&#34;&gt;
+&lt;img data-src=&#34;11.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Ablation study on proposed mask techniques.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;4.png&#34; data-caption=&#34;Ablation study on proposed sharpness loss.&#34;&gt;
+&lt;img data-src=&#34;4.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Ablation study on proposed sharpness loss.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;42-comparison-to-state-of-the-art-methods&#34;&gt;4.2 Comparison to state-of-the-art methods&lt;/h3&gt;
+&lt;p&gt;We compare our approach with state-of-the-art methods, and these experiments demonstrate that our method produces more stable and diverse stylised video than them.
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;3_ijcv.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;1_ijcv.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;3_cvst.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;6_cvst.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;&lt;/p&gt;
+&lt;h2 id=&#34;5-more-results&#34;&gt;5. More results&lt;/h2&gt;
+&lt;p&gt;TO BE CONTINUED&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>EfficientNet_mobilenet_shufflenet</title>
@@ -1065,7 +1223,7 @@ thus &lt;strong&gt;the loss function of linear regression is a convex function w
       <description>&lt;p&gt;This is a small prototype that I had been working on when I was a visiting scholar (more like an intern) in Italy. The main purpose is reprogram a sensor receiver software (in python) into an executable file (i.e., EXE) in Windows OS.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Background:&lt;/strong&gt; Two independent programs for data receiving via Bluetooth and visualization via browser respectively. In addition, two programs depend on various softwares and libraries (i.e., google chrome browser, tkinter, matplotlib etc.), which makes it difficult to install.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Goal:&lt;/strong&gt; integrate two programs into one executable file without any other software and library dependence.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Method:&lt;/strong&gt; 1. Integrate two programs into one program with multiprocessing; 2. Visualize the sensor data and complete functions (i.e., extract data during usr specific time, export data into csv file, sample rate etc.) on a window created via tkinter and matplotlib; 3. Convert python code into an single executable file via pyinstaller.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Method:&lt;/strong&gt; 1. Integrate two programs into one program with multiprocessing; 2. Visualize the sensor data and complete functions (i.e., extract data during usr specific time, export data into csv file, sample rate etc.) on a window created via tkinter and matplotlib; 3. Convert python code into a single executable file via pyinstaller.&lt;/p&gt;
 </description>
     </item>
     

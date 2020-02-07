@@ -49,14 +49,14 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;11.png&#34; data-caption=&#34;Ablation study on proposed mask techniques.&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;11.png&#34; data-caption=&#34;Fig 1. Ablation study on proposed mask techniques.&#34;&gt;
 &lt;img data-src=&#34;11.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
   
   &lt;figcaption&gt;
-    Ablation study on proposed mask techniques.
+    Fig 1. Ablation study on proposed mask techniques.
   &lt;/figcaption&gt;
 
 
@@ -78,14 +78,14 @@
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;4.png&#34; data-caption=&#34;Ablation study on proposed sharpness loss.&#34;&gt;
-&lt;img data-src=&#34;4.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;12.png&#34; data-caption=&#34;Fig 2. Ablation study on proposed sharpness loss.&#34;&gt;
+&lt;img data-src=&#34;12.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
   
   &lt;figcaption&gt;
-    Ablation study on proposed sharpness loss.
+    Fig 2. Ablation study on proposed sharpness loss.
   &lt;/figcaption&gt;
 
 
@@ -164,9 +164,63 @@
 
 &lt;video controls &gt;
   &lt;source src=&#34;6_cvst.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;3_cvpr2017.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;3_flownet2.mp4&#34; type=&#34;video/mp4&#34;&gt;
 &lt;/video&gt;&lt;/p&gt;
 &lt;h2 id=&#34;5-more-results&#34;&gt;5. More results&lt;/h2&gt;
-&lt;p&gt;TO BE CONTINUED&amp;hellip;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+&lt;video controls &gt;
+  &lt;source src=&#34;10_Johnson.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+TO BE CONTINUED&amp;hellip;&lt;/p&gt;
 </description>
     </item>
     

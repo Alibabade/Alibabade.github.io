@@ -240,7 +240,7 @@
     
       <meta property="article:published_time" content="2020-02-06T21:35:55&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-02-07T19:47:18&#43;00:00">
+    <meta property="article:modified_time" content="2020-02-07T20:05:48&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Stable_video_style_transfer",
   
   "datePublished": "2020-02-06T21:35:55Z",
-  "dateModified": "2020-02-07T19:47:18Z",
+  "dateModified": "2020-02-07T20:05:48Z",
   
   "author": {
     "@type": "Person",
@@ -626,7 +626,7 @@
 <p>To address the flickering problem, a few approaches made their attempts to achieve coherent video transfer results. In early stage, <a href="https://arxiv.org/pdf/1605.08153.pdf">Anderson et al.</a> and <a href="https://arxiv.org/pdf/1604.08610.pdf">Ruder et al.</a> are the very first to introduce temporal consistency by optical flow into video style transfer, and they achieve high coherent results but along with worse ghosting artefacts. Besides, their methods need 3 or 5 mins for each video frame which is less practical in video applications. <a href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Huang_Real-Time_Neural_Style_CVPR_2017_paper.pdf">Huang et al.</a> and <a href="http://openaccess.thecvf.com/content_ICCV_2017/papers/Gupta_Characterizing_and_Improving_ICCV_2017_paper.pdf">Gupta et al.</a> propose real-time video style transfer by combining <a href="http://svl.stanford.edu/assets/papers/JohnsonECCV16.pdf">Fast-Neural-Style</a> and temporal consistency. More recently, <a href="https://arxiv.org/pdf/1703.09211.pdf">Chen et al.</a> and <a href="https://arxiv.org/pdf/1708.04538.pdf">Ruder et al.</a> propose their methods to achieve more coherent results but sacrifice speed.</p>
 <h2 id="2-motivation">2. Motivation</h2>
 <p>We notice that all the methods aforementioned above are built upon feed-forward networks which are sensitive to small perturbations among adjacent frames, for example, lighting, noises and motions may cause large variations in stylised video frames. Thus <strong>there are still space to be improved</strong>. Besides, their networks are all <strong>in a per-network-per-style pattern</strong>, which means a training process is needed for each style and the training time may range from hours to days. In contrary, optimisation-based approaches are more stable for perturbations and naturally made for arbitrary styles. Thus we follow the optimisation-based routine.</p>
-<p>Now we need to deal with the problems such as slow runtime and ghosting artefacts. We dig into the reason behind these problems, and observe that there are two drawbacks of previous optimisation-based methods (e.g., <a href="https://arxiv.org/pdf/1605.08153.pdf">Anderson et al.</a> and <a href="https://arxiv.org/pdf/1604.08610.pdf">Ruder et al.</a>): <strong>1. their methods complete the entire style transformation for each video frame, which causes 3 or 5 mins; 2. they have too much temporal consistency constraints between adjacent frames, which causes ghosting artefacts.</strong> To avoid these drawbacks, we come up with a straightforward idea that we only constrain loose temporal consistency among already stylised frames.</p>
+<p>Now we need to deal with the problems such as slow runtime and ghosting artefacts. We dig into the reason behind these problems, and observe that there are two drawbacks of previous optimisation-based methods (e.g., <a href="https://arxiv.org/pdf/1605.08153.pdf">Anderson et al.</a> and <a href="https://arxiv.org/pdf/1604.08610.pdf">Ruder et al.</a>): <strong>1. their methods complete the entire style transformation for each video frame, which causes 3 or 5 mins; 2. they have too much temporal consistency constraints between adjacent frames, which causes ghosting artefacts.</strong> To avoid these drawbacks, we come up with a straightforward idea that we only constrain loose temporal consistency among already stylised frames. In this way, the optimisation process only completes a light style transformation for producing seamless frames, thus it runs much more fast (around 1.8 second including per-frame stylising process) than previous methods.</p>
 <p>Following this idea, we need to handle another two problems: <strong>1. inconsistent textures between adjacent stylised frames due to flow errors (ghosting artefacts); 2. image degeneration after long-term running (blurriness artefacts).</strong></p>
 <h2 id="3-methodology">3. Methodology</h2>
 <ol>
@@ -805,7 +805,8 @@
   <source src="3_flownet2.mp4" type="video/mp4">
 </video></p>
 <h2 id="5-more-results">5. More results</h2>
-<p>
+<p>Here we show more video style transfer results by our approach with challenging style images.
+
 
 
 
@@ -857,9 +858,26 @@
 
 
 <video controls >
-  <source src="15_huang.mp4" type="video/mp4">
+  <source src="20_huang.mp4" type="video/mp4">
 </video>
-TO BE CONTINUED&hellip;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<video controls >
+  <source src="20_Johnson.mp4" type="video/mp4">
+</video></p>
 
     </div>
 

@@ -238,7 +238,7 @@
     
       <meta property="article:published_time" content="2019-12-24T15:52:34&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-03-02T20:53:34&#43;00:00">
+    <meta property="article:modified_time" content="2020-03-08T21:03:56&#43;00:00">
   
 
   
@@ -269,7 +269,7 @@
   "headline": "Discrete_specific_techniques_dl",
   
   "datePublished": "2019-12-24T15:52:34Z",
-  "dateModified": "2020-03-02T20:53:34Z",
+  "dateModified": "2020-03-08T21:03:56Z",
   
   "author": {
     "@type": "Person",
@@ -576,7 +576,7 @@
           Last updated on
       
     
-    Mar 2, 2020
+    Mar 8, 2020
   </span>
   
 
@@ -585,7 +585,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    14 min read
+    16 min read
   </span>
   
 
@@ -625,7 +625,7 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h2 id="bag-of-words-bow">Bag of words (BOW)</h2>
+      <h2 id="1-bag-of-words-bow">1. Bag of words (BOW)</h2>
 <p>BOW is a method to extract features from text documents, which is usually used in <strong>NLP</strong>, <strong>Information retrieve (IR) from documents</strong> and <strong>document classification</strong>. In general, BOW summarizes words in documents into a vocabulary (like dict type in python) that <strong>collects all the words in the documents along with word counts but disregarding the order they appear.</strong></p>
 <p>For examples, two sentences:</p>
 <pre><code class="language-python">Lei Li would like to have a lunch before he goes to watch a movie.
@@ -639,41 +639,48 @@
 Then first sentence is presented in vector (in the order of vocabulary) as: {1,1,1,1,2,1,2,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0}, and the second sentence is presented in vector as: {0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1}.</p>
 <h3 id="reference">Reference</h3>
 <p><a href="https://www.freecodecamp.org/news/an-introduction-to-bag-of-words-and-how-to-code-it-in-python-for-nlp-282e87a9da04/">https://www.freecodecamp.org/news/an-introduction-to-bag-of-words-and-how-to-code-it-in-python-for-nlp-282e87a9da04/</a></p>
-<h2 id="principal-component-analysis-pca">Principal Component Analysis (PCA)</h2>
+<h2 id="2-principal-component-analysis-pca">2. Principal Component Analysis (PCA)</h2>
+<p>To better understand the mathematic theory behind PCA, please refer to <a href="https://blog.csdn.net/u010376788/article/details/46957957">this Blog</a> (Chinese only).</p>
 <ol>
 <li>mean: $\mu_i = \frac{1}{n} \Sigma_{i=1}^n{x_i}$</li>
 <li>variance: $\sigma^2 = \frac{1}{n} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$</li>
 <li>standard deviation: $\sigma^2 = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$</li>
 <li>covariance: $cov(x,y) = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i-\mu_x)*(y_i -\mu_y)}$</li>
 </ol>
-<h2 id="cross-entropy">Cross Entropy</h2>
-<h3 id="amount-of-information-that-an-event-gives">Amount of information that an event gives</h3>
+<p>Let's denote the input data $X$ is a $N \times M$ matrix where $N$ is the dimension of each input sample and $M$ is the number of input samples. <strong>Usually, the PCA aims to reduce the dimension $N$ to $R$ by a linear transformation matrix $P$ of $X$, which can be written as $Y=PX$</strong>. The dimension reduction actually changes the basis vector set of $X$ to the row vectors in $P$, and we hope the new basis vector set is independent from each other and the projected points in one basis vector is as far as possible from each other. In other words, <strong>we hope the variance in one basis vector is as large as possible and the covariance between each two basis vector is as small as possible</strong>. To this end, we compute the covariance matrix $B$ of $Y$, and we find the elements at diagonal are variances and other elements are covariance of new each basis vectors (in fact, the covariance matrix B is a symmetry matrix), thus we then seek $P$ to make the covariance matrix $B$ diagonalization, whcih means the elements are as large as possible at diagonal and elsewhere is zero.</p>
+<p>$$B = \frac{1}{m} YY^T = \frac{1}{m} (PX)(PX)^T = P (\frac{1}{m}XX^T) P^T = P A P^T$$
+where A denotes the covariance matrix of input data $X$. Equation above indicates that the $P$ diagonalize A is what we seek. In linear algebra, $P$ is actually made of eigenvectors of $A$ and elements at diagnoal are corresponding eigenvalues, which is called eigen decomposition. Based on this, we only need to compute the eigenvectors and their eigenvalues of $A$ and sort the eigenvectors into a matrix $C$ by ordering from larger corresponding eigenvalues to smaller ones. If we want to reduce the dimension from $N$ to $R$ ($R&lt;N$), then we choose the top $R$ rows of $C$ to form $P$, and perform $PX$ to get the final result $Y$.</p>
+<p>As we can see, PCA needs to compute the mean, variance and covariance to form the covariance matrix of original input data, and compute eigenvectors and their corresponding eigenvalues, which indicates this could be quite slow when input dimension $N$ is large.</p>
+<h3 id="reference-1">Reference</h3>
+<p><a href="https://blog.csdn.net/u010376788/article/details/46957957">https://blog.csdn.net/u010376788/article/details/46957957</a></p>
+<h2 id="3-cross-entropy">3. Cross Entropy</h2>
+<h3 id="31-amount-of-information-that-an-event-gives">3.1 Amount of information that an event gives</h3>
 <p>In general, the amount of information should be greater when an event with low probability happens. For example, event A: China won the table-tennis world champion; event B: Eygpt won the table-tennis world champion. Obviously, event B will give people more information if it happens. The reason behind this is that event A has great probability to happen while event B is rather rare, so people will get more information if event B happens.</p>
 <p>The amount of information that an event gives is denoted as following equation:</p>
 <p>$$f(x) = -log(p(x))$$
 where $p(x)$ denotes the probability that event $x$ happens.</p>
-<h3 id="entropy">Entropy</h3>
+<h3 id="32-entropy">3.2 Entropy</h3>
 <p>For a given event $X$, there may be several possible situations/results, and each situation/result has its own probability, then the amount of information that this event gives is denoted as:
 $$f(X)= -\Sigma_{i=1}^{n}p(x_i)log(p(x_i))$$<br>
 where $n$ denotes the number of situations/results and $p(x_i)$ is the probability of situation/result $x_i$ happens.</p>
-<h3 id="kullback-leibler-kl-divergence">Kullback-Leibler (KL) divergence</h3>
+<h3 id="33-kullback-leibler-kl-divergence">3.3 Kullback-Leibler (KL) divergence</h3>
 <p>The KL divergence aims to describe the difference between two probability distributions. For instance, for a given event $X$ consisting of a series events ${x_1,x_2,&hellip;,x_n}$, if there are two probability distributions of possible situations/results: $P={p(x_1),p(x_2),&hellip;,p(x_n)}$ and $Q={q(x_1),q(x_2),&hellip;,q(x_n)}$, then the KL divergence distance between $P$ and $Q$ is formulated as:</p>
 <p>$$D_{KL}(P||Q) = \Sigma_{i=1}^n p(x_i)log(\frac{p(x_i)}{q(x_i)})$$
 further,
 $$D_{KL}(P||Q) = \Sigma_{i=1}^n p(x_i)log(p(x_i)) - \Sigma_{i=1}^n p(x_i)log(q(x_i))$$
 where $Q$ is closer to $P$ when $D_{KL}(P||Q)$ is smaller.</p>
-<h3 id="cross-entropy-1">Cross Entropy</h3>
+<h3 id="34-cross-entropy">3.4 Cross Entropy</h3>
 <p>In machine learning or deep learning, let $y={p(x_1),p(x_2),&hellip;,p(x_n)}$ denote the groundturth probability distribution, and $\widetilde{y}={q(x_1),q(x_2),&hellip;,q(x_n)}$ present the predicted probability distribution, then KL divergence is just a good way to compute the distance between predicted distribution and groudtruth. Thus, the loss could be just formulated as:
 $$Loss(y,\widetilde{y}) = \Sigma_{i=1}^n p(x_i)log(p(x_i)) - \Sigma_{i=1}^n p(x_i)log(q(x_i))$$
 where the first term $\Sigma_{i=1}^n p(x_i)log(p(x_i))$ is a constant, then the $Loss(y,\widetilde{y})$ is only related to the second term $- \Sigma_{i=1}^n p(x_i)log(q(x_i))$ which is called **Cross Entropy** as a training loss.</p>
-<h3 id="reference-1">Reference</h3>
+<h3 id="reference-2">Reference</h3>
 <p><a href="https://blog.csdn.net/tsyccnh/article/details/79163834">https://blog.csdn.net/tsyccnh/article/details/79163834</a></p>
-<h2 id="conv-1x1">Conv 1x1</h2>
+<h2 id="4-conv-1x1">4. Conv 1x1</h2>
 <p><a href="https://arxiv.org/pdf/1409.4842.pdf">Conv 1x1</a> in Google Inception is quite useful when the filter dimension of input featues needs to be increased or decreased meanwhile keeping the spaital dimension, and reduces the convolution computation. For example, the input feautre dimension is $(B, C, H, W)$ where $B$ is batch size, $C$ is channel number, $H$ and $W$ are height and width. Using $M$ filters of Conv 1x1, then the output of Conv 1x1 is $(B,M,H,W)$, only channel number changes but spatial dimension ($H \times W$) is still the same as input. To demonstrate the computation efficiency using conv 1x1, take a look at next example. For instance, the output feature we want is $(C, H, W)$, using M filters of conv 3x3, then the compuation is $3^2C \times MHW$. Using conv 1x1, the computation is $1^2C \times MHW$, which is $\frac{1}{9}$ of using conv 3x3.</p>
 <p><a href="https://machinelearningmastery.com/introduction-to-1x1-convolutions-to-reduce-the-complexity-of-convolutional-neural-networks/">Why do we need to decrease filter dimension or the number of feature maps?</a> The filters or the number of feature maps often increases along with the depth of the network, it is a common network design pattern. For example, the number of feature maps in VGG19, is 64,128,512 along with the depth of network. Further, some networks like Inception architecture may also concatenate the output feature maps from multiple front convolution layers, which also rapidly increases the number of feature maps to subsequent convolutional layers.</p>
-<h3 id="reference-2">Reference</h3>
+<h3 id="reference-3">Reference</h3>
 <p><a href="https://stats.stackexchange.com/questions/194142/what-does-1x1-convolution-mean-in-a-neural-network">https://stats.stackexchange.com/questions/194142/what-does-1x1-convolution-mean-in-a-neural-network</a></p>
-<h2 id="iou-intersection-of-union-in-object-detection">IOU (Intersection of Union) in Object Detection</h2>
+<h2 id="5-iou-intersection-of-union-in-object-detection">5. IOU (Intersection of Union) in Object Detection</h2>
 
 
 
@@ -782,7 +789,7 @@ $$\Delta t_w = log(G_w/P_w)$$
 $$\Delta t_h = log(G_h/P_h)$$
 Next, we denote $W_i \Phi(P_i)$ where $i \in {x,y,w,h}$ as learned transformation through the neural network, then the loss function is to minimize the L2 distance between $\Delta t_i$ and $W_i \Phi(P_i)$ where $i \in {x,y,w,h}$ by SGD:
 $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$</p>
-<h2 id="upsampling-deconvolution-and-unpooling">Upsampling, Deconvolution and Unpooling</h2>
+<h2 id="6-upsampling-deconvolution-and-unpooling">6. Upsampling, Deconvolution and Unpooling</h2>
 <p><strong>Upsampling</strong>: upsample any image to higher resolution. It uses <strong>upsample</strong> and <strong>interpolation</strong>.</p>
 <p><strong><a href="https://www.quora.com/How-do-fully-convolutional-networks-upsample-their-coarse-output">Deconvolution</a></strong>: also called transpose convolution. For example, your input for deconvolution layer is 4x4, deconvolution layer multiplies one point in the input with a 3x3 weighted kernel and place the 3x3 results in the output image. Where the outputs overlap you sum them. Often you would use a stride larger than 1 to increase the overlap points where you sum them up, which adds upsampling effect (see blue points). The upsampling kernels can be learned just like normal convolutional kernels.
 
@@ -821,7 +828,7 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$</p>
 <ol>
 <li><a href="https://www.quora.com/What-is-the-difference-between-Deconvolution-Upsampling-Unpooling-and-Convolutional-Sparse-Coding">https://www.quora.com/What-is-the-difference-between-Deconvolution-Upsampling-Unpooling-and-Convolutional-Sparse-Coding</a></li>
 </ol>
-<h2 id="roi-pooling-in-object-detection-fast-rcnn">RoI Pooling in Object Detection (Fast RCNN)</h2>
+<h2 id="7-roi-pooling-in-object-detection-fast-rcnn">7. RoI Pooling in Object Detection (Fast RCNN)</h2>
 <p><a href="https://arxiv.org/pdf/1504.08083.pdf">RoI pooling</a> is simple version of Spatial Pyramid Pooling (multiple division scales, i.e., divide the entire feature maps into (1,4,16) patches/grids), which has only one scale division. For example, the original input image size is (1056x640) and one region proposal ($x_1=0, y_1=80,x_2=245, y_2=498$), after convolutional layers and pooling layers, the feature map size is (66x40), then we should rescale the proposal from ($x_1=0, y_1=80,x_2=245, y_2=498$) to ($x_1=0, y_1=5,x_2=15, y_2=31$) as the scale is 16 (1056/66=16 and 640/40=16). Then we divide the proposal on feature map into 7x7 sections/grids (the proposal size is no need of 7 times) if the output size is 7x7. Next we operate max pooling on each grid, and place the maxima into output 7x7. Here is another simple example below, the input feature size is 8x8, proposal is (0,3,7,8), and the output size is 2x2 thus divide the proposal region into 2x2 sections:</p>
 
 
@@ -854,11 +861,11 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$</p>
 
 </figure>
 
-<h3 id="reference-3">Reference</h3>
+<h3 id="reference-4">Reference</h3>
 <ol>
 <li><a href="https://zhuanlan.zhihu.com/p/73654026">https://zhuanlan.zhihu.com/p/73654026</a>ß</li>
 </ol>
-<h2 id="roialign-pooling-in-object-detection">RoIAlign Pooling in Object Detection</h2>
+<h2 id="8-roialign-pooling-in-object-detection">8. RoIAlign Pooling in Object Detection</h2>
 <p>RoI align Pooling is proposed in <a href="https://arxiv.org/pdf/1703.06870.pdf">Mask RCNN</a> to address the problem that RoI pooling causes misalignments by rounding quantization.</p>
 <p><strong>Problem of RoI pooling.</strong> There are twice misalignments for each RoI pooling operation. For example, the size of original input image is 800x800, and one region proposal is 515x482 and its corresponding coordinates are ($x_{tl}=20, y_{tl}=267, x_{br}=535, y_{br}=749$) where &lsquo;tl&rsquo; means top left and &lsquo;br&rsquo; means bottom right. And the stride of last conv layer is **16** which means each feature map extracted from the last conv layer is **50x50** (800/16). If the output size is fixed to 7x7, then RoI pooling would quantize (by floor operation) the region proposal to **32x30** and its corresponding coordinates to ($x_{tl}=1,y_{tl}=16, x_{br}=33, y_{br}=46$). The twice misalignments in each feature map are visualized in the below figure (acutal coordinates in blue colour).</p>
 
@@ -925,11 +932,11 @@ $$L_{reg} = \sum_{i}^{N} (\Delta t_i - W_i \Phi(P_i))^2 + \lambda ||W||^2$$</p>
 </figure>
 
 where area0=(2.3995-2)x(17.76325-17)=0.304918375, area1=(3-2.3995)x(17.76325-17)=0.458331625, area2=(2.3995-2)x(18-17.76325)=0.094581625, area3=(3-2.3995)x(18-17.76325)=0.142168375.</p>
-<h3 id="reference-4">Reference</h3>
+<h3 id="reference-5">Reference</h3>
 <ol>
 <li><a href="https://zhuanlan.zhihu.com/p/61317964">https://zhuanlan.zhihu.com/p/61317964</a></li>
 </ol>
-<h2 id="map-mean-average-precision-in-object-detection">mAP (mean average precision) in Object Detection</h2>
+<h2 id="9-map-mean-average-precision-in-object-detection">9. mAP (mean average precision) in Object Detection</h2>
 <p>mAP is a measurement metric for the accuracy of object detectors, and it actually computes the mean average precision values along with recall from 0 to 1. Before going deep into mAP, a few concepts should be introduced first, i.e., True Positive, True Negative, False Positive, False Negative, Precision and Recall.</p>
 <p>For example, there is a classification task to distinguish whether an image contains apples, then for an image dataset:</p>
 <p><strong>True Positive (TP)</strong>: is how many images containing apples (True) and you predict them contain apples (Positive).</p>
@@ -940,7 +947,7 @@ where area0=(2.3995-2)x(17.76325-17)=0.304918375, area1=(3-2.3995)x(17.76325-17)
 $$P = \frac{TP}{TP+FP}$$</p>
 <p><strong>Recall</strong>: is the percentage of TP among how many images you predict correctly including TP and FN. Correct prediction consists of two parts: 1. you predict an image contains apples and the fact is that it indeed contains apples (this is actually TP); 2. you predict an image not contain apples and the fact is that it indeed not contain apples (this is actually FN). Thus recall is denoted as:
 $$R = \frac{TP}{TP+FN}$$</p>
-<h3 id="ap">AP</h3>
+<h3 id="91-ap">9.1 AP</h3>
 <p>AP is the <strong>exact area under the precision-recall curve</strong>. In object detection, the prediction is correct if IoU $\geqslant$ 0.5, which means the True Positive is when your prediction satisfies IoU $\geqslant$ 0.5. Then False Positive is IoU &lt; 0.5. For example, if we have a precision-recall curve (red line) like below figure, we first smooth out the zigzag pattern, then at each recall level, we replace each precision value with the maximum precision value to the right of that recall level.</p>
 
 
@@ -975,14 +982,14 @@ $$R = \frac{TP}{TP+FN}$$</p>
 
 <p>We first smooth out the precision zigzag pattern (recall between 0.3 and 0.6,0.6 and 0.8) by replacing maximum precision value to the right of that recall level (blue line). This happens when the FP number increases first then TP number increases. ($Precision = \frac{TP}{TP+FP}$, FP $\uparrow$, Precision $\downarrow$. TP $\uparrow$, Precision $\uparrow$. ). Then $AP = \frac{1}{10}(1 \times 3 + 0.7 \times 3 + 0.6 \times 4)=0.75$ (green area).</p>
 <p><strong>mAP is the average of AP</strong>. In some context, we compute the AP for each class then average them. But in some context, they mean the same thing. For example, in <strong>COCO context</strong>, AP is averaged over all categories, which means <strong>there is no difference between mAP and AP</strong>.</p>
-<h3 id="reference-5">Reference</h3>
+<h3 id="reference-6">Reference</h3>
 <p><a href="https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173">https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173</a></p>
-<h2 id="cross-validation">Cross Validation</h2>
-<h3 id="model-vs-learner">Model vs Learner</h3>
+<h2 id="10-cross-validation">10. Cross Validation</h2>
+<h3 id="101-model-vs-learner">10.1 Model vs Learner</h3>
 <p>Model is general a mapping function from input to output, and it could be a machine learning algorithm (e.g., Logistic regression/SVM) or deep neural network (e.g., CNN/GCN/GAN). While Learner is general a model with learned weights which is a learned model after training.</p>
-<h3 id="hyperparameters-vs-parameters-in-model">Hyperparameters vs parameters in Model</h3>
+<h3 id="102-hyperparameters-vs-parameters-in-model">10.2 Hyperparameters vs parameters in Model</h3>
 <p>Hyperparameters are the user pre-defined parameters of a model before training (e.g., learning-rate), while parameters are the learned weights after training, for example, $w^T$ in linear regression $f(x) = w^T x + b$.</p>
-<h3 id="k-fold-cross-validation">K-fold Cross Validation</h3>
+<h3 id="103-k-fold-cross-validation">10.3 K-fold Cross Validation</h3>
 <p>Given a dataset, we first divide it into training set and testing set which is not accessible to model during training stage. Then we further divide the training set into a training part and a validate part by k-fold cross validation.</p>
 <p>For example, if we choose $k=5$ then the training set will be divided into 5 parts of equal size, like part 1, part 2, part 3, part 4 and part 5. During training, we take part 1 as validate samples and the rest as true training samples, which means the model will be trained with the part 2-4 and validated by part 1. Then we choose part 2 as validate samples and the rest as true training samples, which means the model will be trained with part1,3-5 and validated by part 2. Continue, until each part has been chosen as validate samples. Thus this process is repeated $k=5$ times. After this, the model has been trained with all the samples of the training set (though it is not in once time). Then we use mean of mean square error:
 $$cv_{k} = \frac{1}{k} \sum_{i=1}^k MSE(x_i)$$
@@ -1020,7 +1027,7 @@ to see the cross validate score. The illustration is as follow:</p>
 
 <h3 id="references-1">References</h3>
 <p><a href="https://zhuanlan.zhihu.com/p/24825503">https://zhuanlan.zhihu.com/p/24825503</a></p>
-<h2 id="why-do-variational-autoencoders-vae-compute-kl-divergence-loss">Why do Variational Autoencoders (VAE) compute KL divergence loss?</h2>
+<h2 id="11-why-do-variational-autoencoders-vae-compute-kl-divergence-loss">11 Why do Variational Autoencoders (VAE) compute KL divergence loss?</h2>
 <p>Variational autoencoders aim to map the input data into a distribution (aka latent vector) instead of just a <em>fixed vector</em>, as once the model is learned we can generate arbitrary output by just sampling from this learnt distribution. In this way, during test time, we can discard the encoder part and just use the decoder to produce new outputs that are not seen in training set. However, in general cases, the distribution of learned latent vector could be variant to inputs in training dataset. To address this problem, we assign the learned distribution of latent vectors to be a Gaussian distribution, then we sample arbitrary $z$ from this distribution and produce new outputs by passing $z$ into the decoder. To enforce the learned distribution, we use Kullback-Leibler (KL) divergence loss to emphasize the distribution distance between learned distribution and Gaussian distribution.</p>
 <p>
 
@@ -1086,7 +1093,7 @@ During the training-time, a variational autoencoder implemented as a feed-forwar
 </figure>
 
 For a conditional variational autoencoder, we hope the autoencoder could produce some plausible outputs with additional input (aka condition). For example, we want an MINST digit autoencoder could produce a digit just like a particular person's writing or style. In figure 10, left is a training-time conditional variational autoencoder implemented as a feefforward nerual network, following the same notation as Fig 9. Right is same decoder at test time, where $X$ denotes the condition in both training and testing time.</p>
-<h3 id="reference-6">Reference</h3>
+<h3 id="reference-7">Reference</h3>
 <ol>
 <li><a href="https://arxiv.org/pdf/1606.05908.pdf">https://arxiv.org/pdf/1606.05908.pdf</a></li>
 <li><a href="https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html">https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html</a></li>

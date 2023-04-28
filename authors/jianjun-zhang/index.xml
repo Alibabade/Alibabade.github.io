@@ -5,12 +5,20 @@
     <link>https://Alibabade.github.io/authors/jianjun-zhang/</link>
       <atom:link href="https://Alibabade.github.io/authors/jianjun-zhang/index.xml" rel="self" type="application/rss+xml" />
     <description>Jianjun Zhang</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 07 Aug 2021 20:05:48 +0100</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Jianjun Zhang</title>
       <link>https://Alibabade.github.io/authors/jianjun-zhang/</link>
     </image>
+    
+    <item>
+      <title>Bas-relief modelling from enriched detail and geometry with deep normal transfer</title>
+      <link>https://Alibabade.github.io/publication/wang-2021-bas/</link>
+      <pubDate>Sat, 07 Aug 2021 20:05:48 +0100</pubDate>
+      <guid>https://Alibabade.github.io/publication/wang-2021-bas/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Single-image Mesh Reconstruction and Pose Estimation via Generative Normal Map</title>

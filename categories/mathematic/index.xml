@@ -89,7 +89,7 @@ then we call $C$ is a &lt;strong&gt;convex set/domain&lt;/strong&gt;(see figure 
 
 &lt;/figure&gt;
 
-&lt;p&gt;A few sets we&#39;ve already known are convex sets. For example, &lt;strong&gt;a real number set $\mathbb{R}$&lt;/strong&gt;. It&#39;s obvious that $\forall x,y \in \mathbb{R}$, and $\forall \theta \in \mathbb{R}$ and $0 \leq \theta \leq 1$:
+&lt;p&gt;A few sets we&amp;rsquo;ve already known are convex sets. For example, &lt;strong&gt;a real number set $\mathbb{R}$&lt;/strong&gt;. It&amp;rsquo;s obvious that $\forall x,y \in \mathbb{R}$, and $\forall \theta \in \mathbb{R}$ and $0 \leq \theta \leq 1$:
 $$\theta x + (1-\theta) y \in \mathbb{R}$$
 &lt;strong&gt;An affine subspace $\mathbb{R}^n$&lt;/strong&gt;. Given a $n \times m$ matrix $A$ and a vector $b$ of length $m$, then an affine subspace is such a set consisting of the following elements:&lt;br&gt;
 $$\{x \in \mathbb{R}^n: Ax=b\}$$

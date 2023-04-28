@@ -854,7 +854,7 @@ The operation is first divide the input channels $N$ into $G$ groups, which resu
 </figure>
 </p>
 <h3 id="32-flops-comparison">3.2 FLOPs comparison</h3>
-<p>Note that FLOPs of ResNeXt is only reduced by a small budget of computational cost and it's up to group number $G$ when $N_r=N_x$ and $M_r=M_x$.
+<p>Note that FLOPs of ResNeXt is only reduced by a small budget of computational cost and it&rsquo;s up to group number $G$ when $N_r=N_x$ and $M_r=M_x$.
 
 
 
@@ -1118,7 +1118,7 @@ Note that the FLOPs for a single inverted residual block has an extra term ($N_{
 <p><strong>Why MobileNet is not as fast as FLOPs indicates in practice?</strong> One reason could be the application of memory takes much time (according to some interviews).</p>
 <h2 id="5-shufflenet-v1-vs-v2">5. ShuffleNet v1 vs v2</h2>
 <h3 id="51-shufflenet-v1-resnext">5.1 ShuffleNet v1 (ResNeXt)</h3>
-<p>ResNeXt is an efficient model for ResNet by introducing group conv $3\times3$ to reduce computational cost. However, the computational cost of conv $1\times1$ become the operation consuming most of time. To reduce the FLOPs of conv $1\times1$, <a href="https://arxiv.org/pdf/1707.01083.pdf">ShuffleNet v1</a> introduce group conv $1\times1$ tp replace the standard conv $1\times1$. However, the features won't be shared between groups by using group conv $1\times1$, which causes less feature reuse and accuracy. To address this problem, a channel shuffle operation is introduced to share features between groups. The basic blocks of ResNeXt and ShuffleNet v1 is shown in the below figure.
+<p>ResNeXt is an efficient model for ResNet by introducing group conv $3\times3$ to reduce computational cost. However, the computational cost of conv $1\times1$ become the operation consuming most of time. To reduce the FLOPs of conv $1\times1$, <a href="https://arxiv.org/pdf/1707.01083.pdf">ShuffleNet v1</a> introduce group conv $1\times1$ tp replace the standard conv $1\times1$. However, the features won&rsquo;t be shared between groups by using group conv $1\times1$, which causes less feature reuse and accuracy. To address this problem, a channel shuffle operation is introduced to share features between groups. The basic blocks of ResNeXt and ShuffleNet v1 is shown in the below figure.
 
 
 
@@ -1545,7 +1545,7 @@ Since the channel split, concat and channel shuffle are basically not multiplica
 
     <div class="media-body">
       <h5 class="card-title"><a href="https://Alibabade.github.io/">Li Wang</a></h5>
-      <h6 class="card-subtitle">PhD candidate</h6>
+      <h6 class="card-subtitle">PhD</h6>
       <p class="card-text">My research focuses on image/video based neural style transfer.</p>
       <ul class="network-icon" aria-hidden="true">
   
@@ -1561,7 +1561,7 @@ Since the channel split, concat and channel shuffle are basically not multiplica
       
     
     <li>
-      <a href="/lwang@bournemouth.ac.uk" >
+      <a href="/liwang1991@outlook.com" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>

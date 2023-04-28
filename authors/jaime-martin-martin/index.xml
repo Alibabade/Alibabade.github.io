@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jaime Martín-Martín | Li Wang</title>
+    <link>https://Alibabade.github.io/authors/jaime-martin-martin/</link>
+      <atom:link href="https://Alibabade.github.io/authors/jaime-martin-martin/index.xml" rel="self" type="application/rss+xml" />
+    <description>Jaime Martín-Martín</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 25 Apr 2023 09:03:29 +0800</lastBuildDate>
+    <image>
+      <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Jaime Martín-Martín</title>
+      <link>https://Alibabade.github.io/authors/jaime-martin-martin/</link>
+    </image>
+    
+    <item>
+      <title>The Validity of the Energy Expenditure Criteria Based on Open Source Code through two Inertial Sensors</title>
+      <link>https://Alibabade.github.io/publication/jmartin-2022-the/</link>
+      <pubDate>Tue, 25 Apr 2023 09:03:29 +0800</pubDate>
+      <guid>https://Alibabade.github.io/publication/jmartin-2022-the/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

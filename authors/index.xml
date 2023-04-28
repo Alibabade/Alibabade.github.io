@@ -5,117 +5,12 @@
     <link>https://Alibabade.github.io/authors/</link>
       <atom:link href="https://Alibabade.github.io/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 06 Feb 2020 21:35:55 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 25 Apr 2023 09:03:29 +0800</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Authors</title>
       <link>https://Alibabade.github.io/authors/</link>
     </image>
-    
-    <item>
-      <title></title>
-      <link>https://Alibabade.github.io/authors/admin/</link>
-      <pubDate>Thu, 06 Feb 2020 21:35:55 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/admin/</guid>
-      <description>&lt;p&gt;I am currently a PhD candidate of Computer Vision and Computer Graphics at National Centre for Computer Animation, Bournemouth University, UK. My research focuses on image/video based neural style transfer, in particular, photo style transfer, coherent video style transfer and geometry texture synthesis using deep learning techniques. I received my M.Eng and B.Sci degrees from Department of Computer Science at Jilin University in 2016 and 2013, respectively. Then I got a 4-year PhD scholarship from Bournemouth University and China Scholarship Council.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Jianjun Zhang</title>
-      <link>https://Alibabade.github.io/authors/jianjun-zhang/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/jianjun-zhang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Li Wang</title>
-      <link>https://Alibabade.github.io/authors/li-wang/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/li-wang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Nan Xiang</title>
-      <link>https://Alibabade.github.io/authors/nan-xiang/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/nan-xiang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tao Jiang</title>
-      <link>https://Alibabade.github.io/authors/tao-jiang/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/tao-jiang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Xiaosong Yang</title>
-      <link>https://Alibabade.github.io/authors/xiaosong-yang/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/xiaosong-yang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Yanran Li</title>
-      <link>https://Alibabade.github.io/authors/yanran-li/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/yanran-li/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Shi-Min Hu</title>
-      <link>https://Alibabade.github.io/authors/shi-min-hu/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/shi-min-hu/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Zhao Wang</title>
-      <link>https://Alibabade.github.io/authors/zhao-wang/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/zhao-wang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Jie Li</title>
-      <link>https://Alibabade.github.io/authors/jie-li/</link>
-      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/jie-li/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ming-Hui Zhu</title>
-      <link>https://Alibabade.github.io/authors/ming-hui-zhu/</link>
-      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/ming-hui-zhu/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ning Wang</title>
-      <link>https://Alibabade.github.io/authors/ning-wang/</link>
-      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/ning-wang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Xiang-Jiu Che</title>
-      <link>https://Alibabade.github.io/authors/xiang-jiu-che/</link>
-      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://Alibabade.github.io/authors/xiang-jiu-che/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>

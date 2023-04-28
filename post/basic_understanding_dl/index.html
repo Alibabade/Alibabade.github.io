@@ -647,7 +647,7 @@ Then first sentence is presented in vector (in the order of vocabulary) as: {1,1
 <li>standard deviation: $\sigma^2 = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$</li>
 <li>covariance: $cov(x,y) = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i-\mu_x)*(y_i -\mu_y)}$</li>
 </ol>
-<p>Let's denote the input data $X$ is a $N \times M$ matrix where $N$ is the dimension of each input sample and $M$ is the number of input samples. <strong>Usually, the PCA aims to reduce the dimension $N$ to $R$ by a linear transformation matrix $P$ of $X$, which can be written as $Y=PX$</strong>. The dimension reduction actually changes the basis vector set of $X$ to the row vectors in $P$, and we hope the new basis vector set is independent from each other and the projected points in one basis vector is as far as possible from each other. In other words, <strong>we hope the variance in one basis vector is as large as possible and the covariance between each two basis vector is as small as possible</strong>. To this end, we compute the covariance matrix $B$ of $Y$, and we find the elements at diagonal are variances and other elements are covariance of new each basis vectors (in fact, the covariance matrix B is a symmetry matrix), thus we then seek $P$ to make the covariance matrix $B$ diagonalization, whcih means the elements are as large as possible at diagonal and elsewhere is zero.</p>
+<p>Let&rsquo;s denote the input data $X$ is a $N \times M$ matrix where $N$ is the dimension of each input sample and $M$ is the number of input samples. <strong>Usually, the PCA aims to reduce the dimension $N$ to $R$ by a linear transformation matrix $P$ of $X$, which can be written as $Y=PX$</strong>. The dimension reduction actually changes the basis vector set of $X$ to the row vectors in $P$, and we hope the new basis vector set is independent from each other and the projected points in one basis vector is as far as possible from each other. In other words, <strong>we hope the variance in one basis vector is as large as possible and the covariance between each two basis vector is as small as possible</strong>. To this end, we compute the covariance matrix $B$ of $Y$, and we find the elements at diagonal are variances and other elements are covariance of new each basis vectors (in fact, the covariance matrix B is a symmetry matrix), thus we then seek $P$ to make the covariance matrix $B$ diagonalization, whcih means the elements are as large as possible at diagonal and elsewhere is zero.</p>
 <p>$$B = \frac{1}{m} YY^T = \frac{1}{m} (PX)(PX)^T = P (\frac{1}{m}XX^T) P^T = P A P^T$$
 where A denotes the covariance matrix of input data $X$. Equation above indicates that the $P$ diagonalize A is what we seek. In linear algebra, $P$ is actually made of eigenvectors of $A$ and elements at diagnoal are corresponding eigenvalues, which is called eigen decomposition. Based on this, we only need to compute the eigenvectors and their eigenvalues of $A$ and sort the eigenvectors into a matrix $C$ by ordering from larger corresponding eigenvalues to smaller ones. If we want to reduce the dimension from $N$ to $R$ ($R&lt;N$), then we choose the top $R$ rows of $C$ to form $P$, and perform $PX$ to get the final result $Y$.</p>
 <p>As we can see, PCA needs to compute the mean, variance and covariance to form the covariance matrix of original input data, and compute eigenvectors and their corresponding eigenvalues, which indicates this could be quite slow when input dimension $N$ is large.</p>
@@ -1092,7 +1092,7 @@ During the training-time, a variational autoencoder implemented as a feed-forwar
 
 </figure>
 
-For a conditional variational autoencoder, we hope the autoencoder could produce some plausible outputs with additional input (aka condition). For example, we want an MINST digit autoencoder could produce a digit just like a particular person's writing or style. In figure 10, left is a training-time conditional variational autoencoder implemented as a feefforward nerual network, following the same notation as Fig 9. Right is same decoder at test time, where $X$ denotes the condition in both training and testing time.</p>
+For a conditional variational autoencoder, we hope the autoencoder could produce some plausible outputs with additional input (aka condition). For example, we want an MINST digit autoencoder could produce a digit just like a particular person&rsquo;s writing or style. In figure 10, left is a training-time conditional variational autoencoder implemented as a feefforward nerual network, following the same notation as Fig 9. Right is same decoder at test time, where $X$ denotes the condition in both training and testing time.</p>
 <h3 id="reference-7">Reference</h3>
 <ol>
 <li><a href="https://arxiv.org/pdf/1606.05908.pdf">https://arxiv.org/pdf/1606.05908.pdf</a></li>
@@ -1237,7 +1237,7 @@ For a conditional variational autoencoder, we hope the autoencoder could produce
 
     <div class="media-body">
       <h5 class="card-title"><a href="https://Alibabade.github.io/">Li Wang</a></h5>
-      <h6 class="card-subtitle">PhD candidate</h6>
+      <h6 class="card-subtitle">PhD</h6>
       <p class="card-text">My research focuses on image/video based neural style transfer.</p>
       <ul class="network-icon" aria-hidden="true">
   
@@ -1253,7 +1253,7 @@ For a conditional variational autoencoder, we hope the autoencoder could produce
       
     
     <li>
-      <a href="/lwang@bournemouth.ac.uk" >
+      <a href="/liwang1991@outlook.com" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>

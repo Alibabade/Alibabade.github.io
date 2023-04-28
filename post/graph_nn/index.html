@@ -677,7 +677,7 @@
 <p>There are two concepts should be understood first before GCN.
 <strong>Degree Matrix (D)</strong>: this matrix ($N \times N$, N is the node number) is a diag matrix in which values in diag line means the degree of each node; <strong>Adjacency Matrix (A)</strong>: this matrix is also a $N \times N$ matrix in which value $A_{i,j}=1$ means there is an edge between node $i$ and $j$, otherwise $A_{i,j}=0$;</p>
 <h3 id="simple-gcn-example">Simple GCN example</h3>
-<p>Let's consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it's already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:</p>
+<p>Let&rsquo;s consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it&rsquo;s already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:</p>
 <ol>
 <li>there is no node self information as adjacency matrix $A$ does not contain any information of nodeself.</li>
 <li>there is no normalization of adjacency matrix. The formulation $AH^{l}$ is actually a linear transformation which scales node feature vectors $H^l$ by summing the features of all neighbour nodes. The nodes having more neighbour nodes has more impact, which should be normalized.</li>
@@ -844,8 +844,8 @@ matrix([[  2.,  0.],
 <li>compute the cross entropy loss on known node labels.</li>
 <li>backpropagate the loss and update the weight matrices $W$ in each layer.</li>
 </ol>
-<h3 id="zacharys-karate-club">Zachary's Karate Club</h3>
-<p>Zachary's Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
+<h3 id="zacharys-karate-club">Zachary&rsquo;s Karate Club</h3>
+<p>Zachary&rsquo;s Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
 
 
 
@@ -1089,7 +1089,7 @@ The video above shows Semi-supervised classification with GCNs in <a href="https
 
     <div class="media-body">
       <h5 class="card-title"><a href="https://Alibabade.github.io/">Li Wang</a></h5>
-      <h6 class="card-subtitle">PhD candidate</h6>
+      <h6 class="card-subtitle">PhD</h6>
       <p class="card-text">My research focuses on image/video based neural style transfer.</p>
       <ul class="network-icon" aria-hidden="true">
   
@@ -1105,7 +1105,7 @@ The video above shows Semi-supervised classification with GCNs in <a href="https
       
     
     <li>
-      <a href="/lwang@bournemouth.ac.uk" >
+      <a href="/liwang1991@outlook.com" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>

@@ -246,7 +246,7 @@ The operation is first divide the input channels $N$ into $G$ groups, which resu
 &lt;/figure&gt;
 &lt;/p&gt;
 &lt;h3 id=&#34;32-flops-comparison&#34;&gt;3.2 FLOPs comparison&lt;/h3&gt;
-&lt;p&gt;Note that FLOPs of ResNeXt is only reduced by a small budget of computational cost and it&#39;s up to group number $G$ when $N_r=N_x$ and $M_r=M_x$.
+&lt;p&gt;Note that FLOPs of ResNeXt is only reduced by a small budget of computational cost and it&amp;rsquo;s up to group number $G$ when $N_r=N_x$ and $M_r=M_x$.
 
 
 
@@ -510,7 +510,7 @@ Note that the FLOPs for a single inverted residual block has an extra term ($N_{
 &lt;p&gt;&lt;strong&gt;Why MobileNet is not as fast as FLOPs indicates in practice?&lt;/strong&gt; One reason could be the application of memory takes much time (according to some interviews).&lt;/p&gt;
 &lt;h2 id=&#34;5-shufflenet-v1-vs-v2&#34;&gt;5. ShuffleNet v1 vs v2&lt;/h2&gt;
 &lt;h3 id=&#34;51-shufflenet-v1-resnext&#34;&gt;5.1 ShuffleNet v1 (ResNeXt)&lt;/h3&gt;
-&lt;p&gt;ResNeXt is an efficient model for ResNet by introducing group conv $3\times3$ to reduce computational cost. However, the computational cost of conv $1\times1$ become the operation consuming most of time. To reduce the FLOPs of conv $1\times1$, &lt;a href=&#34;https://arxiv.org/pdf/1707.01083.pdf&#34;&gt;ShuffleNet v1&lt;/a&gt; introduce group conv $1\times1$ tp replace the standard conv $1\times1$. However, the features won&#39;t be shared between groups by using group conv $1\times1$, which causes less feature reuse and accuracy. To address this problem, a channel shuffle operation is introduced to share features between groups. The basic blocks of ResNeXt and ShuffleNet v1 is shown in the below figure.
+&lt;p&gt;ResNeXt is an efficient model for ResNet by introducing group conv $3\times3$ to reduce computational cost. However, the computational cost of conv $1\times1$ become the operation consuming most of time. To reduce the FLOPs of conv $1\times1$, &lt;a href=&#34;https://arxiv.org/pdf/1707.01083.pdf&#34;&gt;ShuffleNet v1&lt;/a&gt; introduce group conv $1\times1$ tp replace the standard conv $1\times1$. However, the features won&amp;rsquo;t be shared between groups by using group conv $1\times1$, which causes less feature reuse and accuracy. To address this problem, a channel shuffle operation is introduced to share features between groups. The basic blocks of ResNeXt and ShuffleNet v1 is shown in the below figure.
 
 
 
@@ -888,7 +888,7 @@ then we call $C$ is a &lt;strong&gt;convex set/domain&lt;/strong&gt;(see figure 
 
 &lt;/figure&gt;
 
-&lt;p&gt;A few sets we&#39;ve already known are convex sets. For example, &lt;strong&gt;a real number set $\mathbb{R}$&lt;/strong&gt;. It&#39;s obvious that $\forall x,y \in \mathbb{R}$, and $\forall \theta \in \mathbb{R}$ and $0 \leq \theta \leq 1$:
+&lt;p&gt;A few sets we&amp;rsquo;ve already known are convex sets. For example, &lt;strong&gt;a real number set $\mathbb{R}$&lt;/strong&gt;. It&amp;rsquo;s obvious that $\forall x,y \in \mathbb{R}$, and $\forall \theta \in \mathbb{R}$ and $0 \leq \theta \leq 1$:
 $$\theta x + (1-\theta) y \in \mathbb{R}$$
 &lt;strong&gt;An affine subspace $\mathbb{R}^n$&lt;/strong&gt;. Given a $n \times m$ matrix $A$ and a vector $b$ of length $m$, then an affine subspace is such a set consisting of the following elements:&lt;br&gt;
 $$\{x \in \mathbb{R}^n: Ax=b\}$$
@@ -1600,7 +1600,7 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 &lt;h4 id=&#34;312-loss-functions&#34;&gt;3.1.2 Loss functions&lt;/h4&gt;
 &lt;p&gt;$&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Symbol  Explanation&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;$\mathbb{1}_{ij}^{obj}$:    an indicator function. It&#39;s 1 when there is an object contained in the $j$-th predicted box of the $i$-th cell and &lt;strong&gt;$j$-th predicted box has the largest overlap region with the groundtruth box&lt;/strong&gt;, otherwise it&#39;s 0.&lt;/p&gt;
+&lt;p&gt;$\mathbb{1}_{ij}^{obj}$:    an indicator function. It&amp;rsquo;s 1 when there is an object contained in the $j$-th predicted box of the $i$-th cell and &lt;strong&gt;$j$-th predicted box has the largest overlap region with the groundtruth box&lt;/strong&gt;, otherwise it&amp;rsquo;s 0.&lt;/p&gt;
 &lt;p&gt;{$x_{ij}^p, y_{ij}^p, w_{ij}^p, h_{ij}^p$}:  the centre coordinates and (width, height) of the predicted $j$-th bounding box in $i$-th cell.&lt;/p&gt;
 &lt;p&gt;{$x_{ij}^t, y_{ij}^t, w_{ij}^t, h_{ij}^t$}:  the centre coordinates and (width, height) of the groundtruth $j$-th bounding box in $i$-th cell.&lt;/p&gt;
 &lt;p&gt;$C_{ij}^p$: the predicted confidence score for the $j$-th bounding box in $i$-th cell.&lt;/p&gt;
@@ -1843,7 +1843,7 @@ where $Pr(animal \ | \ physical \ object)$ is the confidence score, predicted se
 &lt;h4 id=&#34;334-limitations--or-unsolved-problems&#34;&gt;3.3.4 Limitations ( or unsolved problems)&lt;/h4&gt;
 &lt;p&gt;During training, the significant imbalance number between positive anchor boxes containing objects and negative boxes containing background still hinders further improvement of detection accuracy.&lt;/p&gt;
 &lt;h4 id=&#34;insight-questions-for-object-detection&#34;&gt;Insight Questions for Object Detection&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;Why does the measurement of object detection only use mAP but no classification measurement?&lt;/strong&gt; Honestly, I don&#39;t know.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why does the measurement of object detection only use mAP but no classification measurement?&lt;/strong&gt; Honestly, I don&amp;rsquo;t know.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Why does improving the classification (binary classification: contains objects of interests or not) increase the detection accuracy?&lt;/strong&gt; Well, I think that better classification will reduce negative samples (including easy and hard negative examples), then the network focuses on learning more positive samples to predict bounding boxes, which increases the mAP.&lt;/p&gt;
 &lt;h3 id=&#34;4-retinanet&#34;&gt;4. RetinaNet&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1708.02002.pdf&#34;&gt;RetinaNet&lt;/a&gt; is an one-stage object detector, which proposes two critical contributions: 1. focal loss for addressing class imbalance between foreground containing objects of interest and background containing no object; 2. FPN + ResNet as backbone network for detecting objects at different scales.&lt;/p&gt;
@@ -1917,14 +1917,14 @@ and &lt;strong&gt;there are experiments prove this form slightly improves accura
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/focal-loss-weights.png&#34; data-caption=&#34;Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: LilianWeng&amp;#39;s blog.&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/focal-loss-weights.png&#34; data-caption=&#34;Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: LilianWeng&amp;rsquo;s blog.&#34;&gt;
 &lt;img data-src=&#34;https://Alibabade.github.io/img/focal-loss-weights.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
   
   &lt;figcaption&gt;
-    Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html&#34;&gt;LilianWeng&#39;s blog&lt;/a&gt;.
+    Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html&#34;&gt;LilianWeng&amp;rsquo;s blog&lt;/a&gt;.
   &lt;/figcaption&gt;
 
 
@@ -1955,14 +1955,14 @@ and &lt;strong&gt;there are experiments prove this form slightly improves accura
 &lt;figure&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/featurized-image-pyramid.png&#34; data-caption=&#34;Fig 20. The illustration of feature pyramid network. Image source: LilianWeng&amp;#39;s blog.&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://Alibabade.github.io/img/featurized-image-pyramid.png&#34; data-caption=&#34;Fig 20. The illustration of feature pyramid network. Image source: LilianWeng&amp;rsquo;s blog.&#34;&gt;
 &lt;img data-src=&#34;https://Alibabade.github.io/img/featurized-image-pyramid.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
 
 
   
   
   &lt;figcaption&gt;
-    Fig 20. The illustration of feature pyramid network. Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html&#34;&gt;LilianWeng&#39;s blog&lt;/a&gt;.
+    Fig 20. The illustration of feature pyramid network. Image source: &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html&#34;&gt;LilianWeng&amp;rsquo;s blog&lt;/a&gt;.
   &lt;/figcaption&gt;
 
 
@@ -2145,7 +2145,7 @@ For example, to freeze some layers in BERT model, you could do something like &l
 &lt;p&gt;There are two concepts should be understood first before GCN.
 &lt;strong&gt;Degree Matrix (D)&lt;/strong&gt;: this matrix ($N \times N$, N is the node number) is a diag matrix in which values in diag line means the degree of each node; &lt;strong&gt;Adjacency Matrix (A)&lt;/strong&gt;: this matrix is also a $N \times N$ matrix in which value $A_{i,j}=1$ means there is an edge between node $i$ and $j$, otherwise $A_{i,j}=0$;&lt;/p&gt;
 &lt;h3 id=&#34;simple-gcn-example&#34;&gt;Simple GCN example&lt;/h3&gt;
-&lt;p&gt;Let&#39;s consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it&#39;s already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s consider one simple GCN example, which has one GCN layer and one activation layer, the formulation is as following: $$f(H^{l}, A) = \sigma(AH^{l}W^{l})$$ where $W^l$ denotes the weight matrix in the $l$th layer and $\sigma(\dot)$ denotes the activation function like ReLU. This is the simplest expression of GCN example, but it&amp;rsquo;s already much powerful (we will show example below). However, there are two basic limitations of this simple formulation:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;there is no node self information as adjacency matrix $A$ does not contain any information of nodeself.&lt;/li&gt;
 &lt;li&gt;there is no normalization of adjacency matrix. The formulation $AH^{l}$ is actually a linear transformation which scales node feature vectors $H^l$ by summing the features of all neighbour nodes. The nodes having more neighbour nodes has more impact, which should be normalized.&lt;/li&gt;
@@ -2312,8 +2312,8 @@ matrix([[  2.,  0.],
 &lt;li&gt;compute the cross entropy loss on known node labels.&lt;/li&gt;
 &lt;li&gt;backpropagate the loss and update the weight matrices $W$ in each layer.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;zacharys-karate-club&#34;&gt;Zachary&#39;s Karate Club&lt;/h3&gt;
-&lt;p&gt;Zachary&#39;s Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
+&lt;h3 id=&#34;zacharys-karate-club&#34;&gt;Zachary&amp;rsquo;s Karate Club&lt;/h3&gt;
+&lt;p&gt;Zachary&amp;rsquo;s Karate Club is a typical small social network where there are a few main class labels. The task is to predict which class each member belongs to.
 
 
 
@@ -2624,7 +2624,7 @@ Con: the model is &lt;strong&gt;non-differentiable&lt;/strong&gt; and requires m
 
 &lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
 &lt;ol&gt;
-&lt;li&gt;This attention blog heavily borrowed from Lilian Weng&#39;s blog, more details refer to &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&#34;&gt;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This attention blog heavily borrowed from Lilian Weng&amp;rsquo;s blog, more details refer to &lt;a href=&#34;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&#34;&gt;https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
     </item>
@@ -2812,11 +2812,11 @@ ReLU^{&#39;}(x) = \begin{cases}
 &lt;p&gt;&lt;strong&gt;Why ReLU performs better in modern NNs?&lt;/strong&gt; The answer is not so sure right now, but its propeties like &lt;strong&gt;non-saturation gradient&lt;/strong&gt; and &lt;strong&gt;computionally efficient&lt;/strong&gt; indeed lead to fast convergence. Additionally, its property &lt;strong&gt;sparsing the network&lt;/strong&gt; also improves the modeling preformance. The &lt;strong&gt;non-zero centered issue&lt;/strong&gt; can be tackled by other regularization techniques like &lt;strong&gt;Batch Normalization&lt;/strong&gt; which produces a stable distribution for ReLU.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Dying ReLU problem. The backpropagation won&#39;t work when inputs approach zero or negative.
+&lt;li&gt;Dying ReLU problem. The backpropagation won&amp;rsquo;t work when inputs approach zero or negative.
 However, to some extent, dying ReLU problem makes input values sparse which is helpful for neural network to learn more important values and perform better.&lt;/li&gt;
 &lt;li&gt;Non differentiable at zero.&lt;/li&gt;
 &lt;li&gt;Non zero centered.&lt;/li&gt;
-&lt;li&gt;Don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;li&gt;Don&amp;rsquo;t avoid gradient explode&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&#34;elu&#34;&gt;ELU&lt;/h3&gt;
 &lt;p&gt;
@@ -2872,7 +2872,7 @@ ELU(x) + \alpha, &amp;amp; x \leqslant 0 \newline
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;don&#39;t avoid gradient explode.&lt;/li&gt;
+&lt;li&gt;don&amp;rsquo;t avoid gradient explode.&lt;/li&gt;
 &lt;li&gt;not computationally efficient.&lt;/li&gt;
 &lt;li&gt;$\alpha$ is not learnt by neural networks.&lt;/li&gt;
 &lt;/ol&gt;
@@ -2930,7 +2930,7 @@ LReLU^{&#39;}(x) = \begin{cases}
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;li&gt;don&amp;rsquo;t avoid gradient explode&lt;/li&gt;
 &lt;li&gt;Non consistent results for negative input values.&lt;/li&gt;
 &lt;li&gt;non-zero centered&lt;/li&gt;
 &lt;li&gt;non differentiable at Zeros&lt;/li&gt;
@@ -3069,7 +3069,7 @@ Then first sentence is presented in vector (in the order of vocabulary) as: {1,1
 &lt;li&gt;standard deviation: $\sigma^2 = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i - \mu_i)^2}$&lt;/li&gt;
 &lt;li&gt;covariance: $cov(x,y) = \frac{1}{n-1} \Sigma_{i=1}^n{(x_i-\mu_x)*(y_i -\mu_y)}$&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Let&#39;s denote the input data $X$ is a $N \times M$ matrix where $N$ is the dimension of each input sample and $M$ is the number of input samples. &lt;strong&gt;Usually, the PCA aims to reduce the dimension $N$ to $R$ by a linear transformation matrix $P$ of $X$, which can be written as $Y=PX$&lt;/strong&gt;. The dimension reduction actually changes the basis vector set of $X$ to the row vectors in $P$, and we hope the new basis vector set is independent from each other and the projected points in one basis vector is as far as possible from each other. In other words, &lt;strong&gt;we hope the variance in one basis vector is as large as possible and the covariance between each two basis vector is as small as possible&lt;/strong&gt;. To this end, we compute the covariance matrix $B$ of $Y$, and we find the elements at diagonal are variances and other elements are covariance of new each basis vectors (in fact, the covariance matrix B is a symmetry matrix), thus we then seek $P$ to make the covariance matrix $B$ diagonalization, whcih means the elements are as large as possible at diagonal and elsewhere is zero.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s denote the input data $X$ is a $N \times M$ matrix where $N$ is the dimension of each input sample and $M$ is the number of input samples. &lt;strong&gt;Usually, the PCA aims to reduce the dimension $N$ to $R$ by a linear transformation matrix $P$ of $X$, which can be written as $Y=PX$&lt;/strong&gt;. The dimension reduction actually changes the basis vector set of $X$ to the row vectors in $P$, and we hope the new basis vector set is independent from each other and the projected points in one basis vector is as far as possible from each other. In other words, &lt;strong&gt;we hope the variance in one basis vector is as large as possible and the covariance between each two basis vector is as small as possible&lt;/strong&gt;. To this end, we compute the covariance matrix $B$ of $Y$, and we find the elements at diagonal are variances and other elements are covariance of new each basis vectors (in fact, the covariance matrix B is a symmetry matrix), thus we then seek $P$ to make the covariance matrix $B$ diagonalization, whcih means the elements are as large as possible at diagonal and elsewhere is zero.&lt;/p&gt;
 &lt;p&gt;$$B = \frac{1}{m} YY^T = \frac{1}{m} (PX)(PX)^T = P (\frac{1}{m}XX^T) P^T = P A P^T$$
 where A denotes the covariance matrix of input data $X$. Equation above indicates that the $P$ diagonalize A is what we seek. In linear algebra, $P$ is actually made of eigenvectors of $A$ and elements at diagnoal are corresponding eigenvalues, which is called eigen decomposition. Based on this, we only need to compute the eigenvectors and their eigenvalues of $A$ and sort the eigenvectors into a matrix $C$ by ordering from larger corresponding eigenvalues to smaller ones. If we want to reduce the dimension from $N$ to $R$ ($R&amp;lt;N$), then we choose the top $R$ rows of $C$ to form $P$, and perform $PX$ to get the final result $Y$.&lt;/p&gt;
 &lt;p&gt;As we can see, PCA needs to compute the mean, variance and covariance to form the covariance matrix of original input data, and compute eigenvectors and their corresponding eigenvalues, which indicates this could be quite slow when input dimension $N$ is large.&lt;/p&gt;
@@ -3514,7 +3514,7 @@ During the training-time, a variational autoencoder implemented as a feed-forwar
 
 &lt;/figure&gt;
 
-For a conditional variational autoencoder, we hope the autoencoder could produce some plausible outputs with additional input (aka condition). For example, we want an MINST digit autoencoder could produce a digit just like a particular person&#39;s writing or style. In figure 10, left is a training-time conditional variational autoencoder implemented as a feefforward nerual network, following the same notation as Fig 9. Right is same decoder at test time, where $X$ denotes the condition in both training and testing time.&lt;/p&gt;
+For a conditional variational autoencoder, we hope the autoencoder could produce some plausible outputs with additional input (aka condition). For example, we want an MINST digit autoencoder could produce a digit just like a particular person&amp;rsquo;s writing or style. In figure 10, left is a training-time conditional variational autoencoder implemented as a feefforward nerual network, following the same notation as Fig 9. Right is same decoder at test time, where $X$ denotes the condition in both training and testing time.&lt;/p&gt;
 &lt;h3 id=&#34;reference-7&#34;&gt;Reference&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1606.05908.pdf&#34;&gt;https://arxiv.org/pdf/1606.05908.pdf&lt;/a&gt;&lt;/li&gt;

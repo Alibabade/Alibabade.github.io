@@ -148,11 +148,11 @@ ReLU^{&#39;}(x) = \begin{cases}
 &lt;p&gt;&lt;strong&gt;Why ReLU performs better in modern NNs?&lt;/strong&gt; The answer is not so sure right now, but its propeties like &lt;strong&gt;non-saturation gradient&lt;/strong&gt; and &lt;strong&gt;computionally efficient&lt;/strong&gt; indeed lead to fast convergence. Additionally, its property &lt;strong&gt;sparsing the network&lt;/strong&gt; also improves the modeling preformance. The &lt;strong&gt;non-zero centered issue&lt;/strong&gt; can be tackled by other regularization techniques like &lt;strong&gt;Batch Normalization&lt;/strong&gt; which produces a stable distribution for ReLU.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Dying ReLU problem. The backpropagation won&#39;t work when inputs approach zero or negative.
+&lt;li&gt;Dying ReLU problem. The backpropagation won&amp;rsquo;t work when inputs approach zero or negative.
 However, to some extent, dying ReLU problem makes input values sparse which is helpful for neural network to learn more important values and perform better.&lt;/li&gt;
 &lt;li&gt;Non differentiable at zero.&lt;/li&gt;
 &lt;li&gt;Non zero centered.&lt;/li&gt;
-&lt;li&gt;Don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;li&gt;Don&amp;rsquo;t avoid gradient explode&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&#34;elu&#34;&gt;ELU&lt;/h3&gt;
 &lt;p&gt;
@@ -208,7 +208,7 @@ ELU(x) + \alpha, &amp;amp; x \leqslant 0 \newline
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;don&#39;t avoid gradient explode.&lt;/li&gt;
+&lt;li&gt;don&amp;rsquo;t avoid gradient explode.&lt;/li&gt;
 &lt;li&gt;not computationally efficient.&lt;/li&gt;
 &lt;li&gt;$\alpha$ is not learnt by neural networks.&lt;/li&gt;
 &lt;/ol&gt;
@@ -266,7 +266,7 @@ LReLU^{&#39;}(x) = \begin{cases}
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;Cons:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;don&#39;t avoid gradient explode&lt;/li&gt;
+&lt;li&gt;don&amp;rsquo;t avoid gradient explode&lt;/li&gt;
 &lt;li&gt;Non consistent results for negative input values.&lt;/li&gt;
 &lt;li&gt;non-zero centered&lt;/li&gt;
 &lt;li&gt;non differentiable at Zeros&lt;/li&gt;

@@ -1155,7 +1155,7 @@ where $y_{ij}$ is the label (0 or 1) for a cell $(i,j)$ in the groundtruth mask 
 <h4 id="312-loss-functions">3.1.2 Loss functions</h4>
 <p>$&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-$</p>
 <p><strong>Symbol  Explanation</strong></p>
-<p>$\mathbb{1}_{ij}^{obj}$:    an indicator function. It's 1 when there is an object contained in the $j$-th predicted box of the $i$-th cell and <strong>$j$-th predicted box has the largest overlap region with the groundtruth box</strong>, otherwise it's 0.</p>
+<p>$\mathbb{1}_{ij}^{obj}$:    an indicator function. It&rsquo;s 1 when there is an object contained in the $j$-th predicted box of the $i$-th cell and <strong>$j$-th predicted box has the largest overlap region with the groundtruth box</strong>, otherwise it&rsquo;s 0.</p>
 <p>{$x_{ij}^p, y_{ij}^p, w_{ij}^p, h_{ij}^p$}:  the centre coordinates and (width, height) of the predicted $j$-th bounding box in $i$-th cell.</p>
 <p>{$x_{ij}^t, y_{ij}^t, w_{ij}^t, h_{ij}^t$}:  the centre coordinates and (width, height) of the groundtruth $j$-th bounding box in $i$-th cell.</p>
 <p>$C_{ij}^p$: the predicted confidence score for the $j$-th bounding box in $i$-th cell.</p>
@@ -1398,7 +1398,7 @@ where $Pr(animal \ | \ physical \ object)$ is the confidence score, predicted se
 <h4 id="334-limitations--or-unsolved-problems">3.3.4 Limitations ( or unsolved problems)</h4>
 <p>During training, the significant imbalance number between positive anchor boxes containing objects and negative boxes containing background still hinders further improvement of detection accuracy.</p>
 <h4 id="insight-questions-for-object-detection">Insight Questions for Object Detection</h4>
-<p><strong>Why does the measurement of object detection only use mAP but no classification measurement?</strong> Honestly, I don't know.</p>
+<p><strong>Why does the measurement of object detection only use mAP but no classification measurement?</strong> Honestly, I don&rsquo;t know.</p>
 <p><strong>Why does improving the classification (binary classification: contains objects of interests or not) increase the detection accuracy?</strong> Well, I think that better classification will reduce negative samples (including easy and hard negative examples), then the network focuses on learning more positive samples to predict bounding boxes, which increases the mAP.</p>
 <h3 id="4-retinanet">4. RetinaNet</h3>
 <p><a href="https://arxiv.org/pdf/1708.02002.pdf">RetinaNet</a> is an one-stage object detector, which proposes two critical contributions: 1. focal loss for addressing class imbalance between foreground containing objects of interest and background containing no object; 2. FPN + ResNet as backbone network for detecting objects at different scales.</p>
@@ -1472,14 +1472,14 @@ and <strong>there are experiments prove this form slightly improves accuracy ove
 <figure>
 
 
-  <a data-fancybox="" href="/img/focal-loss-weights.png" data-caption="Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: LilianWeng&#39;s blog.">
+  <a data-fancybox="" href="/img/focal-loss-weights.png" data-caption="Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: LilianWeng&rsquo;s blog.">
 <img data-src="/img/focal-loss-weights.png" class="lazyload" alt="" ></a>
 
 
   
   
   <figcaption>
-    Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: <a href="https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html">LilianWeng's blog</a>.
+    Fig 19. The illustration of various combinations of $\alpha$ and $\gamma$ in $\alpha$-balanced Focal Loss. Image source: <a href="https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html">LilianWeng&rsquo;s blog</a>.
   </figcaption>
 
 
@@ -1510,14 +1510,14 @@ and <strong>there are experiments prove this form slightly improves accuracy ove
 <figure>
 
 
-  <a data-fancybox="" href="/img/featurized-image-pyramid.png" data-caption="Fig 20. The illustration of feature pyramid network. Image source: LilianWeng&#39;s blog.">
+  <a data-fancybox="" href="/img/featurized-image-pyramid.png" data-caption="Fig 20. The illustration of feature pyramid network. Image source: LilianWeng&rsquo;s blog.">
 <img data-src="/img/featurized-image-pyramid.png" class="lazyload" alt="" ></a>
 
 
   
   
   <figcaption>
-    Fig 20. The illustration of feature pyramid network. Image source: <a href="https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html">LilianWeng's blog</a>.
+    Fig 20. The illustration of feature pyramid network. Image source: <a href="https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html">LilianWeng&rsquo;s blog</a>.
   </figcaption>
 
 
@@ -1737,7 +1737,7 @@ and <strong>there are experiments prove this form slightly improves accuracy ove
 
     <div class="media-body">
       <h5 class="card-title"><a href="https://Alibabade.github.io/">Li Wang</a></h5>
-      <h6 class="card-subtitle">PhD candidate</h6>
+      <h6 class="card-subtitle">PhD</h6>
       <p class="card-text">My research focuses on image/video based neural style transfer.</p>
       <ul class="network-icon" aria-hidden="true">
   
@@ -1753,7 +1753,7 @@ and <strong>there are experiments prove this form slightly improves accuracy ove
       
     
     <li>
-      <a href="/lwang@bournemouth.ac.uk" >
+      <a href="/liwang1991@outlook.com" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>

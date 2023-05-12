@@ -239,7 +239,7 @@ Introduction Normal Decomposition is mainly used for manipulating normal informa
     
       <meta property="article:published_time" content="2023-05-11T14:00:11&#43;08:00">
     
-    <meta property="article:modified_time" content="2023-05-11T20:04:56&#43;08:00">
+    <meta property="article:modified_time" content="2023-05-12T15:04:48&#43;08:00">
   
 
   
@@ -272,7 +272,7 @@ Introduction Normal Decomposition is mainly used for manipulating normal informa
   ],
   
   "datePublished": "2023-05-11T14:00:11+08:00",
-  "dateModified": "2023-05-11T20:04:56+08:00",
+  "dateModified": "2023-05-12T15:04:48+08:00",
   
   "author": {
     "@type": "Person",
@@ -574,7 +574,7 @@ Introduction Normal Decomposition is mainly used for manipulating normal informa
           Last updated on
       
     
-    May 11, 2023
+    May 12, 2023
   </span>
   
 
@@ -655,7 +655,10 @@ Introduction Normal Decomposition is mainly used for manipulating normal informa
 
 People dealing with geometry detail preservation, in general, consider to decompose details from normal images first, then manipulate them before reconstruction. However, detail information obtained by value subtraction is broken (see zoom-in details of (e) in Fig 1.), where value subtraction is operated on pixel-level from original normal images and smoothed normal images. In fact, the detail information should be a vector subtraction as the RGB colour of each pixel in a normal image represents a vector. Therefore, to obtain more correct and intact detail information, we should use vector subtraction instead of value subtraction.</p>
 <h2 id="script-in-matlab">Script in Matlab</h2>
-<p><a href="">Here</a> is a script written in Matlab to decompose normal based on vector subtraction. Additionally, the script also includes a smoothing function that applies DTRF filter to obtain a structure normal image by smoothing the origial normal image.</p>
+<p><a href="https://github.com/Alibabade/Decomposition-for-Normal-Images">Here</a> is a script written in Matlab to decompose normal based on vector subtraction. Additionally, the script also includes a smoothing function that applies DTRF filter to obtain a structure normal image by smoothing the origial normal image.</p>
+<p>The equation for the vector subtraction is:
+$$n1 - n2 = $quaternion(n2,n0).*N1.*quaternion(n2,n0)^{-1}$$
+where $N1=(0, n1)$, $n0=(0,0,1)$ a constant vector, and $quaternion(n2,n0)$ and $quaternion(n2,n0)^{-1}$ represent the quaternion and inverse_quaternion calculated from the rotation matrix that rotates vector $n2$ to vector $n0$ via z-axis.</p>
 <h2 id="results">Results</h2>
 <p>Here is a comparsion between detail information (see (b) and (d) in Fig 1.) and reconstruction results (see (c) and (f) in Fig 1.) between value subtraction and vector subtraction.</p>
 

@@ -13,6 +13,66 @@
     </image>
     
     <item>
+      <title>Mesh_preprocesser_in_blender_with_python</title>
+      <link>https://Alibabade.github.io/project/mesh_preprocessor_in_blender_with_python/</link>
+      <pubDate>Tue, 16 May 2023 14:46:41 +0800</pubDate>
+      <guid>https://Alibabade.github.io/project/mesh_preprocessor_in_blender_with_python/</guid>
+      <description>&lt;p&gt;This peoject presents a mesh preprocessor tool which works with python and blender. It&amp;rsquo;s capable of processing mesh files in batch manner.&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The main reason to create such a mesh preprocessor is that preparing mesh files (especially .obj file format) for datasets usually is time-consuming, and it kind of needs tons of manual work. To free hands, a mesh processor tool is presented to do the dirty work for people.&lt;/p&gt;
+&lt;h2 id=&#34;functions&#34;&gt;Functions&lt;/h2&gt;
+&lt;p&gt;A few functions are added in this tool, for example, subdivide mesh into (or closest to) desired vertex number, triangulate the mesh if needed, and extract vertex idxs of arbitrary sub-surfaces from the mesh.&lt;/p&gt;
+&lt;h2 id=&#34;time-consumption&#34;&gt;Time consumption&lt;/h2&gt;
+&lt;p&gt;For a computer with i7-6700k cpu and 16GB memory, it will take about ~3 hours when processing over 100 meshes (low poly) plus subdivding them into 50K vertices plus extracting 1K sub-surfaces for each mesh. It will take about ~9 hours when processing over 100 meshes (low poly) plus subdivding them into 150K vertices plus extracting 1K sub-surfaces for each mesh. The time consumption varies on the cpu and memory.&lt;/p&gt;
+&lt;h2 id=&#34;inputs-and-outputs&#34;&gt;Inputs and Outputs&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;inputs are mesh files ending with &amp;lsquo;.obj&amp;rsquo;, which are original mesh files you find or download online. In this repos, a folder named &amp;lsquo;data&amp;rsquo; contains two examples.&lt;/li&gt;
+&lt;li&gt;outputs are mesh files ending with &amp;lsquo;_tri.obj&amp;rsquo; which are subdivided and triangulated mesh files, and data files ending with &amp;lsquo;.npy&amp;rsquo; under corresponding &amp;ldquo;vertex_indinces_of_arbitrary_surfaces&amp;rdquo; which contains a list of numpy arrays of vertex indinces of sub-surfaces from each mesh.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
+&lt;p&gt;You can find the code in &lt;a href=&#34;https://github.com/Alibabade/Mesh-preprocessor-in-blender-with-python&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;usage&#34;&gt;Usage&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;open blender software, if not installed, then download it from &lt;a href=&#34;https://www.blender.org/download/&#34;&gt;here&lt;/a&gt;. NO installation needed just unzip it.&lt;/li&gt;
+&lt;li&gt;clone or download the zip file of this repos (then unzip it).&lt;/li&gt;
+&lt;li&gt;click the &amp;ldquo;Scripting&amp;rdquo; tab on the above menu in blender, then click &amp;ldquo;Open&amp;rdquo; tab under &amp;ldquo;Scripting&amp;rdquo;, choose the work path to the mesh_preprocessor.py script in the unzipped repos.&lt;/li&gt;
+&lt;li&gt;change the variable named &amp;ldquo;work_path&amp;rdquo; in the mesh_preprocesser.py.&lt;/li&gt;
+&lt;li&gt;click the &amp;ldquo;Run Script&amp;rdquo; tab under &amp;ldquo;Scripting&amp;rdquo;, then you are ready to go.
+You can follow the steps to run script in blender as shown in the following image.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;mesh_preprocesser_in_blender.png&#34; data-caption=&#34;Fig 1. Steps to run mesh preprocessor in blender.&#34;&gt;
+&lt;img data-src=&#34;mesh_preprocesser_in_blender.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Fig 1. Steps to run mesh preprocessor in blender.
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
       <title>Decomposition_for_normal_images</title>
       <link>https://Alibabade.github.io/project/decomposition_for_normal_images/</link>
       <pubDate>Thu, 11 May 2023 14:00:11 +0800</pubDate>

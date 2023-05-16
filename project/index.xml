@@ -17,11 +17,11 @@
       <link>https://Alibabade.github.io/project/mesh_preprocessor_in_blender_with_python/</link>
       <pubDate>Tue, 16 May 2023 14:46:41 +0800</pubDate>
       <guid>https://Alibabade.github.io/project/mesh_preprocessor_in_blender_with_python/</guid>
-      <description>&lt;p&gt;This peoject presents a mesh preprocessor tool which works with python and blender. It&amp;rsquo;s capable of processing mesh files in batch manner.&lt;/p&gt;
+      <description>&lt;p&gt;This project presents a mesh preprocessor tool which works with python and blender. It&amp;rsquo;s capable of processing mesh files in batch manner.&lt;/p&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;The main reason to create such a mesh preprocessor is that preparing mesh files (especially .obj file format) for datasets usually is time-consuming, and it kind of needs tons of manual work. To free hands, a mesh processor tool is presented to do the dirty work for people.&lt;/p&gt;
+&lt;p&gt;The main reason to create such a mesh preprocessor is that preparing raw mesh files (especially .obj file format) for datasets usually is time-consuming, and it kind of needs tons of manual work. To free hands, a mesh processor tool is presented to do the dirty work for people.&lt;/p&gt;
 &lt;h2 id=&#34;functions&#34;&gt;Functions&lt;/h2&gt;
-&lt;p&gt;A few functions are added in this tool, for example, subdivide mesh into (or closest to) desired vertex number, triangulate the mesh if needed, and extract vertex idxs of arbitrary sub-surfaces from the mesh.&lt;/p&gt;
+&lt;p&gt;A few functions are added in this tool, for example, subdivide mesh into (or closest to) desired vertex number, triangulate the mesh if needed, and extract vertex indices of arbitrary sub-surfaces from the mesh.&lt;/p&gt;
 &lt;h2 id=&#34;time-consumption&#34;&gt;Time consumption&lt;/h2&gt;
 &lt;p&gt;For a computer with i7-6700k cpu and 16GB memory, it will take about ~3 hours when processing over 100 meshes (low poly) plus subdivding them into 50K vertices plus extracting 1K sub-surfaces for each mesh. It will take about ~9 hours when processing over 100 meshes (low poly) plus subdivding them into 150K vertices plus extracting 1K sub-surfaces for each mesh. The time consumption varies on the cpu and memory.&lt;/p&gt;
 &lt;h2 id=&#34;inputs-and-outputs&#34;&gt;Inputs and Outputs&lt;/h2&gt;

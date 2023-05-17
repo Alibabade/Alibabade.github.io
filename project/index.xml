@@ -5,12 +5,80 @@
     <link>https://Alibabade.github.io/project/</link>
       <atom:link href="https://Alibabade.github.io/project/index.xml" rel="self" type="application/rss+xml" />
     <description>Projects</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 16 May 2023 14:46:41 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 17 May 2023 14:07:32 +0800</lastBuildDate>
     <image>
       <url>https://Alibabade.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Projects</title>
       <link>https://Alibabade.github.io/project/</link>
     </image>
+    
+    <item>
+      <title>Commnad_line_Program_Youtube_Music_Channel_Scraper</title>
+      <link>https://Alibabade.github.io/project/commnad_line_program_youtube_music_channel_scraper/</link>
+      <pubDate>Wed, 17 May 2023 14:07:32 +0800</pubDate>
+      <guid>https://Alibabade.github.io/project/commnad_line_program_youtube_music_channel_scraper/</guid>
+      <description>&lt;p&gt;This program scrapes the given Youtube music channels by fetching infomation of videos, and saving information and videos into local drives. The program is currently only avaiable for downloading artwork images (if applicable), thumbnails, audios (mp3 format) and videos.&lt;/p&gt;
+&lt;h2 id=&#34;features&#34;&gt;Features&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Automatically Resume Scraping Process&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Update Channels Scraped&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Download Images From Various Image Websites (e.g., Artstation, Pixix, Deviantart, Pexels, Unsplash, Flickr)&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Automatically Rename Video Titles (Optional)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;automatically-resume-scraping-and-downloading-processes&#34;&gt;Automatically Resume Scraping and Downloading Processes.&lt;/h3&gt;
+&lt;p&gt;Normally, scraping a big music channel (e.g., MrSuicideSheep) could take hours (or even longer) as the channel contains over thousands of videos.
+Thus the scraping and downloading process could be easily interrupted by anything, for example, power failure or poor internet connection, or coffee leak (even worse :) ).&lt;/p&gt;
+&lt;p&gt;Here the information scraping and video downloading are seperately treated.&lt;/p&gt;
+&lt;p&gt;To automatically resume the information scraping process, this program will deal with this problem by checking the number of videos (after stop_upload_time if applicable) of two files: FILE1. &amp;ldquo;channel_videos_id_list.txt&amp;rdquo; and FILE2.&amp;ldquo;channel_videos_info_list.json&amp;rdquo;
+FILE1 will store all video_ids from one channel, which only takes minutes to scrape and save.
+FILE2 will store all video_info (including URL, title, upload_date, chapters, thumbnail, artwork_url, etc), which will be used for downloading. Saving this file could take around mins or hours depends on how many videos that channel has.&lt;/p&gt;
+&lt;p&gt;There are three senarios in resume scheme:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1. both files are created, then check the number of recored videos,
+   if   	the numbers are equal, then no more infomartion fetch process.
+   else 	resume the information fetch process from the last video id in FILE2.
+        	       
+2. FILE2 not exists but FILE1 exists, then resume the infomation fetch process and create FILE2.
+        	
+3. both files are not created, then start the infomation fetch process straightforward.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To automatically resume the video downloading process, this program will deal with this problem by checking the number of files under one video folder.
+For videos without chapters, the file number under a video folder should be the number of items downloaded. For example, usually, the files of a video folder should contains an artwork image (if recorded under the same video title in &amp;ldquo;channel_videos_info_list.json&amp;rdquo;), a thumbnail and a video file, thus if file number is lower than 3, then the downloading process will resume from downloading the files not exist. For videos with chapters, the file number should be 3 + number of chapters. If the number of files is lower than that, the downloading process will resume from downloading the files not exist.&lt;/p&gt;
+&lt;h3 id=&#34;update-channels-already-scraped&#34;&gt;Update Channels Already Scraped&lt;/h3&gt;
+&lt;p&gt;Setting up flag &amp;ldquo;&amp;ndash;update True&amp;rdquo; when running program will automatically update these two files: &amp;ldquo;channel_videos_id_list.txt&amp;rdquo; and &amp;ldquo;channel_videos_info_list.json&amp;rdquo;, and download new videos.&lt;/p&gt;
+&lt;h3 id=&#34;image-downloader-for-various-image-websites&#34;&gt;Image Downloader for Various Image Websites&lt;/h3&gt;
+&lt;p&gt;Several downloaders are implemented in &amp;ldquo;lib/Youtube_Scraper_API.py&amp;rdquo; file. Currently, this program is able to download images from Websites: Artstation, Pixix, Deviantart, Pexels, Unsplash, Flickr.&lt;/p&gt;
+&lt;h3 id=&#34;automatically-rename-video-titles-optional&#34;&gt;Automatically Rename Video Titles (Optional)&lt;/h3&gt;
+&lt;p&gt;During the development, an interesting problem is observed that the video titles could contain some weird words or symbols which are not able to be file titles saved in disk (especially for Linux OS). Further more, the titles are abitrary sometimes, which are difficult to extract useful information, for example,  artist names, features, music or song titles and types of video contents (e.g., mv or lyric video or visualizer, etc.). Thus, here presents a rename scheme that will automatically rename the video titles into a unified format:
+&amp;ldquo;artist_usernames - song_name (feat./with/prod. by/cover by artist_usernames) + (artist_usernames remix/mix/flip/cover) + [ncs release]&amp;rdquo;
+where the words in bracket &amp;ldquo;[]&amp;rdquo; are essential while the words in bracket &amp;ldquo;{}&amp;rdquo; are optional.&lt;/p&gt;
+&lt;h2 id=&#34;setups&#34;&gt;Setups&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Please install youtube-dl for video (or audio) download.&lt;/li&gt;
+&lt;li&gt;Please install all the other necessary libraries in &amp;ldquo;requirements.txt&amp;rdquo; before starting the program.&lt;/li&gt;
+&lt;li&gt;(Optional) An adblock plugin could be installed via Firefox browser as this will disable the ads when scraping the video webpages (this could save lots of times).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
+&lt;p&gt;You shall find the code in &lt;a href=&#34;https://github.com/Alibabade/Commnad-line-Youtube-Music-Channel-Scraper/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;h3 id=&#34;example-1-scrape-youtube-channels&#34;&gt;Example 1: Scrape youtube channels&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;python youtube_scraper_by_given_artist_channels.py \
+   --music_channel_list_filepath [path/to/channel_list.txt]\
+   --saved_path [path/to/saved_path]\
+   --download_file_format [file_format]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Running this example, a folder will be created if saved_path not exists, then &amp;ldquo;channel_videos_id_list.txt&amp;rdquo; and &amp;ldquo;channel_videos_info_list.json&amp;rdquo; will be created under the same youtube channel folder, next a folder (named as the video_id) will be created for each downloaded video, in which all related images (e.g., artwork images and thumbnails) and videos (or audios) will be downloaded from Youtube.&lt;/p&gt;
+&lt;h3 id=&#34;example-2-update-youtube-channels-which-are-already-scraped&#34;&gt;Example 2: Update youtube channels which are already scraped&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;python youtube_scraper_by_given_artist_channels.py \
+   --music_channel_list_filepath [path/to/channel_list.txt]\
+   --saved_path [path/to/saved_path]\
+   --download_file_format [file_format]
+   --update True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Running this example, channels that already scraped and downloaded will be updated by re-scraping the information of channels, and downloading new videos.&lt;/p&gt;
+&lt;h3 id=&#34;optional-flags&#34;&gt;Optional Flags&lt;/h3&gt;
+&lt;p&gt;Set &amp;ldquo;&amp;ndash;rename_title&amp;rdquo; as True, then all video titles will be automatically reformed into the unified format described above.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Mesh_preprocessor_in_blender_with_python</title>

@@ -22,7 +22,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Automatically Resume Scraping Process&lt;/li&gt;
 &lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Update Channels Scraped&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Download Images From Various Image Websites (e.g., Artstation, Pixix, Deviantart, Pexels, Unsplash, Flickr)&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Download Images From Various Image Websites (e.g., Artstation, Pixiv, Deviantart, Pexels, Unsplash, Flickr)&lt;/li&gt;
 &lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Automatically Rename Video Titles (Optional)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;automatically-resume-scraping-and-downloading-processes&#34;&gt;Automatically Resume Scraping and Downloading Processes.&lt;/h3&gt;
@@ -46,7 +46,7 @@ For videos without chapters, the file number under a video folder should be the 
 &lt;h3 id=&#34;update-channels-already-scraped&#34;&gt;Update Channels Already Scraped&lt;/h3&gt;
 &lt;p&gt;Setting up flag &amp;ldquo;&amp;ndash;update True&amp;rdquo; when running program will automatically update these two files: &amp;ldquo;channel_videos_id_list.txt&amp;rdquo; and &amp;ldquo;channel_videos_info_list.json&amp;rdquo;, and download new videos.&lt;/p&gt;
 &lt;h3 id=&#34;image-downloader-for-various-image-websites&#34;&gt;Image Downloader for Various Image Websites&lt;/h3&gt;
-&lt;p&gt;Several downloaders are implemented in &amp;ldquo;lib/Youtube_Scraper_API.py&amp;rdquo; file. Currently, this program is able to download images from Websites: Artstation, Pixix, Deviantart, Pexels, Unsplash, Flickr.&lt;/p&gt;
+&lt;p&gt;Several downloaders are implemented in &amp;ldquo;lib/Youtube_Scraper_API.py&amp;rdquo; file. Currently, this program is able to download images from Websites: Artstation, Pixiv, Deviantart, Pexels, Unsplash, Flickr.&lt;/p&gt;
 &lt;h3 id=&#34;automatically-rename-video-titles-optional&#34;&gt;Automatically Rename Video Titles (Optional)&lt;/h3&gt;
 &lt;p&gt;During the development, an interesting problem is observed that the video titles could contain some weird words or symbols which are not able to be file titles saved in disk (especially for Linux OS). Further more, the titles are abitrary sometimes, which are difficult to extract useful information, for example,  artist names, features, music or song titles and types of video contents (e.g., mv or lyric video or visualizer, etc.). Thus, here presents a rename scheme that will automatically rename the video titles into a unified format:
 &amp;ldquo;artist_usernames - song_name (feat./with/prod. by/cover by artist_usernames) + (artist_usernames remix/mix/flip/cover) + [ncs release]&amp;rdquo;
